@@ -2,6 +2,7 @@ QT += quick qml
 
 SOURCES += \
         View/FirstWindow/firstwindow.cpp \
+        View/SecondWindow/secondwindow.cpp \
         main.cpp
 
 resources.files = main.qml 
@@ -21,7 +22,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    View/FirstWindow/firstwindow.h
+    View/FirstWindow/firstwindow.h \
+    View/SecondWindow/secondwindow.h
 
 DISTFILES += \
-    View/FirstWindow/FirstWindow.qml
+    View/FirstWindow/FirstWindow.qml \
+    View/SecondWindow/SecondWindow.qml

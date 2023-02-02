@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>View/FirstWindow/FirstWindow.qml</file>
         <file>main.qml</file>
+        <file>View/SecondWindow/SecondWindow.qml</file>
     </qresource>
 </RCC>

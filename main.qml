@@ -1,4 +1,5 @@
 import QtQuick
+import "View"
 
 Window {
     width: 640
