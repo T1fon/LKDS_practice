@@ -3,5 +3,8 @@
         <file>View/FirstWindow/FirstWindow.qml</file>
         <file>main.qml</file>
         <file>View/SecondWindow/SecondWindow.qml</file>
+        <file>View/ThirdWindow/ThirdWindow.qml</file>
+        <file>View/FouthWindow/FouthWindow.qml</file>
+        <file>View/FifthWindow/FifthWindow.qml</file>
     </qresource>
 </RCC>

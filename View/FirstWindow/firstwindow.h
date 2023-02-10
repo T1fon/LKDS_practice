@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QQuickItem>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <qqml.h>
+#include "../Controller/controller_databasemanager.h"
 
 class FirstWindow : public QObject
 {
@@ -15,6 +18,7 @@ public:
 
 private:
     QQmlApplicationEngine *__engine;
+    Controller_DatabaseManager *__model;
 signals:
 
 };

@@ -3,7 +3,9 @@ import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import "../SecondWindow/"
-
+import "../ThirdWindow/"
+import "../FouthWindow/"
+import "../FifthWindow/"
 
 ApplicationWindow
 {
@@ -93,12 +95,21 @@ ApplicationWindow
                 {
                     color: "#D3B992"
                 }
+                onClicked:
+                {
+                    firstwindow.button2Clicked()
+                }
             }
         }
         onButton1Clicked:
         {
             stackview.push(secondwindow)
         }
+        onButton2Clicked:
+        {
+            stackview.push(fifthwindow)
+        }
+
     }
     SecondWindow
     {
@@ -106,5 +117,51 @@ ApplicationWindow
         visible: false
         height: parent.height
         width: parent.width
+        onButtonMainWindowClicked:
+        {
+            stackview.pop(firstwindow)
+        }
+        onButtonThirdWindowClicked:
+        {
+            stackview.push(thirdwindow)
+        }
+    }
+    ThirdWindow
+    {
+        id: thirdwindow
+        visible: false
+        height: parent.height
+        width: parent.width
+       onButtonSecondWindowClicked:
+       {
+           stackview.pop(secondwindow)
+       }
+       onButtonFouthWindowClicked:
+       {
+           stackview.push(fouthwindow)
+       }
+    }
+    FouthWindow
+    {
+        id: fouthwindow
+        visible: false
+        height: parent.height
+        width: parent.width
+        onButtonFirstWindowClicked:
+        {
+            stackview.pop(firstwindow)
+        }
+    }
+    FifthWindow
+    {
+        id: fifthwindow
+        visible: false
+        height: parent.height
+        width: parent.width
+        onButtonFirstWindowClicked:
+        {
+            stackview.pop(firstwindow)
+        }
+
     }
 }

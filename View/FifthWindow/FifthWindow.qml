@@ -1,23 +1,18 @@
-import QtQuick 2.12
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.1
-import Qt.labs.qmlmodels 1.0
-import QtQml.Models 2.15
-
-
+import QtQuick 2.6
+import QtQuick.Window 2.3
+import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.3
 
 Rectangle
 {
-    id: secondwindow
+    id: fifthwindow
     width:800
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
     color: "#F5F5F5"
 
-    signal buttonMainWindowClicked()
-    signal buttonThirdWindowClicked()
+    signal buttonFirstWindowClicked()
 
     Rectangle
     {
@@ -72,115 +67,99 @@ Rectangle
 
         }
     }
-
     Rectangle
     {
-        id: secondwindow_table
+        id: table
         width: swidth * 58.3333
-        height: sheight * 64.921875
+        height: sheight * 66.9531
         x: swidth * 3.125
         y: sheight * 11.796875
-        //anchors.fill: parent
-       // color: "red"
-
-        TableView
-        {
-            id: tableVie
-
-           ScrollBar.horizontal: ScrollBar
-           {
-               policy: ScrollBar.AsNeeded
-               active: true
-               onActiveChanged:
-               {
-                   if(!active)
-                       active = true;
-               }
-           }
-
-           ScrollBar.vertical: ScrollBar
-           {
-               policy: ScrollBar.AsNeeded
-               active: true
-               onActiveChanged:
-               {
-                   if(!active)
-                       active = true;
-               }
-           }
-
-        }
-    }
-
-    Rectangle
-    {
-        id: info
-        width: swidth * 27.96875
-        height: sheight * 36.1718
-        x:swidth * 67.552
-        y:sheight * 11.71875
         color: "red"
-        Button
-        {
-            id: addcompany
-            height: sheight * 7.65625
-            width: parent.width
-            anchors.bottom: parent.bottom
-            text:"Добавить компанию"
-            font.family: "Helvetica"
-            font.pointSize: sheight * 1.5
-            background: Rectangle
-            {
-                color: "#D3B992"
-            }
-        }
     }
 
     Rectangle
     {
-        id: travellmenu
-        height: sheight * 16.5625
-        width: swidth * 27.96875
+        id: buttoncase
+        width: swidth * 27.9688
+        height: sheight * 37.1875
+        x: swidth * 66.7187
+        y: sheight * 11.796875
         color: "#F5F5F5"
-        //anchors.right: parent.right
-        y: sheight * 60.15625
-        x: swidth * 67.552
-
         Button
         {
-            id:thirdwindow_button
+            id: add
             width: parent.width
-            height: sheight * 7.65625
-            text:"Продолжить"
+            height: sheight * 7.6563
+            text:"Добавить"
             font.family: "Helvetica"
             font.pointSize: sheight * 1.5
             background: Rectangle
             {
                 color: "#D3B992"
             }
-            onClicked:
+        }
+        Button
+        {
+            id: redact
+            width: parent.width
+            height: sheight * 7.6563
+            y: sheight * 9.5
+            text:"Редактировать"
+            font.family: "Helvetica"
+            font.pointSize: sheight * 1.5
+            background: Rectangle
             {
-                secondwindow.buttonThirdWindowClicked()
+                color: "#D3B992"
             }
 
         }
         Button
         {
-            id:firstwindow_button
+            id: delet
             width: parent.width
-            height: sheight * 7.65625
-            anchors.bottom: parent.bottom
-            text:"Назад"
+            height: sheight * 7.6563
+            y: sheight * 19
+            text:"Удалить"
             font.family: "Helvetica"
             font.pointSize: sheight * 1.5
             background: Rectangle
             {
                 color: "#D3B992"
             }
-            onClicked:
+
+        }
+        Button
+        {
+            id: unload
+            width: parent.width
+            height: sheight * 7.6563
+            anchors.bottom: parent.bottom
+            text:"Выгрузить"
+            font.family: "Helvetica"
+            font.pointSize: sheight * 1.5
+            background: Rectangle
             {
-                secondwindow.buttonMainWindowClicked()
+                color: "#D3B992"
             }
+
+        }
+    }
+    Button
+    {
+        width: swidth * 27.9688
+        height: sheight * 7.6563
+        x: swidth * 66.5625
+        y: sheight * 71.0937
+        text:"Вернуться"
+        font.family: "Helvetica"
+        font.pointSize: sheight * 1.5
+        background: Rectangle
+        {
+            color: "#D3B992"
+        }
+        onClicked:
+        {
+            fifthwindow.buttonFirstWindowClicked()
         }
     }
 }

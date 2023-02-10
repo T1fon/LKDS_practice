@@ -1,8 +1,13 @@
-QT += quick qml
+QT += quick qml sql
 
 SOURCES += \
+        Controller/controller_databasemanager.cpp \
+        Model/model_database.cpp \
+        View/FifthWindow/fifthwindow.cpp \
         View/FirstWindow/firstwindow.cpp \
+        View/FouthWindow/fouthwindow.cpp \
         View/SecondWindow/secondwindow.cpp \
+        View/ThirdWindow/thirdwindow.cpp \
         main.cpp
 
 resources.files = main.qml 
@@ -22,9 +27,17 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Controller/controller_databasemanager.h \
+    Model/model_database.h \
+    View/FifthWindow/fifthwindow.h \
     View/FirstWindow/firstwindow.h \
-    View/SecondWindow/secondwindow.h
+    View/FouthWindow/fouthwindow.h \
+    View/SecondWindow/secondwindow.h \
+    View/ThirdWindow/thirdwindow.h
 
 DISTFILES += \
+    View/FifthWindow/FifthWindow.qml \
     View/FirstWindow/FirstWindow.qml \
-    View/SecondWindow/SecondWindow.qml
+    View/FouthWindow/FouthWindow.qml \
+    View/SecondWindow/SecondWindow.qml \
+    View/ThirdWindow/ThirdWindow.qml
