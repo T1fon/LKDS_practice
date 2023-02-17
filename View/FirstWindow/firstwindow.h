@@ -7,6 +7,7 @@
 #include <QQmlContext>
 #include <qqml.h>
 #include "../Controller/controller_databasemanager.h"
+#include <QQuickView>
 
 class FirstWindow : public QObject
 {
@@ -19,6 +20,7 @@ public:
 private:
     QQmlApplicationEngine *__engine;
     Controller_DatabaseManager *__model;
+    Model_database *DataBase;
 signals:
 
 };

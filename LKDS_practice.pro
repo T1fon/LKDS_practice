@@ -40,4 +40,5 @@ DISTFILES += \
     View/FirstWindow/FirstWindow.qml \
     View/FouthWindow/FouthWindow.qml \
     View/SecondWindow/SecondWindow.qml \
+    View/SecondWindow/TableModeler.qml \
     View/ThirdWindow/ThirdWindow.qml

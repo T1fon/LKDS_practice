@@ -6,5 +6,6 @@
         <file>View/ThirdWindow/ThirdWindow.qml</file>
         <file>View/FouthWindow/FouthWindow.qml</file>
         <file>View/FifthWindow/FifthWindow.qml</file>
+        <file>View/SecondWindow/TableModeler.qml</file>
     </qresource>
 </RCC>

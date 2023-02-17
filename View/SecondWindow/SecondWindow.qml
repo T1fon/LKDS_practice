@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.1
 import Qt.labs.qmlmodels 1.0
 import QtQml.Models 2.15
+import DatabaseManager 0.1
 
 
 
@@ -16,8 +17,11 @@ Rectangle
     property int sheight: this.height/100
     color: "#F5F5F5"
 
+
     signal buttonMainWindowClicked()
     signal buttonThirdWindowClicked()
+    signal buttonCHangeTableToThirdClicked()
+
 
     Rectangle
     {
@@ -80,35 +84,17 @@ Rectangle
         height: sheight * 64.921875
         x: swidth * 3.125
         y: sheight * 11.796875
-        //anchors.fill: parent
-       // color: "red"
+        visible: true
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 5
 
-        TableView
-        {
-            id: tableVie
-
-           ScrollBar.horizontal: ScrollBar
-           {
-               policy: ScrollBar.AsNeeded
-               active: true
-               onActiveChanged:
-               {
-                   if(!active)
-                       active = true;
-               }
-           }
-
-           ScrollBar.vertical: ScrollBar
-           {
-               policy: ScrollBar.AsNeeded
-               active: true
-               onActiveChanged:
-               {
-                   if(!active)
-                       active = true;
-               }
-           }
-
+            TableModeler {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                model: Controller_DatabaseManager {}
+                columnWidths: [10 * swidth, 15 * swidth, 10 * swidth, 10 * swidth, 12 *swidth]
+            }
         }
     }
 
@@ -161,6 +147,7 @@ Rectangle
             onClicked:
             {
                 secondwindow.buttonThirdWindowClicked()
+
             }
 
         }

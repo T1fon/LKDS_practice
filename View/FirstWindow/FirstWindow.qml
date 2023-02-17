@@ -1,7 +1,8 @@
-import QtQuick 2.6
-import QtQuick.Window 2.3
-import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.3
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
+import DatabaseManager
 import "../SecondWindow/"
 import "../ThirdWindow/"
 import "../FouthWindow/"
@@ -19,6 +20,7 @@ ApplicationWindow
     color: "#F5F5F5"
     property int defMargin: 10
 
+
     StackView
     {
         id: stackview
@@ -28,12 +30,17 @@ ApplicationWindow
 
     Rectangle
     {
+        Connections
+        {
+            target: bd
+        }
         id: firstwindow
         width:parent.width
         height: parent.height
         color: "#F5F5F5"
         signal button1Clicked();
         signal button2Clicked();
+
 
         Rectangle
         {
@@ -81,6 +88,7 @@ ApplicationWindow
                 onClicked:
                 {
                     firstwindow.button1Clicked();
+                    bd.changeToSecond()
                 }
             }
             Button
@@ -104,6 +112,7 @@ ApplicationWindow
         onButton1Clicked:
         {
             stackview.push(secondwindow)
+
         }
         onButton2Clicked:
         {
@@ -120,6 +129,7 @@ ApplicationWindow
         onButtonMainWindowClicked:
         {
             stackview.pop(firstwindow)
+
         }
         onButtonThirdWindowClicked:
         {
