@@ -20,7 +20,6 @@ ApplicationWindow
     color: "#F5F5F5"
     property int defMargin: 10
 
-
     StackView
     {
         id: stackview
@@ -153,6 +152,7 @@ ApplicationWindow
     }
     FouthWindow
     {
+
         id: fouthwindow
         visible: false
         height: parent.height

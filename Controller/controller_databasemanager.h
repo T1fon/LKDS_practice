@@ -8,7 +8,7 @@
 #include <qqml.h>
 #include <QStringList>
 #include <QAbstractTableModel>
-#include <../Model/model_database.h>
+#include "../Model/model_database.h"
 #include <QMap>
 #include <QVector>
 
