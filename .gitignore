@@ -72,4 +72,4 @@ CMakeLists.*
 *.dll
 *.exe
 # Build
-build*
+*Debug/*
