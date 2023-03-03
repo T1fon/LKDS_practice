@@ -1,14 +1,4 @@
-QT += quick qml sql
-
-SOURCES += \
-        Controller/controller_databasemanager.cpp \
-        Model/model_database.cpp \
-        View/FifthWindow/fifthwindow.cpp \
-        View/FirstWindow/firstwindow.cpp \
-        View/FouthWindow/fouthwindow.cpp \
-        View/SecondWindow/secondwindow.cpp \
-        View/ThirdWindow/thirdwindow.cpp \
-        main.cpp
+QT += quick qml sql serialport
 
 resources.files = main.qml 
 resources.prefix = /$${TARGET}
@@ -28,12 +18,25 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/controller_databasemanager.h \
+    Controller/SerialManager/ControllerSerialManager.h \
     Model/model_database.h \
+    Model/SerialManager/ModelSerialManager.h \
     View/FifthWindow/fifthwindow.h \
     View/FirstWindow/firstwindow.h \
     View/FouthWindow/fouthwindow.h \
     View/SecondWindow/secondwindow.h \
     View/ThirdWindow/thirdwindow.h
+SOURCES += \
+    Controller/controller_databasemanager.cpp \
+    Controller/SerialManager/ControllerSerialManager.cpp \
+    Model/model_database.cpp \
+    Model/SerialManager/ModelSerialManager.cpp \
+    View/FifthWindow/fifthwindow.cpp \
+    View/FirstWindow/firstwindow.cpp \
+    View/FouthWindow/fouthwindow.cpp \
+    View/SecondWindow/secondwindow.cpp \
+    View/ThirdWindow/thirdwindow.cpp \
+    main.cpp
 
 DISTFILES += \
     View/FifthWindow/FifthWindow.qml \

@@ -2,23 +2,27 @@ import QtQuick 2.6
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-
-
-
+import WindowWriteKey 1.0
 Rectangle
 {
+
+    Fouth_Window
+    {
+        id: window_write_key
+    }
+
     id: thirdwindow
     width:800
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
+    property string access_level: "0"
     color: "#F5F5F5"
-
     signal buttonFirstWindowClicked()
 
     Rectangle
     {
-        id: infopanel
+        id: info_panel
         width: swidth * 92.8125
         height: sheight * 8.0469
         x: swidth * 3.2292
@@ -27,15 +31,17 @@ Rectangle
 
         TextEdit
         {
+            id: info_panel_edit
             width: parent.width
             height: parent.height
             font.family: "Helvetica"
-            font.pointSize: sheight * 2.5
+            font.pointSize: swidth * 1.5
             horizontalAlignment: "AlignHCenter"
             verticalAlignment: "AlignVCenter"
             color: "black"
             clip: true
             //максимальная длина не должна превышать 30
+
         }
     }
 
@@ -60,6 +66,7 @@ Rectangle
             RadioButton
             {
                 id: meckanik
+                objectName: "meckanik_radiobutton"
                 checked: true
                 text: qsTr("Механик")
                 contentItem: Text
@@ -68,14 +75,19 @@ Rectangle
                     color: "red"
                     leftPadding: 2 * swidth
                     font.family: "Helvetica"
-                    font.pointSize: sheight * 2
+                    font.pointSize: swidth * 1.5
                     bottomPadding : 1 * swidth
+                }
+                onClicked:
+                {
+                    access_level = "0"
                 }
             }
 
             RadioButton
             {
                 id: operator
+                objectName: "operator_radiobutton"
                 text: qsTr("Оператор")
                 //color: "green"
                 contentItem: Text
@@ -84,14 +96,19 @@ Rectangle
                     color: "green"
                     leftPadding: 2 * swidth
                     font.family: "Helvetica"
-                    font.pointSize: sheight * 2
+                    font.pointSize: swidth * 1.5
                     bottomPadding : 1 * swidth
+                }
+                onClicked:
+                {
+                    access_level = "1"
                 }
             }
 
             RadioButton
             {
                 id: administrator
+                objectName: "administrator_radiobutton"
                 text: qsTr("Администратор")
                 contentItem: Text
                 {
@@ -99,13 +116,18 @@ Rectangle
                     color: "blue"
                     leftPadding: 2 * swidth
                     font.family: "Helvetica"
-                    font.pointSize: sheight * 2
+                    font.pointSize: swidth * 1.5
                     bottomPadding : 1 * swidth
+                }
+                onClicked:
+                {
+                    access_level = "2"
                 }
             }
             RadioButton
             {
                 id: developer
+                objectName: "developer_radiobutton"
                 text: qsTr("Разработчик")
                 contentItem: Text
                 {
@@ -113,8 +135,12 @@ Rectangle
                     color: "#f6fa20"
                     leftPadding: 2 * swidth
                     font.family: "Helvetica"
-                    font.pointSize: sheight * 2
+                    font.pointSize: swidth * 1.5
                     bottomPadding : 1 * swidth
+                }
+                onClicked:
+                {
+                    access_level = "3"
                 }
             }
         }
@@ -131,7 +157,8 @@ Rectangle
         color: "#F5F5F5"
         Button
         {
-            id: writebutton
+            id: write_button
+            objectName: "write_button"
             width: swidth * 27.9687
             height: sheight * 7.6562
             text: "Записать"
@@ -139,10 +166,15 @@ Rectangle
             {
                 color: "#D3B992"
             }
+            onClicked:
+            {
+                window_write_key.write(info_panel_edit.text,access_level)
+            }
         }
         Button
         {
-            id: checkbutton
+            id: check_button
+            objectName: "check_button"
             width: swidth * 27.9687
             height: sheight * 7.6562
             anchors.right: parent.right
@@ -151,10 +183,15 @@ Rectangle
             {
                 color: "#D3B992"
             }
+            onClicked:
+            {
+                window_write_key.check()
+            }
         }
         Button
         {
-            id: countbutton
+            id: read_button
+            objectName: "read_button"
             width: swidth * 27.9687
             height: sheight * 7.6562
             anchors.verticalCenter: parent.verticalCenter
@@ -165,10 +202,15 @@ Rectangle
             {
                 color: "#D3B992"
             }
+            onClicked:
+            {
+                window_write_key.read()
+            }
         }
         Button
         {
-            id: cleanbutton
+            id: clean_button
+            objectName: "clean_button"
             width: swidth * 27.9687
             height: sheight * 7.6562
             anchors.verticalCenter: parent.verticalCenter
@@ -179,10 +221,15 @@ Rectangle
             {
                 color: "#D3B992"
             }
+            onClicked:
+            {
+                window_write_key.clear()
+            }
         }
         Button
         {
-            id: endbutton
+            id: end_button
+            objectName: "end_button"
             width: swidth * 27.9687
             height: sheight * 7.6562
             anchors.bottom: parent.bottom
@@ -201,11 +248,49 @@ Rectangle
 
     Rectangle
     {
-        id: log
+        id: log_panel
+        objectName: "log_panel"
         width: swidth * 93.5416
         height: sheight * 39.2187
         x: swidth * 3.2292
         y: sheight * 51.0156
         color: "#D9D9D9"
+
+        ScrollView {
+            id: scroll_bar
+            width: parent.width
+            height: parent.height
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            clip: true
+
+            TextEdit
+            {
+                id: log_panel_area
+                width: parent.width
+                height: parent.height
+                leftPadding: swidth * 1
+                topPadding: swidth * 1
+                rightPadding: swidth * 1
+                bottomPadding: swidth * 1
+                color:"#000000"
+                font.family: "Helvetica"
+                font.pointSize: swidth * 1.5
+                horizontalAlignment: "AlignLeft"
+                verticalAlignment: "AlignBottom"
+                clip: true
+                readOnly: true
+            }
+
+        }
+    }
+
+    Connections
+    {
+        target: window_write_key
+        function onSendToQml(message) {
+            log_panel_area.text = log_panel_area.text + message
+        }
     }
 }
