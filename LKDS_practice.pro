@@ -19,22 +19,26 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Controller/controller_databasemanager.h \
     Controller/SerialManager/ControllerSerialManager.h \
+    Model/COMPortModel/COMPortModel.h \
     Model/model_database.h \
     Model/SerialManager/ModelSerialManager.h \
     View/FifthWindow/fifthwindow.h \
     View/FirstWindow/firstwindow.h \
     View/FouthWindow/fouthwindow.h \
     View/SecondWindow/secondwindow.h \
+    View/SettingsWindow/SettingsWindow.h \
     View/ThirdWindow/thirdwindow.h
 SOURCES += \
     Controller/controller_databasemanager.cpp \
     Controller/SerialManager/ControllerSerialManager.cpp \
+    Model/COMPortModel/COMPortModel.cpp \
     Model/model_database.cpp \
     Model/SerialManager/ModelSerialManager.cpp \
     View/FifthWindow/fifthwindow.cpp \
     View/FirstWindow/firstwindow.cpp \
     View/FouthWindow/fouthwindow.cpp \
     View/SecondWindow/secondwindow.cpp \
+    View/SettingsWindow/SettingsWindow.cpp \
     View/ThirdWindow/thirdwindow.cpp \
     main.cpp
 
@@ -44,4 +48,5 @@ DISTFILES += \
     View/FouthWindow/FouthWindow.qml \
     View/SecondWindow/SecondWindow.qml \
     View/SecondWindow/TableModeler.qml \
-    View/ThirdWindow/ThirdWindow.qml
+    View/ThirdWindow/ThirdWindow.qml \
+    View/SettingsWindow/SettingsWindow.qml

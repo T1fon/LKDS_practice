@@ -63,6 +63,7 @@ Rectangle {
                     drag.threshold: 0
                     drag.minimumX: parent.implicitWidth
                     hoverEnabled: true
+
                 }
 
             } // delegate Rectangle columnHeader
@@ -105,10 +106,10 @@ Rectangle {
                     text: display
                     anchors.verticalCenter: parent.verticalCenter
                     x: 4
+
                 }
             }
         } // TableView
-
     } // ColumnLayout
 
 } // Rectangle table

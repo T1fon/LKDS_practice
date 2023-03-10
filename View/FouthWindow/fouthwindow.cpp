@@ -2,8 +2,6 @@
 
 Fouth_Window::Fouth_Window()
 {
-    qmlRegisterType<Fouth_Window>("WindowWriteKey", 1, 0, "Fouth_Window");
-
     __settings.bound_rate = QSerialPort::Baud9600;
     __settings.data_bits = QSerialPort::Data8;
     __settings.parity = QSerialPort::NoParity;

@@ -17,7 +17,6 @@ Rectangle
     property int sheight: this.height/100
     color: "#F5F5F5"
 
-
     signal buttonMainWindowClicked()
     signal buttonThirdWindowClicked()
     signal buttonCHangeTableToThirdClicked()

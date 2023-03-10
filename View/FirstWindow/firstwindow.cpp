@@ -20,7 +20,7 @@ FirstWindow::FirstWindow(QObject *parent)
 
     qmlRegisterType<Controller_DatabaseManager>("DatabaseManager", 0, 1, "Controller_DatabaseManager");
     qmlRegisterType<Fouth_Window>("WindowWriteKey", 1, 0, "Fouth_Window");
-
+    qmlRegisterType<COMPortModel>("COMPortModel", 1, 0, "COM_Port_Model");
     qDebug() << 11;
     __engine->load(url);
 

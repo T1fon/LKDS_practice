@@ -7,6 +7,8 @@ import "../SecondWindow/"
 import "../ThirdWindow/"
 import "../FouthWindow/"
 import "../FifthWindow/"
+import "../SettingsWindow/"
+
 
 ApplicationWindow
 {
@@ -17,7 +19,7 @@ ApplicationWindow
     title: qsTr("Проект Арсений")
     property int swidth: this.width/100
     property int sheight: this.height/100
-    color: "#F5F5F5"
+    color: "#F7EFD7"
     property int defMargin: 10
 
     StackView
@@ -39,7 +41,7 @@ ApplicationWindow
         color: "#F5F5F5"
         signal button1Clicked();
         signal button2Clicked();
-
+        signal buttonSettingsClicked();
 
         Rectangle
         {
@@ -118,6 +120,37 @@ ApplicationWindow
             stackview.push(fifthwindow)
         }
 
+        Button{
+            id: settingswindow_button
+            x: swidth * 88.5416
+            y: sheight * 81.4814
+            width: swidth * 7.7083
+            height: swidth * 7.7083
+            text: "S"
+            background: Rectangle
+            {
+                color: "#D3B992"
+            }
+            onClicked:
+            {
+                firstwindow.buttonSettingsClicked()
+            }
+        }
+        onButtonSettingsClicked: {
+            stackview.push(settings_window)
+        }
+        Button{
+            id: helpwindow_button
+            x: swidth * 78.125
+            y: sheight * 81.4814
+            width: swidth * 7.7083
+            height: swidth * 7.7083
+            background: Rectangle
+            {
+                color: "#D3B992"
+            }
+
+        }
     }
     SecondWindow
     {
@@ -172,6 +205,16 @@ ApplicationWindow
         {
             stackview.pop(firstwindow)
         }
-
+    }
+    SettingsWindow
+    {
+        id: settings_window
+        visible: false
+        height: parent.height
+        width: parent.width
+        onButtonFirstWindowClicked:
+        {
+            stackview.pop(firstwindow)
+        }
     }
 }

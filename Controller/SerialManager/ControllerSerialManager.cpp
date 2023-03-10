@@ -11,7 +11,7 @@ ControllerSerialManager::ControllerSerialManager(Settings settings, QString port
     }
 
     if(temp_port_name == ""){
-        throw invalid_argument("Программатор не был найден");
+        throw invalid_argument("Port name not found");
     }
 
     __m_serial_manager = new ModelSerialManager(settings,temp_port_name);

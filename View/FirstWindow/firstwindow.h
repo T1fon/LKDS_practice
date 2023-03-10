@@ -8,6 +8,7 @@
 #include <qqml.h>
 #include "../../Controller/controller_databasemanager.h"
 #include "../FouthWindow/fouthwindow.h"
+#include "../../Model/COMPortModel/COMPortModel.h"
 #include <QQuickView>
 
 class FirstWindow : public QObject
