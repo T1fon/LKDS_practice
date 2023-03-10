@@ -22,15 +22,17 @@ public:
     explicit Model_database(QObject *parent = nullptr);
     ~Model_database();
 
+
+    bool isOpen();
     void connectToDataBase();
     QSqlQuery * queryToDB(QString query);
+
 
 private:
     QSqlDatabase __Db;
     QSqlQuery* __query;
-    bool openDataBase();
     bool closeDataBase();
-
+    bool openDataBase();
 signals:
 
 };

@@ -11,22 +11,18 @@
 #include <../Model/model_database.h>
 #include <QMap>
 #include <QVector>
+#include <QSqlDatabase>
 
+#define DATABASE_NAME "LKDS_Base.db"
+#define DATABASE_WAY "DataBase/LKDS_Base.db"
 
 struct TableDisplay
 {
-    QString CodCust;
-    QString NameCust;
-    QString Inn;
-    QString KodReg;
-    QString NameSity;
-};
-struct TableDisplayServiceKey
-{
-    QString KodCust;
-    QString IdNum;
-    QString Date;
-    QString NumKey;
+    QString CodCust = "&";
+    QString NameCust = "&";
+    QString Inn = "&";
+    QString KodReg = "&";
+    QString NameSity = "&";
 };
 
 class Controller_DatabaseManager : public QAbstractTableModel
@@ -46,43 +42,39 @@ public:
             CountofColumnsCustom
         };
 
-    enum {
-            ColumnKodCust = 0,
-            ColumnIdNum,
-            ColumnDate,
-            ColumnNumKey,
-            CountofColumnsService
-        };
 
 
     Controller_DatabaseManager(QObject *parent = nullptr);
     int rowCount(const QModelIndex & = QModelIndex()) const override;
     int columnCount(const QModelIndex & = QModelIndex()) const override;
+    void header(int page);
 
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const override;
+
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
     QHash<int, QByteArray> roleNames() const override;
     ~Controller_DatabaseManager();
 
 
 signals:
-    void sendToQml();
 
 public slots:
     void updateModel();
-    void changeToSecond();
-    void changeToThird();
-
+    void recieveData(QString cust,QString inn,QString reg,QString city);
 private:
     QStringList __columnNames;
     QSqlQuery *__q;
     Model_database * __dispetcher;
     QVector<TableDisplay> *__rowNames;
-    QVector<TableDisplayServiceKey> *__serviceNames;
     int __rows = 0;
-    int __page = 0;
+    int __page = PAGE_SECOND_WINDOW;
     QString __query;
+
+    TableDisplay *bufbuf = nullptr;
 };
 
 #endif // CONTROLLER_DATABASEMANAGER_H

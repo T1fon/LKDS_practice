@@ -1,7 +1,9 @@
-QT += quick qml sql
+QT += quick qml sql \
+    widgets
 
 SOURCES += \
         Controller/controller_databasemanager.cpp \
+        Controller/controller_keytable.cpp \
         Model/model_database.cpp \
         View/FifthWindow/fifthwindow.cpp \
         View/FirstWindow/firstwindow.cpp \
@@ -28,6 +30,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/controller_databasemanager.h \
+    Controller/controller_keytable.h \
     Model/model_database.h \
     View/FifthWindow/fifthwindow.h \
     View/FirstWindow/firstwindow.h \
@@ -39,6 +42,8 @@ DISTFILES += \
     View/FifthWindow/FifthWindow.qml \
     View/FirstWindow/FirstWindow.qml \
     View/FouthWindow/FouthWindow.qml \
+    View/SecondWindow/AddCompany.qml \
     View/SecondWindow/SecondWindow.qml \
     View/SecondWindow/TableModeler.qml \
+    View/ThirdWindow/TableModeler_th.qml \
     View/ThirdWindow/ThirdWindow.qml

@@ -4,6 +4,7 @@ Model_database::Model_database(QObject *parent)
     : QObject{parent}
 {
     __query = new QSqlQuery;
+
 }
 
 
@@ -22,8 +23,8 @@ void Model_database::connectToDataBase()
 
 bool Model_database::openDataBase()
 {
+
     __Db = QSqlDatabase::addDatabase("QSQLITE");
-    __Db.setHostName(DATABASE_HOSTNAME);
     __Db.setDatabaseName(DATABASE_WAY);
     if(!__Db.isOpen())
     {
@@ -51,12 +52,16 @@ bool Model_database::closeDataBase()
 
 QSqlQuery * Model_database::queryToDB(QString query)
 {
-    if(__query->exec(query))
-        return __query;
-    else
-        qDebug() << "No Query";
+    *__query = __Db.exec(query);
+    return __query;
 }
-
+bool Model_database::isOpen()
+{
+    if (__Db.isOpen())
+        return true;
+    else
+        return false;
+}
 Model_database::~Model_database()
 {
     this->closeDataBase();

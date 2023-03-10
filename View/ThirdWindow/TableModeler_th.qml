@@ -1,20 +1,16 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import DatabaseManager 1.0
-import "../SecondWindow/"
+import KeyTable 1.0
 Rectangle {
-    id: table
+    id: table_th
 
     required property var model
     required property var columnWidths
 
-    signal buttonAddClicked()
-
     function columnWidthProvider(column) {
         return columnWidths[column]
     }
-
 
     ColumnLayout {
         anchors.fill: parent
@@ -45,7 +41,7 @@ Rectangle {
 
                 Rectangle {
                     id: splitter
-                    x: table.columnWidths[index] - width
+                    x: table_th.columnWidths[index] - width
                     height: horizontalHeader.height
                     width: 4
                     color: "#999"
@@ -53,7 +49,7 @@ Rectangle {
 
                     onXChanged: {
                         if (dragArea.drag.active) {
-                            table.columnWidths[index] = splitter.x + width;
+                            table_th.columnWidths[index] = splitter.x + width;
                             tableView.forceLayout();
                         }
                     }
@@ -80,8 +76,8 @@ Rectangle {
             Layout.fillHeight: true
             clip: true
             boundsBehavior:Flickable.StopAtBounds
-            columnWidthProvider: table.columnWidthProvider
-            model: table.model
+            columnWidthProvider: table_th.columnWidthProvider
+            model: table_th.model
 
             ScrollBar.vertical: ScrollBar {
                 policy: ScrollBar.AsNeeded

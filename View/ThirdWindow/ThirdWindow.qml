@@ -2,7 +2,7 @@ import QtQuick 2.6
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-
+import KeyTable 1.0
 
 Rectangle
 {
@@ -41,12 +41,23 @@ Rectangle
     }
     Rectangle
     {
-        id: table
+        id: thirdwindow_table
         width: swidth * 58.3333
         height: sheight * 64.921875
         x: swidth * 3.125
         y: sheight * 11.796875
-        color: "red"
+        visible: true
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 5
+
+            TableModeler_th {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                model: Controller_KeyTable {}
+                columnWidths: [11 * swidth, 15 * swidth, 13 * swidth, 13 * swidth]
+            }
+        }
     }
 
     Rectangle

@@ -2,7 +2,8 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
-import DatabaseManager
+import DatabaseManager 1.0
+import SecWin 1.0
 import "../SecondWindow/"
 import "../ThirdWindow/"
 import "../FouthWindow/"
@@ -20,6 +21,10 @@ ApplicationWindow
     color: "#F5F5F5"
     property int defMargin: 10
 
+    Controller_DatabaseManager
+    {
+        id:c_DB_M
+    }
 
     StackView
     {
@@ -30,16 +35,13 @@ ApplicationWindow
 
     Rectangle
     {
-        Connections
-        {
-            target: bd
-        }
         id: firstwindow
         width:parent.width
         height: parent.height
         color: "#F5F5F5"
         signal button1Clicked();
         signal button2Clicked();
+        signal changeTable();
 
 
         Rectangle
@@ -63,7 +65,6 @@ ApplicationWindow
                  color: "#749652"
 
              }
-
         }
 
         Rectangle
@@ -88,7 +89,6 @@ ApplicationWindow
                 onClicked:
                 {
                     firstwindow.button1Clicked();
-                    bd.changeToSecond()
                 }
             }
             Button
@@ -109,6 +109,7 @@ ApplicationWindow
                 }
             }
         }
+
         onButton1Clicked:
         {
             stackview.push(secondwindow)
@@ -118,7 +119,6 @@ ApplicationWindow
         {
             stackview.push(fifthwindow)
         }
-
     }
     SecondWindow
     {
@@ -135,13 +135,16 @@ ApplicationWindow
         {
             stackview.push(thirdwindow)
         }
+
     }
+
     ThirdWindow
     {
         id: thirdwindow
         visible: false
         height: parent.height
         width: parent.width
+
        onButtonSecondWindowClicked:
        {
            stackview.pop(secondwindow)

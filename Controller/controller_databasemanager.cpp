@@ -1,22 +1,17 @@
 #include "controller_databasemanager.h"
 #include"../Model/model_database.h"
+#include"../View/SecondWindow/secondwindow.h"
 
 Controller_DatabaseManager::Controller_DatabaseManager(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    if (__page == PAGE_SECOND_WINDOW)
-    {
-        __columnNames << tr("Cod_Cust") << tr("Name_Custom") << tr("INN") << tr("Reg") << tr("City");
-    }
-    else if (__page == PAGE_THIRD_WINDOW)
-    {
-        __columnNames <<tr("Cod_Cust") << tr("Id Num") << tr("Date") << tr("Num key");
-    }
+    __columnNames << tr("Cod_Cust") << tr("Name_Custom") << tr("INN") << tr("Reg") << tr("City");
     __dispetcher = new Model_database(this);
     __dispetcher->connectToDataBase();
     __q = new QSqlQuery;
     __rowNames = new QVector<TableDisplay>;
     this->updateModel();
+    connect(this, SIGNAL(send(QString,QString,QString,QString)),this, SLOT(recieveData(QString,QString,QString,QString)));
 
 }
 int Controller_DatabaseManager::rowCount(const QModelIndex &) const
@@ -27,14 +22,7 @@ int Controller_DatabaseManager::rowCount(const QModelIndex &) const
 
 int Controller_DatabaseManager::columnCount(const QModelIndex &) const
 {
-    if (__page == PAGE_SECOND_WINDOW)
-    {
     return CountofColumnsCustom;
-    }
-    else if (__page == PAGE_THIRD_WINDOW)
-    {
-        return CountofColumnsService;
-    }
 }
 
 
@@ -62,38 +50,20 @@ QVariant Controller_DatabaseManager::data(const QModelIndex &index, int role) co
 
     if (row >= rowCount() || col >= columnCount() || role !=  Qt::DisplayRole)
         return QVariant();
-    if (__page == PAGE_SECOND_WINDOW)
-    {
+
     switch (col)
-        {
-            case ColumnCodCust:
-                return __rowNames->at(row).CodCust;
-            case ColumnNameCust:
-                return __rowNames->at(row).NameCust;
-            case ColumnINN:
-                return __rowNames->at(row).Inn;
-            case CountKodReg:
-                return __rowNames->at(row).KodReg;
-            case ColumnNameSity:
-                return __rowNames->at(row).NameSity;
-        }
-    }
-    else if (__page == PAGE_THIRD_WINDOW)
     {
-        switch (col)
-        {
-            case ColumnKodCust:
-                return __serviceNames->at(row).KodCust;
-            case ColumnIdNum:
-                return __serviceNames->at(row).IdNum;
-            case ColumnDate:
-                return __serviceNames->at(row).Date;
-            case ColumnNumKey:
-                return __serviceNames->at(row).NumKey;
-        }
-
+        case ColumnCodCust:
+            return __rowNames->at(row).CodCust;
+        case ColumnNameCust:
+            return __rowNames->at(row).NameCust;
+        case ColumnINN:
+            return __rowNames->at(row).Inn;
+        case CountKodReg:
+            return __rowNames->at(row).KodReg;
+        case ColumnNameSity:
+            return __rowNames->at(row).NameSity;
     }
-
     //return QVariant();
 }
 
@@ -101,65 +71,115 @@ QVariant Controller_DatabaseManager::data(const QModelIndex &index, int role) co
 void Controller_DatabaseManager::updateModel()
 {
     TableDisplay a;
-    TableDisplayServiceKey b;
     __rows = 0;
-    bool flag = false;
-    if (__page == PAGE_SECOND_WINDOW)
-    {
-         __query = "SELECT * FROM Custom";
-    }
-    else if (__page == PAGE_THIRD_WINDOW)
-    {
-         __query = "SELECT * FROM Custom";
-    }
-    flag = __q->exec(__query);
-    if(!flag)
-            qDebug() << "NO Flag";
+    __query = "SELECT * FROM Custom";
+    __q = __dispetcher->queryToDB(__query);
 
-    if (__page == PAGE_SECOND_WINDOW)
+    for (; __q->next();)
     {
-        for (; __q->next();)
-        {
-            a.CodCust = __q->value("COD_CUST").toString();
-            qDebug() << a.CodCust;
-            a.NameCust = __q->value("NAME_CUSTOM").toString();
-            qDebug() << a.NameCust;
-            a.Inn = __q->value("INN").toString();
-            qDebug() << a.Inn;
-            a.KodReg = __q->value("KOD_REG").toString();
-            qDebug() << a.KodReg;
-            a.NameSity = __q->value("NAME_SITY").toString();
-            qDebug() << a.NameSity;
+        qDebug() << "PAGEDDD";
+        a.CodCust = __q->value("COD_CUST").toString();
+        qDebug() << a.CodCust;
+        a.NameCust = __q->value("NAME_CUSTOM").toString();
+        qDebug() << a.NameCust;
+        a.Inn = __q->value("INN").toString();
+        qDebug() << a.Inn;
+        a.KodReg = __q->value("KOD_REG").toString();
+        qDebug() << a.KodReg;
+        a.NameSity = __q->value("NAME_SITY").toString();
+        qDebug() << a.NameSity;
 
-         __rowNames->push_back(a);
-         __rows++;
-        }
+     __rowNames->push_back(a);
+     __rows++;
     }
-    else if (__page == PAGE_THIRD_WINDOW)
-    {
-        for (; __q->next();)
-        {
-            b.KodCust = __q->value("KOD_CUST").toString();
-            b.IdNum = __q->value("ID_NUM").toString();
-            b.Date = __q->value("DATE").toString();
-            b.NumKey = __q->value("NUM_KEY").toString();
-
-         __serviceNames->push_back(b);
-         __rows++;
-        }
-    }
-
 }
 
-void Controller_DatabaseManager::changeToSecond()
+Qt::ItemFlags Controller_DatabaseManager::flags(const QModelIndex &index) const
 {
-    __page = PAGE_SECOND_WINDOW;
-    emit sendToQml();
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
 
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
-void Controller_DatabaseManager::changeToThird()
+
+bool Controller_DatabaseManager::setData(const QModelIndex &index,const QVariant &value, int role)
+ {
+    if (bufbuf == nullptr)
+    {
+        bufbuf = new TableDisplay;
+    }
+    int col = index.column();
+
+    switch (col)
+    {
+    case ColumnCodCust:
+        bufbuf->CodCust = value.toString();
+    case ColumnNameCust:
+        bufbuf->NameCust = value.toString();
+    case ColumnINN:
+        bufbuf->Inn = value.toString();
+    case CountKodReg:
+        bufbuf->KodReg = value.toString();
+    case ColumnNameSity:
+        bufbuf->NameSity = value.toString();
+    }
+
+     if (index.isValid() && role == Qt::EditRole)
+     {
+        // __rowNames->replace();
+        if((bufbuf->CodCust != "&") && (bufbuf->NameCust != "&") && (bufbuf->Inn != "&") && (bufbuf->KodReg != "&") && (bufbuf->NameSity != "&"))
+        {
+         __rowNames->replace(index.row(), *bufbuf);
+         emit dataChanged(index, index);
+         return true;
+        }
+     }
+     return false;
+}
+
+bool Controller_DatabaseManager::insertRows(int position, int rows, const QModelIndex &parent)
+ {
+    beginInsertRows(QModelIndex(), position, position+rows-1);
+    TableDisplay buffer;
+     for (int row = 0; row < rows; ++row) {
+         __rowNames->push_back(buffer);
+         //__rowNames->
+     }
+
+    endInsertRows();
+    return true;
+ }
+
+void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg,QString city)
 {
-    __page = PAGE_THIRD_WINDOW;
+    beginResetModel();
+    qDebug() << 123456;
+    TableDisplay buf;
+    __dispetcher->connectToDataBase();
+
+    if (__dispetcher->isOpen())
+       qDebug() << "YES";
+    else
+       qDebug() << "NO";
+
+    __query = "SELECT * FROM Region WHERE NAME_REG = '" + reg +"'";
+    //qDebug() << __query;
+    __q = __dispetcher->queryToDB(__query);
+    __q->next();
+    buf.CodCust = "4";
+    buf.NameCust = cust;
+    buf.Inn = inn;
+    buf.KodReg = __q->value("KOD_REG").toString();
+    buf.NameSity = city;
+
+
+    __query = "INSERT INTO Custom (NAME_CUSTOM, INN, KOD_REG, NAME_SITY ) VALUES ( ' " + buf.NameCust + " ', '" + buf.Inn + "', '" + buf.KodReg + "' , '" + buf.NameSity + "')";
+
+    qDebug() << __query;
+    __q = __dispetcher->queryToDB(__query);
+    __rowNames->push_back(buf);
+    endResetModel();
+
 }
 
 Controller_DatabaseManager::~Controller_DatabaseManager()
