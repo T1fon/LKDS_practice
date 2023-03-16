@@ -13,6 +13,7 @@ class ControllerSerialManager : public QObject
     Q_OBJECT
    // QML_ADDED_IN_MINOR_VERSION(1)
 private:
+    bool __connection_succeful = false;
     QThread *__serial_thread = nullptr;
     ModelSerialManager *__m_serial_manager = nullptr;
 
@@ -20,6 +21,7 @@ private:
 public:
     ControllerSerialManager(Settings settings, QString port_name = "");
     void write(QByteArray data);
+    bool isConnection();
 
     ~ControllerSerialManager();
 private slots:

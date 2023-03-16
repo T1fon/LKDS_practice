@@ -12,6 +12,8 @@ Fouth_Window::Fouth_Window()
     __controller_serial = new ControllerSerialManager(__settings);
 
     connect(__controller_serial, SIGNAL(readyRead(QString)), this, SLOT(acceptMessage(QString)));
+
+
 }
 void Fouth_Window::write(QString prefix_and_key, QString access_level){
     QString message = OPERATION_WRITE + prefix_and_key + access_level + OPERATION_SYMBOL;

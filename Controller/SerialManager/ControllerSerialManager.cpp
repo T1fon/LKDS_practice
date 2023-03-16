@@ -11,24 +11,27 @@ ControllerSerialManager::ControllerSerialManager(Settings settings, QString port
     }
 
     if(temp_port_name == ""){
-        throw invalid_argument("Port name not found");
+        __connection_succeful = false;
     }
+    else{
+        __connection_succeful = true;
 
-    __m_serial_manager = new ModelSerialManager(settings,temp_port_name);
-    __serial_thread = new QThread(this);
+        __m_serial_manager = new ModelSerialManager(settings,temp_port_name);
+        __serial_thread = new QThread(this);
 
-    __m_serial_manager->moveToThread(__serial_thread);
-    __m_serial_manager->moveToThreadSerialPort(__serial_thread);
+        __m_serial_manager->moveToThread(__serial_thread);
+        __m_serial_manager->moveToThreadSerialPort(__serial_thread);
 
-    connect(__serial_thread, SIGNAL(started()), __m_serial_manager, SLOT(process()));
-    connect(__m_serial_manager, SIGNAL(finished()), __serial_thread, SLOT(quit()));
-    connect(__serial_thread, SIGNAL(finished()), __serial_thread, SLOT(quit()));
-    connect( __m_serial_manager, SIGNAL(finished()),__m_serial_manager, SLOT(deleteLater()));
-    connect( __serial_thread, SIGNAL(finished()),__serial_thread, SLOT(deleteLater()));
+        connect(__serial_thread, SIGNAL(started()), __m_serial_manager, SLOT(process()));
+        connect(__m_serial_manager, SIGNAL(finished()), __serial_thread, SLOT(quit()));
+        connect(__serial_thread, SIGNAL(finished()), __serial_thread, SLOT(quit()));
+        connect( __m_serial_manager, SIGNAL(finished()),__m_serial_manager, SLOT(deleteLater()));
+        connect( __serial_thread, SIGNAL(finished()),__serial_thread, SLOT(deleteLater()));
 
-    connect(__m_serial_manager, SIGNAL(printDataPort(QString)), this, SLOT(__read(QString)));
+        connect(__m_serial_manager, SIGNAL(printDataPort(QString)), this, SLOT(__read(QString)));
 
-    __serial_thread->start();
+        __serial_thread->start();
+    }
 }
 QString ControllerSerialManager::__searchDevice(){
     QList<QSerialPortInfo> a = QSerialPortInfo::availablePorts();
@@ -39,8 +42,13 @@ QString ControllerSerialManager::__searchDevice(){
     }
     return "";
 }
+bool ControllerSerialManager::isConnection(){
+    return __connection_succeful;
+}
 void ControllerSerialManager::write(QByteArray data){
-    __m_serial_manager->portWrite(data);
+    if(__connection_succeful){
+        __m_serial_manager->portWrite(data);
+    }
 }
 void ControllerSerialManager::__read(QString message){
     emit readyRead(message);

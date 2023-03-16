@@ -21,21 +21,39 @@ Rectangle {
     }
 
     function onAct(index) {
-        device_name_t_e_text.text = com_port_model.getDeviceName(index)
-        device_id_t_e_text.text = com_port_model.getDeviceId(index)
-        manufacturer_name_t_e_text.text = com_port_model.getManufacturerName(index)
-        manufacturer_id_t_e_text.text = com_port_model.getManufacturerId(index)
+        if(com_c_box.count != 0){
+            device_name_t_e_text.text = com_port_model.getDeviceName(index)
+            device_id_t_e_text.text = com_port_model.getDeviceId(index)
+            manufacturer_name_t_e_text.text = com_port_model.getManufacturerName(index)
+            manufacturer_id_t_e_text.text = com_port_model.getManufacturerId(index)
+            com_c_box.displayText = com_port_model.getPortName(index)
+        }
+        else{
+            device_name_t_e_text.text = ""
+            device_id_t_e_text.text = ""
+            manufacturer_name_t_e_text.text = ""
+            manufacturer_id_t_e_text.text = ""
+            com_c_box.displayText = "Устройств не обнаружено"
+        }
+
     }
+    function checkDevice(){
+        com_port_model.updateData();
+        onAct(0);
+    }
+
+
     Rectangle{
         id: com_box
         x: swidth * 26.5625
         y: sheight * 5.5555
-        width: swidth * 46.875
+        width: swidth * 53.3854
         height: sheight * 14.9074
+        color: "#F7EFD7"
         Rectangle{
             width: parent.width
             height: parent.height/2
-
+            anchors.left: parent.left
             color:"#F7EFD7"
             Text{
                 id: com_text
@@ -52,15 +70,47 @@ Rectangle {
 
 
         ComboBox{
-            id:com_c_box
 
+            id:com_c_box
+            anchors.left: parent.left
             anchors.bottom: parent.bottom
-            width: parent.width
+            width: parent.width - parent.height/2-10
             height: parent.height/2
             model: com_port_model
             onActivated: onAct(index)
         }
+
+        Button{
+            id: com_but_update
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            width: parent.height/2
+            height: parent.height/2
+            clip: true
+
+            Text{
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                font.family: "Helvetica"
+                font.pointSize: swidth * 2
+                horizontalAlignment: "AlignHCenter"
+                verticalAlignment: "AlignVCenter"
+                clip: true
+                text: "U"
+                color: "#FBFBFB"
+            }
+            background: Rectangle{
+                width: parent.width
+                height: parent.height
+                color: "#D3B992"
+            }
+            onClicked: checkDevice()
+
+        }
+
     }
+
+
 
 
 
@@ -247,8 +297,6 @@ Rectangle {
             anchors.left: parent.left
             width: swidth * 27.9687
             height: parent.height
-            font.family: "Helvetica"
-            font.pointSize: swidth * 1.5
             clip: true
 
             Text{
@@ -274,8 +322,6 @@ Rectangle {
             anchors.right: parent.right
             width: swidth * 27.9687
             height: parent.height
-            font.family: "Helvetica"
-            font.pointSize: swidth * 1.5
             clip: true
             Text{
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -299,13 +345,5 @@ Rectangle {
         }
     }
 
-    /*Connections:{
-        target: com_c_box
-        function onActivated(index){
-            /*device_name_text.text = com_port_model.getDeviceName(index)
-            device_id_text.text = com_port_model.getDeviceId(index)
-            manufacturer_name_text.text = com_port_model.getManufacturerName(index)
-            manufacturer_id_text = com_port_model.getManufacturerId(index)
-        }
-    }*/
+
 }
