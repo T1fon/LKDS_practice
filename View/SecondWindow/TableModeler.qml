@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import DatabaseManager 1.0
+import QtQuick.Dialogs
 import "../SecondWindow/"
 Rectangle {
     id: table
@@ -75,6 +76,7 @@ Rectangle {
         } // HorizontalHeaderView
 
         TableView {
+
             id: tableView
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -111,7 +113,11 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     x: 4
                 }
+
             }
+
+
+
         } // TableView
 
     } // ColumnLayout

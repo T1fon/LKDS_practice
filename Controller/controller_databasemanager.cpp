@@ -78,6 +78,8 @@ void Controller_DatabaseManager::updateModel()
     for (; __q->next();)
     {
         qDebug() << "PAGEDDD";
+        __rows_to_add = __q->value("COD_CUST").toInt();
+        qDebug() << "ROWWWWW :" << __rows_to_add;
         a.CodCust = __q->value("COD_CUST").toString();
         qDebug() << a.CodCust;
         a.NameCust = __q->value("NAME_CUSTOM").toString();
@@ -109,11 +111,12 @@ bool Controller_DatabaseManager::setData(const QModelIndex &index,const QVariant
         bufbuf = new TableDisplay;
     }
     int col = index.column();
+    QString a = "";
 
     switch (col)
     {
     case ColumnCodCust:
-        bufbuf->CodCust = value.toString();
+        bufbuf->CodCust = a.setNum(__rows_to_add + 1);
     case ColumnNameCust:
         bufbuf->NameCust = value.toString();
     case ColumnINN:
@@ -127,32 +130,31 @@ bool Controller_DatabaseManager::setData(const QModelIndex &index,const QVariant
      if (index.isValid() && role == Qt::EditRole)
      {
         // __rowNames->replace();
-        if((bufbuf->CodCust != "&") && (bufbuf->NameCust != "&") && (bufbuf->Inn != "&") && (bufbuf->KodReg != "&") && (bufbuf->NameSity != "&"))
+        if((bufbuf->NameCust != "&") && (bufbuf->Inn != "&") && (bufbuf->KodReg != "&") && (bufbuf->NameSity != "&"))
         {
+        emit dataChanged(index, index);
          __rowNames->replace(index.row(), *bufbuf);
-         emit dataChanged(index, index);
          return true;
         }
      }
      return false;
 }
+bool Controller_DatabaseManager::insertRows(int row, int count, const QModelIndex &parent)
+{
+    emit beginInsertRows(parent, row, count+row);
 
-bool Controller_DatabaseManager::insertRows(int position, int rows, const QModelIndex &parent)
- {
-    beginInsertRows(QModelIndex(), position, position+rows-1);
-    TableDisplay buffer;
-     for (int row = 0; row < rows; ++row) {
-         __rowNames->push_back(buffer);
-         //__rowNames->
-     }
 
-    endInsertRows();
+    emit endInsertRows();
     return true;
  }
+bool Controller_DatabaseManager::removeRows(int row, int count, const QModelIndex &parent)
+{
+
+}
 
 void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg,QString city)
 {
-    beginResetModel();
+
     qDebug() << 123456;
     TableDisplay buf;
     __dispetcher->connectToDataBase();
@@ -166,7 +168,10 @@ void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString re
     //qDebug() << __query;
     __q = __dispetcher->queryToDB(__query);
     __q->next();
-    buf.CodCust = "4";
+
+    QString t = "";
+
+    buf.CodCust = t.setNum(__rows_to_add +1);
     buf.NameCust = cust;
     buf.Inn = inn;
     buf.KodReg = __q->value("KOD_REG").toString();
@@ -178,7 +183,8 @@ void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString re
     qDebug() << __query;
     __q = __dispetcher->queryToDB(__query);
     __rowNames->push_back(buf);
-    endResetModel();
+    insertRows(__rows, 1);
+    __rows++;
 
 }
 

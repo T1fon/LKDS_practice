@@ -18,7 +18,7 @@
 
 struct TableDisplay
 {
-    QString CodCust = "&";
+    QString CodCust;
     QString NameCust = "&";
     QString Inn = "&";
     QString KodReg = "&";
@@ -53,8 +53,9 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const override;
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override ;
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex())override;
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex())override;
 
     QHash<int, QByteArray> roleNames() const override;
     ~Controller_DatabaseManager();
@@ -73,6 +74,7 @@ private:
     int __rows = 0;
     int __page = PAGE_SECOND_WINDOW;
     QString __query;
+    int __rows_to_add = 0;
 
     TableDisplay *bufbuf = nullptr;
 };

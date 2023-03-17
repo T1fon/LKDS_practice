@@ -99,6 +99,7 @@ Rectangle
                 model: Controller_DatabaseManager {id:aa}
                 columnWidths: [10 * swidth, 15 * swidth, 10 * swidth, 10 * swidth, 12 *swidth]
             }
+
         }
     }
 
