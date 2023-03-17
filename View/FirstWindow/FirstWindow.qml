@@ -185,7 +185,6 @@ ApplicationWindow
     }
     FouthWindow
     {
-
         id: fouthwindow
         visible: false
         height: parent.height
@@ -216,5 +215,10 @@ ApplicationWindow
         {
             stackview.pop(firstwindow)
         }
+        onSetDevice: (port_name)=>
+        {
+            fouthwindow.connectToDevice(port_name)
+        }
     }
+
 }

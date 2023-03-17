@@ -18,7 +18,14 @@ Rectangle
     property int sheight: this.height/100
     property string access_level: "0"
     color: "#F5F5F5"
-    signal buttonFirstWindowClicked()
+    signal buttonFirstWindowClicked();
+    signal connectToDevice(port_name: string);
+
+    onConnectToDevice: (port_name) =>
+    {
+        log_panel_area.text = ""
+        window_write_key.setPortName(port_name);
+    }
 
     Rectangle
     {
@@ -41,7 +48,6 @@ Rectangle
             color: "black"
             clip: true
             //максимальная длина не должна превышать 30
-
         }
     }
 

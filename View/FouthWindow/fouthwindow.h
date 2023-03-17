@@ -9,6 +9,8 @@
 #define OPERATION_CHECK "3"
 #define OPERATION_CLEAR "4"
 #define OPERATION_SYMBOL "?"
+#define DEFAULT_SAVE_PATH "./port_config.txt"
+
 class Fouth_Window : public QObject
 {
     Q_OBJECT
@@ -16,6 +18,8 @@ class Fouth_Window : public QObject
 private:
     Settings __settings;
     ControllerSerialManager *__controller_serial;
+    QString __port_name = "";
+    QString __searchByPortSettings(QString path_to_settings_file);
 public:
     Fouth_Window();
     ~Fouth_Window();
@@ -23,6 +27,7 @@ public:
 
 public slots:
     void acceptMessage(QString message);
+    void setPortName(QString port_name);
 
     void write(QString prefix_and_key, QString access_level);
     void read();

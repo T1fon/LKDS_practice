@@ -24,7 +24,53 @@ void COMPortModel::updateData(){
         qDebug() << "Data no remove";
     }
 }
+void COMPortModel::saveData(QString path){
+    QFile file(path);
+    file.open(QFile::WriteOnly);
+    if(!file.isOpen()){
+        //сигнал об ошибке
+        emit saveError("File " + path + " not open");
+        return;
+    }
 
+    QTextStream fout(&file);
+    fout.seek(0);
+
+    int count_field = 4;
+    QString title[count_field];
+    title[0] = "Device_Name:";
+    title[1] = "Device_Id:";
+    title[2] = "Manufacturer_Name:";
+    title[3] = "Manufacturer_Id:";
+
+    QString value[count_field];
+    value[0] = __COM_info->at(__current_index).description();
+    value[1] = QString().setNum(__COM_info->at(__current_index).productIdentifier());
+    value[2] = __COM_info->at(__current_index).manufacturer();
+    value[3] = QString().setNum(__COM_info->at(__current_index).vendorIdentifier());
+
+    for(int i = 0; i < count_field; i++){
+        value[i] = value[i].replace(' ','_');
+        if(value[i] != ""){
+            fout << title[i] << " " << value[i] << "\n";
+        }
+        else{
+            fout << title[i] << " " << value[i] << "\n";
+        }
+    }
+
+    file.close();
+}
+bool COMPortModel::setCurrentIndex(int value){
+    if(value < 0){
+        return false;
+    }
+    __current_index = value;
+    return true;
+}
+int COMPortModel::getCurrentIndex(){
+    return __current_index;
+}
 bool COMPortModel::setData(const QModelIndex &index, const QVariant &value, int role){
     emit dataChanged(index,index,{role});
     __COM_names_variant->push_back(value);

@@ -14,6 +14,7 @@ Rectangle {
     color: "#F7EFD7"
 
     signal buttonFirstWindowClicked()
+    signal setDevice(port_name: string);
     //signal updateModel()
 
     COM_Port_Model{
@@ -21,27 +22,28 @@ Rectangle {
     }
 
     function onAct(index) {
+        //but_save.enable = true
+        com_port_model.setCurrentIndex(index)
+        device_name_t_e_text.text = com_port_model.getDeviceName(index)
+        device_id_t_e_text.text = com_port_model.getDeviceId(index)
+        manufacturer_name_t_e_text.text = com_port_model.getManufacturerName(index)
+        manufacturer_id_t_e_text.text = com_port_model.getManufacturerId(index)
         if(com_c_box.count != 0){
-            device_name_t_e_text.text = com_port_model.getDeviceName(index)
-            device_id_t_e_text.text = com_port_model.getDeviceId(index)
-            manufacturer_name_t_e_text.text = com_port_model.getManufacturerName(index)
-            manufacturer_id_t_e_text.text = com_port_model.getManufacturerId(index)
+
             com_c_box.displayText = com_port_model.getPortName(index)
         }
         else{
-            device_name_t_e_text.text = ""
-            device_id_t_e_text.text = ""
-            manufacturer_name_t_e_text.text = ""
-            manufacturer_id_t_e_text.text = ""
+            //device_name_t_e_text.text = ""
+            //device_id_t_e_text.text = ""
+            //manufacturer_name_t_e_text.text = ""
+            //manufacturer_id_t_e_text.text = ""
             com_c_box.displayText = "Устройств не обнаружено"
         }
-
     }
     function checkDevice(){
         com_port_model.updateData();
         onAct(0);
     }
-
 
     Rectangle{
         id: com_box
@@ -67,7 +69,6 @@ Rectangle {
                 text: "COM порт"
             }
         }
-
 
         ComboBox{
 
@@ -105,14 +106,8 @@ Rectangle {
                 color: "#D3B992"
             }
             onClicked: checkDevice()
-
         }
-
     }
-
-
-
-
 
     Rectangle{
         id: device_name_box
@@ -314,6 +309,11 @@ Rectangle {
                 width: parent.width
                 height: parent.height
                 color: "#D3B992"
+            }
+            onClicked: {
+                com_port_model.saveData()
+                setDevice(com_port_model.getPortName(com_port_model.getCurrentIndex()))
+               // but_save.enable = false
             }
         }
         Button

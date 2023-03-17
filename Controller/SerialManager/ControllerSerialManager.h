@@ -3,19 +3,22 @@
 
 #include "../../Model/SerialManager/ModelSerialManager.h"
 #include <QThread>
+#include <QFile>
+#include <QTextStream>
+#include <QSerialPortInfo>
 #include <QDebug>
 
-#define DEVICE_DESCRIPTION "USB-SERIAL CH340"
-#define DEVICE_MANUFACTURER "wch.cn"
+#define DEFAULT_DEVICE_DESCRIPTION "USB-SERIAL CH340"
+#define DEFAULT_DEVICE_MANUFACTURER "wch.cn"
 
 class ControllerSerialManager : public QObject
 {
     Q_OBJECT
-   // QML_ADDED_IN_MINOR_VERSION(1)
 private:
     bool __connection_succeful = false;
     QThread *__serial_thread = nullptr;
     ModelSerialManager *__m_serial_manager = nullptr;
+    Settings __settings;
 
     QString __searchDevice();
 public:
@@ -26,6 +29,8 @@ public:
     ~ControllerSerialManager();
 private slots:
     void __read(QString message);
+public slots:
+    bool startConnection(QString port_name);
 signals:
     void readyRead(QString message);
 };

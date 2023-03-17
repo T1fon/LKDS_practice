@@ -3,6 +3,7 @@
 ControllerSerialManager::ControllerSerialManager(Settings settings, QString port_name)
 {
     QString temp_port_name = "";
+    __settings = settings;
     if(port_name == ""){
         temp_port_name = __searchDevice();
     }
@@ -10,13 +11,22 @@ ControllerSerialManager::ControllerSerialManager(Settings settings, QString port
         temp_port_name = port_name;
     }
 
-    if(temp_port_name == ""){
+    startConnection(temp_port_name);
+}
+
+bool ControllerSerialManager::startConnection(QString port_name){
+    qDebug() << port_name;
+    if(port_name == ""){
         __connection_succeful = false;
     }
     else{
         __connection_succeful = true;
 
-        __m_serial_manager = new ModelSerialManager(settings,temp_port_name);
+        if(__m_serial_manager != nullptr){
+            delete __m_serial_manager;
+            delete __serial_thread;
+        }
+        __m_serial_manager = new ModelSerialManager(__settings,port_name);
         __serial_thread = new QThread(this);
 
         __m_serial_manager->moveToThread(__serial_thread);
@@ -32,11 +42,13 @@ ControllerSerialManager::ControllerSerialManager(Settings settings, QString port
 
         __serial_thread->start();
     }
+
+    return __connection_succeful;
 }
 QString ControllerSerialManager::__searchDevice(){
     QList<QSerialPortInfo> a = QSerialPortInfo::availablePorts();
     for(int i = 0; i < a.size(); i++){
-        if(a.at(i).description() == DEVICE_DESCRIPTION && a.at(i).manufacturer() == DEVICE_MANUFACTURER){
+        if(a.at(i).description() == DEFAULT_DEVICE_DESCRIPTION && a.at(i).manufacturer() == DEFAULT_DEVICE_MANUFACTURER){
             return a.at(i).portName();
         }
     }
