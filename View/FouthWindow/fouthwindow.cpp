@@ -72,7 +72,7 @@ void Fouth_Window::clear(){
     qDebug() << "Clear";
 }
 void Fouth_Window::acceptMessage(QString message){
-    qDebug() << message;
+   // qDebug() << message;
     emit sendToQml(message);
     //return message;
 }

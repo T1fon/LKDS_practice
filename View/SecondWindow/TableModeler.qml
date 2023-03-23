@@ -97,7 +97,8 @@ Rectangle {
                 }
             }
 
-            delegate: Rectangle {
+            delegate:
+                Rectangle {
                 implicitHeight: 26
                 border.color: "#bbb"
                 border.width: 1
@@ -108,6 +109,12 @@ Rectangle {
                     x: 4
 
                 }
+               /* MouseArea{
+                    onClicked: {
+                        tableView.curr
+                    }
+                }*/
+
             }
         } // TableView
     } // ColumnLayout

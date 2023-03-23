@@ -57,7 +57,7 @@ void ModelSerialManager::portWrite(QByteArray data){
 void ModelSerialManager::__portRead(){
     QByteArray result;
     result = __serial_port->readAll();
-    qDebug() << result;
+    //qDebug() << result;
 }
 void ModelSerialManager::moveToThreadSerialPort(QThread *&thread){
     __serial_port->moveToThread(thread);

@@ -27,6 +27,26 @@ Rectangle
         window_write_key.setPortName(port_name);
     }
 
+    function onKeyPressed (event){
+        if(event.key === Qt.Key_F5){
+            window_write_key.write(info_panel_edit.text,access_level)
+        }
+        else if(event.key === Qt.Key_F6){
+            window_write_key.read()
+        }
+        else if(event.key === Qt.Key_F7){
+            window_write_key.check()
+        }
+        else if(event.key === Qt.Key_F8){
+            window_write_key.clear()
+        }
+        else if(event.key === Qt.Key_F10){
+            fouthwindow.buttonFirstWindowClicked()
+        }
+    }
+
+    Keys.onPressed: onKeyPressed(event);
+
     Rectangle
     {
         id: info_panel
@@ -167,7 +187,7 @@ Rectangle
             objectName: "write_button"
             width: swidth * 27.9687
             height: sheight * 7.6562
-            text: "Записать"
+            text: "(F5) Записать"
             background: Rectangle
             {
                 color: "#D3B992"
@@ -184,7 +204,7 @@ Rectangle
             width: swidth * 27.9687
             height: sheight * 7.6562
             anchors.right: parent.right
-            text: "Проверить"
+            text: "(F7) Проверить"
             background: Rectangle
             {
                 color: "#D3B992"
@@ -203,7 +223,7 @@ Rectangle
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.verticalCenterOffset: -swidth * 0.25
-            text: "Считать"
+            text: "(F6) Считать"
             background: Rectangle
             {
                 color: "#D3B992"
@@ -222,7 +242,7 @@ Rectangle
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.verticalCenterOffset: -swidth * 0.25
-            text: "Отчистить"
+            text: "(F8) Очистить"
             background: Rectangle
             {
                 color: "#D3B992"
@@ -240,7 +260,7 @@ Rectangle
             height: sheight * 7.6562
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Завершить"
+            text: "(F10) Завершить"
             background: Rectangle
             {
                 color: "#D3B992"
@@ -249,6 +269,7 @@ Rectangle
             {
                 fouthwindow.buttonFirstWindowClicked()
             }
+
         }
     }
 
