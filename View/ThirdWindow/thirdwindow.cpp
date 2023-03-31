@@ -1,5 +1,5 @@
 #include "thirdwindow.h"
-#include "../Controller/controller_keytable.h"
+#include "../../Controller/controller_keytable.h"
 
 ThirdWindow::ThirdWindow(QObject *parent)
     : QObject{parent}

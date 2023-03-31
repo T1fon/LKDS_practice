@@ -83,7 +83,59 @@ Rectangle
         x: swidth * 67.03125
         y: sheight * 12.3438
         color: "#F7EFD7"
+        Rectangle
+        {
+            id:numKey
+            width: parent.width
+            height: sheight * 10
 
+            color: "#F7EFD7"
+            Rectangle
+            {
+               height: parent.height
+               width: parent.width/2
+               color: "#F7EFD7"
+               Text
+               {
+                   id: numKeyText
+                   text: qsTr("Кол-во ключей")
+                   font.family: "Helvetica"
+                   font.pointSize: sheight * 2
+                   anchors.verticalCenter: parent.verticalCenter
+                   anchors.horizontalCenter: parent.horizontalCenter
+               }
+
+            }
+            Rectangle
+            {
+               id :textRect
+               height: sheight * 7
+               width: swidth * 7
+               y: sheight * 1.5
+               x: swidth * 15
+               color: "white"
+               TextEdit
+               {
+                   id: tI
+                   height: parent.height
+                   width: parent.width
+                   font.family: "Helvetica"
+                   font.pointSize: swidth * 1.5
+                   color: "black"
+                   topPadding: sheight * 2.5
+                   leftPadding: swidth * 1.5
+                   text: "1"
+                   onFocusChanged:
+                   {
+                       if(tI.focus){
+                           tI.readOnly = false
+                       }
+                       table.block()
+                   }
+
+               }
+            }
+        }
         Button
         {
             id: addkey
@@ -103,7 +155,7 @@ Rectangle
                     c_KT.addKey(tI.text)
                 else
                     addkey.enabled
-            }
+            } 
         }
         Button
         {

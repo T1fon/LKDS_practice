@@ -24,6 +24,7 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
+    property bool flagRedact: false
     color: "#F7EFD7"
 
     signal buttonMainWindowClicked()
@@ -38,7 +39,7 @@ Rectangle
     {
         width: swidth * 58.333333
         height: sheight * 6.09375
-        color: "#F5F5F5"
+        color: "#F7EFD7"
         y: sheight * 2.969
         x: swidth * 3.125
 
@@ -349,6 +350,10 @@ Rectangle
                 }
                 onClicked:
                 {
+                    tE1.clear()
+                    tE2.clear()
+                    tE3.clear()
+                    tE4.clear()
                     add.close()
                 }
             }
@@ -363,7 +368,7 @@ Rectangle
         height: sheight * 36.1718
         x:swidth * 67.552
         y:sheight * 11.71875
-        color: "#F5F5F5"
+        color: "#F7EFD7"
         Rectangle
         {
             height: sheight * 12

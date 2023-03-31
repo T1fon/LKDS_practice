@@ -1,16 +1,3 @@
-QT += quick qml sql \
-    widgets
-
-SOURCES += \
-        Controller/controller_databasemanager.cpp \
-        Controller/controller_keytable.cpp \
-        Model/model_database.cpp \
-        View/FifthWindow/fifthwindow.cpp \
-        View/FirstWindow/firstwindow.cpp \
-        View/FouthWindow/fouthwindow.cpp \
-        View/SecondWindow/secondwindow.cpp \
-        View/ThirdWindow/thirdwindow.cpp \
-        main.cpp
 QT += quick qml sql serialport
 
 resources.files = main.qml 
@@ -44,6 +31,7 @@ HEADERS += \
     View/ThirdWindow/thirdwindow.h
 SOURCES += \
     Controller/controller_databasemanager.cpp \
+    Controller/controller_keytable.cpp \
     Controller/SerialManager/ControllerSerialManager.cpp \
     Model/COMPortModel/COMPortModel.cpp \
     Model/model_database.cpp \
@@ -64,6 +52,5 @@ DISTFILES += \
     View/SecondWindow/SecondWindow.qml \
     View/SecondWindow/TableModeler.qml \
     View/ThirdWindow/TableModeler_th.qml \
-    View/ThirdWindow/ThirdWindow.qml
     View/ThirdWindow/ThirdWindow.qml \
     View/SettingsWindow/SettingsWindow.qml
