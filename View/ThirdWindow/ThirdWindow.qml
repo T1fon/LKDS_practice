@@ -3,6 +3,7 @@ import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import KeyTable 1.0
+import "../FirstWindow/"
 
 Rectangle
 {
@@ -11,10 +12,22 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
+    property bool redactKey: false
     color: "#F5F5F5"
 
     signal buttonSecondWindowClicked()
     signal buttonFouthWindowClicked()
+    signal recieveTW(sdo: Controller_KeyTable)
+    signal changeData()
+    signal sendInformationAboutKey(int firstKey, string pref, string numKey, bool redact)
+    signal checkRedact(bool flag)
+
+    property Controller_KeyTable c_KT: null
+
+    onRecieveTW: (value) =>
+    {
+        c_KT = value
+    }
 
     Rectangle
     {
@@ -50,15 +63,18 @@ Rectangle
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 5
+            id: ff
 
             TableModeler_th {
+                id: table
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                model: Controller_KeyTable {}
-                columnWidths: [11 * swidth, 15 * swidth, 13 * swidth, 13 * swidth]
+                model: c_KT
+                columnWidths: [10 * swidth, 14 * swidth, 8 * swidth, 12 * swidth, 12 * swidth]
             }
         }
     }
+
 
     Rectangle
     {
@@ -67,13 +83,69 @@ Rectangle
         height: sheight * 27.8125
         x: swidth * 67.03125
         y: sheight * 12.3438
+        //color: "red"
         color: "#F5F5F5"
+        Rectangle
+        {
+            id:numKey
+            width: parent.width
+            height: sheight * 10
+            //color: "red"
+            color: "#F5F5F5"
+
+            Rectangle
+            {
+                height: parent.height
+                width: parent.width/2
+                color: "#F5F5F5"
+                Text
+                {
+                    id: numKeyText
+                    text: qsTr("Кол-во ключей")
+                    font.family: "Helvetica"
+                    font.pointSize: sheight * 2
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+            }
+            Rectangle
+            {
+                id :textRect
+                height: sheight * 7
+                width: swidth * 7
+                y: sheight * 1.5
+                x: swidth * 15
+                color: "white"
+                TextEdit
+                {
+                    id: tI
+                    height: parent.height
+                    width: parent.width
+                    font.family: "Helvetica"
+                    font.pointSize: swidth * 1.5
+                    color: "black"
+                    topPadding: sheight * 2.5
+                    leftPadding: swidth * 1.5
+                    text: "1"
+                    onFocusChanged:
+                    {
+                        if(tI.focus){
+                            tI.readOnly = false
+                        }
+                        table.block()
+                    }
+
+                }
+            }
+        }
 
         Button
         {
             id: addkey
             width: parent.width
             height: sheight * 7.65625
+            y: sheight * 11
             text: "Добавить ключ"
             font.family: "Helvetica"
             font.pointSize: sheight * 1.5
@@ -81,20 +153,12 @@ Rectangle
             {
                 color: "#D3B992"
             }
-        }
-        Button
-        {
-            id: deletekey
-            width: parent.width
-            height: sheight * 7.65625
-            anchors.verticalCenter : addkey.bottom
-            anchors.verticalCenterOffset: parent.height *0.22
-            text: "Удалить ключ"
-            font.family: "Helvetica"
-            font.pointSize: sheight * 1.5
-            background: Rectangle
+            onClicked:
             {
-                color: "#D3B992"
+                if (c_KT.getReg() !== "")
+                    c_KT.addKey(tI.text)
+                else
+                    addkey.enabled
             }
         }
         Button
@@ -113,6 +177,8 @@ Rectangle
             onClicked:
             {
                 thirdwindow.buttonFouthWindowClicked()
+                thirdwindow.sendInformationAboutKey(c_KT.getKey(), c_KT.getReg(), tI.text, redactKey)
+
             }
         }
     }
@@ -134,5 +200,14 @@ Rectangle
         {
             thirdwindow.buttonSecondWindowClicked()
         }
+    }
+    onChangeData:
+    {
+        companiinfo_t.text = c_KT.printData()
+    }
+    onCheckRedact: (flag) =>
+    {
+        redactKey = flag
+      //  tI.readOnly = true
     }
 }

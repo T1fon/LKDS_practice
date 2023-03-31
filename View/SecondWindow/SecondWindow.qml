@@ -6,24 +6,33 @@ import Qt.labs.qmlmodels 1.0
 import QtQml.Models 2.15
 import DatabaseManager 1.0
 import SecWin 1.0
+import KeyTable 1.0
 import "../SecondWindow/"
+import "../ThirdWindow/"
 
 
 
 Rectangle
 {
+    Controller_KeyTable
+    {
+        id:contr
+    }
 
     id: secondwindow
     width:800
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
+    property bool flagRedact: false
     color: "#F5F5F5"
 
 
     signal buttonMainWindowClicked()
     signal buttonThirdWindowClicked()
     signal send()
+    signal sendTW(ckt: Controller_KeyTable);
+    signal changeLastKey()
 
 
 
@@ -44,7 +53,7 @@ Rectangle
            color: "white"
             TextEdit
             {
-                id: text
+                id: search_tE
                 width: swidth * 46.87
                 height: parent.height
                 font.family: "Helvetica"
@@ -70,14 +79,49 @@ Rectangle
             }
 
             Text {
-                id: name
+                id: search
                 text: qsTr("Поиск")
                 font.family: "Helvetica"
                 font.pointSize: sheight * 2
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
             }
+            onClicked:
+            {
+                if(search_tE.text != "")
+                {
+                    aa.searchCompany(search_tE.text)
+                    //search_tE.clear()
+                }
+                else
+                searchbutton.enabled
+            }
 
+        }
+        Button
+        {
+            id: cancelButton
+            height: parent.height
+            width: swidth * 5
+            x: swidth * 59
+            background: Rectangle
+            {
+                color: "#D3B992"
+            }
+
+            Text {
+                id: cancel
+                text: qsTr("X")
+                font.family: "Helvetica"
+                font.pointSize: sheight * 2
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            onClicked:
+            {
+                search_tE.clear()
+                aa.refreshTable()
+            }
         }
     }
     Rectangle
@@ -91,6 +135,7 @@ Rectangle
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 5
+
 
             TableModeler {
                 id : tab
@@ -281,11 +326,12 @@ Rectangle
                 }
                 onClicked:
                 {
-                    aa.recieveData(tE1.text, tE2.text, tE3.text, tE4.text);
+                    aa.recieveData(tE1.text, tE2.text, tE3.text, tE4.text, flagRedact);
                     tE1.clear()
                     tE2.clear()
                     tE3.clear()
                     tE4.clear()
+                    flagRedact = false
 
                     add.close()
 
@@ -319,14 +365,33 @@ Rectangle
         height: sheight * 36.1718
         x:swidth * 67.552
         y:sheight * 11.71875
-        color: "red"
+        color: "#F5F5F5"
+        Rectangle
+        {
+            height: sheight * 12
+            width: parent.width
+            color: "white"
+            TextEdit
+            {
+                id: infoKey
+                height: parent.height
+                width: parent.width
+                font.family: "Helvetica"
+                font.pointSize: swidth* 1.1
+                color: "black"
+                topPadding: sheight * 2.5
+                leftPadding: swidth * 1.5
+                readOnly: true
+            }
+        }
 
         Button
         {
             id: addcompany
             height: sheight * 7.65625
+            y: sheight * 20
             width: parent.width
-            anchors.bottom: parent.bottom
+            //anchors.bottom: parent.bottom
             text:"Добавить компанию"
             font.family: "Helvetica"
             font.pointSize: sheight * 1.5
@@ -338,6 +403,30 @@ Rectangle
             {
                 add.open()
             }
+        }
+        Button
+        {
+            id: redactcompany
+            height: sheight * 7.65625
+            width: parent.width
+            anchors.bottom: parent.bottom
+            text:"Редактировать"
+            font.family: "Helvetica"
+            font.pointSize: sheight * 1.5
+            background: Rectangle
+            {
+                color: "#D3B992"
+            }
+            onClicked:
+            {
+                flagRedact = true
+                add.open()
+                tE1.text = aa.checkName()
+                tE2.text = aa.checkInn()
+                tE3.text = aa.checkReg1()
+                tE4.text = aa.checkCity()
+            }
+
         }
     }
 
@@ -365,7 +454,10 @@ Rectangle
             }
             onClicked:
             {
+                contr.recieveRegion(aa.checkCodCust(), aa.checkCity(), aa.checkReg())
                 secondwindow.buttonThirdWindowClicked()
+                secondwindow.sendTW(contr)
+                thirdwindow.changeData()
             }
 
         }
@@ -388,4 +480,9 @@ Rectangle
             }
         }
     }
+    onChangeLastKey:
+    {
+        infoKey.text = aa.lastKey()
+    }
+
 }

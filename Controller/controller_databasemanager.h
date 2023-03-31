@@ -12,6 +12,7 @@
 #include <QMap>
 #include <QVector>
 #include <QSqlDatabase>
+#include "controller_keytable.h"
 
 #define DATABASE_NAME "LKDS_Base.db"
 #define DATABASE_WAY "DataBase/LKDS_Base.db"
@@ -63,9 +64,22 @@ public:
 
 signals:
 
+
 public slots:
     void updateModel();
-    void recieveData(QString cust,QString inn,QString reg,QString city);
+    void recieveData(QString cust,QString inn,QString reg,QString city, bool flag);
+    void searchCompany(QString seachplace);
+    void refreshTable();
+    void chooseRegion(int row);
+    QString checkCodCust();
+    QString checkCity();
+    QString checkReg();
+    QString checkReg1();
+    QString checkInn();
+    QString checkName();
+    QString lastKey();
+    void redactProfile(int row);
+
 private:
     QStringList __columnNames;
     QSqlQuery *__q;
@@ -75,6 +89,15 @@ private:
     int __page = PAGE_SECOND_WINDOW;
     QString __query;
     int __rows_to_add = 0;
+    int __row;
+    QString __companyCodCust = "";
+    QString __companyCity = "";
+    QString __companyReg = "";
+    QString __companyReg1 = "";
+    QString __companyInn = "";
+    QString __companyName = "";
+    QString __keyDate = "";
+    QString __keyNum = "";
 
     TableDisplay *bufbuf = nullptr;
 };

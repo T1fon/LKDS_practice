@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import DatabaseManager 1.0
 import SecWin 1.0
+import KeyTable 1.0
 import "../SecondWindow/"
 import "../ThirdWindow/"
 import "../FouthWindow/"
@@ -20,6 +21,7 @@ ApplicationWindow
     property int sheight: this.height/100
     color: "#F5F5F5"
     property int defMargin: 10
+
 
     Controller_DatabaseManager
     {
@@ -42,6 +44,7 @@ ApplicationWindow
         signal button1Clicked();
         signal button2Clicked();
         signal changeTable();
+        signal keyInformation(int firstKey, string pref, string numKey, bool redact)
 
 
         Rectangle
@@ -135,6 +138,10 @@ ApplicationWindow
         {
             stackview.push(thirdwindow)
         }
+        onSendTW: (value) =>
+        {
+            thirdwindow.recieveTW(value)
+        }
 
     }
 
@@ -145,13 +152,19 @@ ApplicationWindow
         height: parent.height
         width: parent.width
 
+
        onButtonSecondWindowClicked:
        {
            stackview.pop(secondwindow)
        }
        onButtonFouthWindowClicked:
        {
+
            stackview.push(fouthwindow)
+       }
+       onSendInformationAboutKey: ( firstKey,  pref,  numKey, redact) =>
+       {
+            firstwindow.keyInformation(firstKey,  pref,  numKey, redact)
        }
     }
     FouthWindow

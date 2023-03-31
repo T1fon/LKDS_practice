@@ -7,16 +7,20 @@
 #include <qqml.h>
 #include <QStringList>
 #include <QAbstractTableModel>
-#include <../Model/model_database.h>
+#include "../Model/model_database.h"
 #include <QMap>
 #include <QVector>
+#include "Controller/controller_databasemanager.h"
+#include <QDate>
 
 struct TableDisplayServiceKey
 {
-    QString KodCust;
     QString IdNum;
-    QString Date;
-    QString NumKey;
+    QString KodCust = "&";
+    QString KodReg = "&";
+    QString Date = "&";
+    QString NumKey = "&";
+
 };
 
 class Controller_KeyTable : public QAbstractTableModel
@@ -25,8 +29,9 @@ class Controller_KeyTable : public QAbstractTableModel
     QML_ELEMENT
     QML_ADDED_IN_MINOR_VERSION(1)
     enum {
-            ColumnKodCust = 0,
-            ColumnIdNum,
+            ColumnIdNum = 0,
+            ColumnKodCust,
+            ColumnReg,
             ColumnDate,
             ColumnNumKey,
             CountofColumnsService
@@ -37,6 +42,11 @@ public:
     int columnCount(const QModelIndex & = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex())override;
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex())override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override ;
+    int numKeyFofReg(QString __kodReg);
 
     QHash<int, QByteArray> roleNames() const override;
 
@@ -49,6 +59,12 @@ public:
 
 public slots:
     void updateModel();
+    void recieveRegion(QString codcust, QString city, QString reg);
+    void addKey(QString numKey);
+    QString printData();
+    QString addCodCust();
+    int getKey();
+    QString getReg();
 
 private:
     Model_database * __dispetcher;
@@ -58,6 +74,16 @@ private:
     int __rows = 0;
     int __page = PAGE_THIRD_WINDOW;
     QString __query;
+    QString __codCust;
+    TableDisplayServiceKey *__keyTable;
+    int __rowsID = 0;
+    int __numKey = 0;
+    int __num = 0;
+    QString __city = "";
+    QString __kodReg = "";
+
+signals:
+    sendInformationAboutKey(QString firstKey, QString pref, int num, bool redact);
 };
 
 #endif // CONTROLLER_KEYTABLE_H

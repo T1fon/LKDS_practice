@@ -4,18 +4,17 @@ import QtQuick.Layouts
 import DatabaseManager 1.0
 import QtQuick.Dialogs
 import "../SecondWindow/"
+
 Rectangle {
     id: table
+
 
     required property var model
     required property var columnWidths
 
-    signal buttonAddClicked()
-
     function columnWidthProvider(column) {
         return columnWidths[column]
     }
-
 
     ColumnLayout {
         anchors.fill: parent
@@ -76,13 +75,14 @@ Rectangle {
         } // HorizontalHeaderView
 
         TableView {
-
             id: tableView
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
             boundsBehavior:Flickable.StopAtBounds
             columnWidthProvider: table.columnWidthProvider
+            pointerNavigationEnabled: true
+            keyNavigationEnabled: true
             model: table.model
 
             ScrollBar.vertical: ScrollBar {
@@ -101,9 +101,18 @@ Rectangle {
                     if (!active)
                         active = true;
                 }
+
+            }
+
+            selectionModel: ItemSelectionModel
+            {
+                model: tableView.model
             }
 
             delegate: Rectangle {
+                id: bb
+                required property bool current
+                color: current ? "lightgray" : "white"
                 implicitHeight: 26
                 border.color: "#bbb"
                 border.width: 1
@@ -112,14 +121,24 @@ Rectangle {
                     text: display
                     anchors.verticalCenter: parent.verticalCenter
                     x: 4
+
                 }
+                onCurrentChanged: ()=>
+                {
+                    if(current)
+                        aa.chooseRegion(tableView.currentRow)
+                        secondwindow.changeLastKey()
+                        aa.redactProfile(tableView.currentRow)
+                }
+
 
             }
 
-
-
         } // TableView
+
 
     } // ColumnLayout
 
+
 } // Rectangle table
+

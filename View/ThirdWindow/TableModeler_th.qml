@@ -7,10 +7,14 @@ Rectangle {
 
     required property var model
     required property var columnWidths
+    property bool redactTrue: true
+    property bool blockchoosen: false
 
     function columnWidthProvider(column) {
         return columnWidths[column]
     }
+    signal redact()
+    signal block()
 
     ColumnLayout {
         anchors.fill: parent
@@ -97,19 +101,52 @@ Rectangle {
                 }
             }
 
+
+            selectionModel: ItemSelectionModel
+            {
+                model: tableView.model
+            }
+
             delegate: Rectangle {
+                id: clickThird
+                required property bool current
+                color: current ? "lightgray" : "white"
                 implicitHeight: 26
                 border.color: "#bbb"
                 border.width: 1
+
                 Text {
                     id: cellText
                     text: display
                     anchors.verticalCenter: parent.verticalCenter
                     x: 4
+
+
                 }
+                onCurrentChanged: ()=>
+                {
+                    tI.text = ""
+                    tI.readOnly = true
+                    if (blockchoosen == false)
+                    {
+                        if(current)
+                            table_th.redact()
+                    }
+                }
+
+
             }
         } // TableView
 
     } // ColumnLayout
+    onRedact:
+    {
+        thirdwindow.checkRedact(redactTrue)
+    }
+    onBlock:
+    {
+        blockchoosen = true
+        tableView.focus = false
+    }
 
 } // Rectangle table
