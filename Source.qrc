@@ -8,5 +8,7 @@
         <file>View/FifthWindow/FifthWindow.qml</file>
         <file>View/SecondWindow/TableModeler.qml</file>
         <file>View/ThirdWindow/TableModeler_th.qml</file>
+        <file>View/SettingsWindow/SettingsWindow.qml</file>
+        <file>Source/settings.png</file>
     </qresource>
 </RCC>

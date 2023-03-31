@@ -68,6 +68,7 @@ Rectangle {
                     drag.threshold: 0
                     drag.minimumX: parent.implicitWidth
                     hoverEnabled: true
+
                 }
 
             } // delegate Rectangle columnHeader

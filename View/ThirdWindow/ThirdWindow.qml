@@ -12,8 +12,7 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
-    property bool redactKey: false
-    color: "#F5F5F5"
+    color: "#F7EFD7"
 
     signal buttonSecondWindowClicked()
     signal buttonFouthWindowClicked()
@@ -83,62 +82,7 @@ Rectangle
         height: sheight * 27.8125
         x: swidth * 67.03125
         y: sheight * 12.3438
-        //color: "red"
-        color: "#F5F5F5"
-        Rectangle
-        {
-            id:numKey
-            width: parent.width
-            height: sheight * 10
-            //color: "red"
-            color: "#F5F5F5"
-
-            Rectangle
-            {
-                height: parent.height
-                width: parent.width/2
-                color: "#F5F5F5"
-                Text
-                {
-                    id: numKeyText
-                    text: qsTr("Кол-во ключей")
-                    font.family: "Helvetica"
-                    font.pointSize: sheight * 2
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-            }
-            Rectangle
-            {
-                id :textRect
-                height: sheight * 7
-                width: swidth * 7
-                y: sheight * 1.5
-                x: swidth * 15
-                color: "white"
-                TextEdit
-                {
-                    id: tI
-                    height: parent.height
-                    width: parent.width
-                    font.family: "Helvetica"
-                    font.pointSize: swidth * 1.5
-                    color: "black"
-                    topPadding: sheight * 2.5
-                    leftPadding: swidth * 1.5
-                    text: "1"
-                    onFocusChanged:
-                    {
-                        if(tI.focus){
-                            tI.readOnly = false
-                        }
-                        table.block()
-                    }
-
-                }
-            }
-        }
+        color: "#F7EFD7"
 
         Button
         {

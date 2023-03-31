@@ -9,6 +9,8 @@ import "../SecondWindow/"
 import "../ThirdWindow/"
 import "../FouthWindow/"
 import "../FifthWindow/"
+import "../SettingsWindow/"
+
 
 ApplicationWindow
 {
@@ -19,9 +21,8 @@ ApplicationWindow
     title: qsTr("Проект Арсений")
     property int swidth: this.width/100
     property int sheight: this.height/100
-    color: "#F5F5F5"
-    property int defMargin: 10
 
+    property int defMargin: 10
 
     Controller_DatabaseManager
     {
@@ -40,12 +41,13 @@ ApplicationWindow
         id: firstwindow
         width:parent.width
         height: parent.height
-        color: "#F5F5F5"
+        color: "#F7EFD7"
         signal button1Clicked();
         signal button2Clicked();
         signal changeTable();
         signal keyInformation(int firstKey, string pref, string numKey, bool redact)
 
+        signal buttonSettingsClicked();
 
         Rectangle
         {
@@ -55,7 +57,7 @@ ApplicationWindow
             y: sheight * 10.083
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenterOffset: parent.height/6
-            color: "#F5F5F5"
+            color: "#F7EFD7"
 
              Text
              {
@@ -73,7 +75,7 @@ ApplicationWindow
         Rectangle
         {
             id:buttongroup
-            color: "#F5F5F5"
+            color: "#F7EFD7"
             height: sheight * 37.31481
             width: swidth * 39.7395
             anchors.horizontalCenter: parent.horizontalCenter
@@ -121,6 +123,38 @@ ApplicationWindow
         onButton2Clicked:
         {
             stackview.push(fifthwindow)
+        }
+
+        Button{
+            id: settingswindow_button
+            x: swidth * 88.5416
+            y: sheight * 81.4814
+            width: swidth * 7.7083
+            height: swidth * 7.7083
+            text: "S"
+            background: Rectangle
+            {
+                color: "#D3B992"
+            }
+            onClicked:
+            {
+                firstwindow.buttonSettingsClicked()
+            }
+        }
+        onButtonSettingsClicked: {
+            stackview.push(settings_window)
+        }
+        Button{
+            id: helpwindow_button
+            x: swidth * 78.125
+            y: sheight * 81.4814
+            width: swidth * 7.7083
+            height: swidth * 7.7083
+            background: Rectangle
+            {
+                color: "#D3B992"
+            }
+
         }
     }
     SecondWindow
@@ -188,6 +222,21 @@ ApplicationWindow
         {
             stackview.pop(firstwindow)
         }
-
     }
+    SettingsWindow
+    {
+        id: settings_window
+        visible: false
+        height: parent.height
+        width: parent.width
+        onButtonFirstWindowClicked:
+        {
+            stackview.pop(firstwindow)
+        }
+        onSetDevice: (port_name)=>
+        {
+            fouthwindow.connectToDevice(port_name)
+        }
+    }
+
 }

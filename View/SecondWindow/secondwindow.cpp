@@ -1,5 +1,5 @@
 #include "secondwindow.h"
-#include "../Controller/controller_databasemanager.h"
+#include "../../Controller/controller_databasemanager.h"
 
 Second_Window::Second_Window(QObject *parent)
     : QObject{parent}

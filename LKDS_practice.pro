@@ -11,6 +11,7 @@ SOURCES += \
         View/SecondWindow/secondwindow.cpp \
         View/ThirdWindow/thirdwindow.cpp \
         main.cpp
+QT += quick qml sql serialport
 
 resources.files = main.qml 
 resources.prefix = /$${TARGET}
@@ -31,12 +32,29 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Controller/controller_databasemanager.h \
     Controller/controller_keytable.h \
+    Controller/SerialManager/ControllerSerialManager.h \
+    Model/COMPortModel/COMPortModel.h \
     Model/model_database.h \
+    Model/SerialManager/ModelSerialManager.h \
     View/FifthWindow/fifthwindow.h \
     View/FirstWindow/firstwindow.h \
     View/FouthWindow/fouthwindow.h \
     View/SecondWindow/secondwindow.h \
+    View/SettingsWindow/SettingsWindow.h \
     View/ThirdWindow/thirdwindow.h
+SOURCES += \
+    Controller/controller_databasemanager.cpp \
+    Controller/SerialManager/ControllerSerialManager.cpp \
+    Model/COMPortModel/COMPortModel.cpp \
+    Model/model_database.cpp \
+    Model/SerialManager/ModelSerialManager.cpp \
+    View/FifthWindow/fifthwindow.cpp \
+    View/FirstWindow/firstwindow.cpp \
+    View/FouthWindow/fouthwindow.cpp \
+    View/SecondWindow/secondwindow.cpp \
+    View/SettingsWindow/SettingsWindow.cpp \
+    View/ThirdWindow/thirdwindow.cpp \
+    main.cpp
 
 DISTFILES += \
     View/FifthWindow/FifthWindow.qml \
@@ -47,3 +65,5 @@ DISTFILES += \
     View/SecondWindow/TableModeler.qml \
     View/ThirdWindow/TableModeler_th.qml \
     View/ThirdWindow/ThirdWindow.qml
+    View/ThirdWindow/ThirdWindow.qml \
+    View/SettingsWindow/SettingsWindow.qml

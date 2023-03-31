@@ -6,7 +6,9 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <qqml.h>
-#include "../Controller/controller_databasemanager.h"
+#include "../../Controller/controller_databasemanager.h"
+#include "../FouthWindow/fouthwindow.h"
+#include "../../Model/COMPortModel/COMPortModel.h"
 #include <QQuickView>
 
 class FirstWindow : public QObject
@@ -21,6 +23,7 @@ private:
     QQmlApplicationEngine *__engine;
     Controller_DatabaseManager *__model;
     Model_database *DataBase;
+    //FouthWindow *__write_key_window = nullptr;
 signals:
 
 };
