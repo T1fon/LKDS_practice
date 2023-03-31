@@ -3,6 +3,8 @@ import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import WindowWriteKey 1.0
+import KeyTable 1.0
+
 Rectangle
 {
 
@@ -10,21 +12,56 @@ Rectangle
     {
         id: window_write_key
         onSignalClearLog:  ()=>
-           {
-               log_panel_area.text = ""
-           }
+        {
+            log_panel_area.text = ""
+        }
+        onSuccefulWrite: (result)=>
+        {
+            if(result === true){
+                key_table.addKey(getCurrentKey()-1)
+                info_panel_edit.text = window_write_key.getKeyParametr();
+
+                if(access_level === "0"){
+                    meckanik_count.text = Number(meckanik_count.text)+1
+                }
+                else if(access_level === "1"){
+                    operator_count.text = Number(operator_count.text)+1
+                }
+                else if(access_level === "2"){
+                    administrator_count.text = Number(administrator_count.text)+1
+                }
+                else if(access_level === "3"){
+                    developer_count.text = Number(developer_count.text)+1
+                }
+            }
+        }
     }
 
     id: thirdwindow
     width:800
     height: 600
+    color: "#F7EFD7"
+
     property int swidth: this.width/100
     property int sheight: this.height/100
     property string access_level: "0"
-    color: "#F7EFD7"
+    property Controller_KeyTable key_table: null
+
     signal buttonFirstWindowClicked();
     signal connectToDevice(port_name: string);
+    signal sendInformationAboutKey(first_key: string, prefix: string, count_key: string, overwriting: bool);
+    signal recieveTW(table_view: Controller_KeyTable)
 
+    onRecieveTW: (value) =>
+    {
+        key_table = value
+    }
+
+    onSendInformationAboutKey: (first_key, prefix, count_key, overwriting) =>
+    {
+        window_write_key.setKeyParametr(prefix,first_key,count_key, overwriting);
+        info_panel_edit.text = window_write_key.getKeyParametr();
+    }
     onConnectToDevice: (port_name) =>
     {
         log_panel_area.text = ""
@@ -33,7 +70,7 @@ Rectangle
 
     function onKeyPressed (event){
         if(event.key === Qt.Key_F5){
-            window_write_key.write(info_panel_edit.text,access_level)
+            window_write_key.write(window_write_key.getPrefix(),window_write_key.getCurrentKey(),access_level)
         }
         else if(event.key === Qt.Key_F6){
             window_write_key.read()
@@ -71,6 +108,7 @@ Rectangle
             verticalAlignment: "AlignVCenter"
             color: "black"
             clip: true
+            readOnly: true
             //максимальная длина не должна превышать 30
         }
     }
@@ -200,7 +238,7 @@ Rectangle
             }
             onClicked:
             {
-                window_write_key.write(info_panel_edit.text,access_level)
+                window_write_key.write(window_write_key.getPrefix(),window_write_key.getCurrentKey(),access_level)
             }
         }
         Button

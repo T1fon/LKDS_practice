@@ -125,8 +125,6 @@ Rectangle {
                 }
                 onCurrentChanged: ()=>
                 {
-                    tI.text = ""
-                    tI.readOnly = true
                     if (blockchoosen == false)
                     {
                         if(current)

@@ -24,6 +24,9 @@ private:
     bool __succeful_write_operation = false;
     int __COUNT_LOG_MESSAGE = 3;
 
+    int __current_key, __prefix, __count_key;
+    bool __overwriting = false;
+
 public:
     Fouth_Window();
     ~Fouth_Window();
@@ -32,16 +35,22 @@ public:
 public slots:
     void acceptMessage(QString message);
     void setPortName(QString port_name);
+    bool setKeyParametr(QString prefix, QString start_key, QString count_key, bool overwriting);
+    QString getKeyParametr();
+    int getCurrentKey();
+    int getPrefix();
 
-    void write(QString prefix_and_key, QString access_level);
+    void write(int prefix, int key, QString access_level);
     void read();
     void check();
     void clear();
     void slotClearLog();
+
 signals:
     void returnMessage(QString message);
     void sendToQml(QString message);
     void signalClearLog();
+    void succefulWrite(bool result);
 };
 
 #endif // FOUTHWINDOW_H

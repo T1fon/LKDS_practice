@@ -12,13 +12,14 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
+    property bool redactKey: false
     color: "#F7EFD7"
 
     signal buttonSecondWindowClicked()
     signal buttonFouthWindowClicked()
     signal recieveTW(sdo: Controller_KeyTable)
     signal changeData()
-    signal sendInformationAboutKey(int firstKey, string pref, string numKey, bool redact)
+    //signal sendInformationAboutKey(int firstKey, string pref, string numKey, bool redact)
     signal checkRedact(bool flag)
 
     property Controller_KeyTable c_KT: null
@@ -47,7 +48,7 @@ Rectangle
             verticalAlignment: "AlignVCenter"
             color: "black"
             clip: true
-
+            readOnly: true
             //максимальная длина не должна превышать 30
         }
     }
@@ -142,7 +143,7 @@ Rectangle
             width: parent.width
             height: sheight * 7.65625
             y: sheight * 11
-            text: "Добавить ключ"
+            text: "Добавить ключ/и"
             font.family: "Helvetica"
             font.pointSize: sheight * 1.5
             background: Rectangle
@@ -152,12 +153,17 @@ Rectangle
             onClicked:
             {
                 if (c_KT.getReg() !== "")
-                    c_KT.addKey(tI.text)
+                    if(tI.text !== ""){
+                        fouthwindow.recieveTW(c_KT)
+                        thirdwindow.buttonFouthWindowClicked()
+                        fouthwindow.sendInformationAboutKey(c_KT.getKey(), c_KT.getReg(), tI.text, redactKey)
+                    }
+                    //c_KT.addKey(tI.text)
                 else
                     addkey.enabled
             } 
         }
-        Button
+        /*Button
         {
             id: fourthwindow_button
             width: parent.width
@@ -172,11 +178,12 @@ Rectangle
             }
             onClicked:
             {
-                thirdwindow.buttonFouthWindowClicked()
-                thirdwindow.sendInformationAboutKey(c_KT.getKey(), c_KT.getReg(), tI.text, redactKey)
-
+                if(tI.text !== ""){
+                    thirdwindow.buttonFouthWindowClicked()
+                    fouthwindow.sendInformationAboutKey(c_KT.getKey(), c_KT.getReg(), tI.text, redactKey)
+                }
             }
-        }
+        }*/
     }
     Button
     {

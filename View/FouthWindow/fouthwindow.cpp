@@ -12,7 +12,28 @@ Fouth_Window::Fouth_Window()
     __controller_serial = new ControllerSerialManager(__settings, __port_name);
 
     connect(__controller_serial, SIGNAL(readyRead(QString)), this, SLOT(acceptMessage(QString)));
-  //  connect(__controller_serial, SIGNAL(signalClear()), this, SLOT(slotClearLog()));
+}
+bool Fouth_Window::setKeyParametr(QString prefix, QString start_key, QString count_key, bool overwriting){
+    if(prefix == "" || start_key == "" || count_key == ""){
+        return false;
+    }
+    __current_key = start_key.toInt()+1;
+    __prefix = prefix.toInt();
+    __count_key = count_key.toInt();
+    __overwriting = overwriting;
+    return true;
+}
+QString Fouth_Window::getKeyParametr(){
+    qDebug() << "count_key = " << __count_key;
+    return "Префикс: " + QString().setNum(__prefix) + " | "
+            + "Ключ: " + QString().setNum(__current_key) + " | "
+            + "Осталось ключей: " + QString().setNum(__count_key);
+}
+int Fouth_Window::getCurrentKey(){
+    return __current_key;
+}
+int Fouth_Window::getPrefix(){
+    return __prefix;
 }
 QString Fouth_Window::__searchByPortSettings(QString path_to_settings_file){
     qDebug() << "Пробуем открыть файл";
@@ -55,10 +76,17 @@ void Fouth_Window::setPortName(QString port_name){
     __port_name = port_name;
     __controller_serial->startConnection(__port_name);
 }
-void Fouth_Window::write(QString prefix_and_key, QString access_level){
-    QString message = OPERATION_WRITE + prefix_and_key + access_level + OPERATION_SYMBOL;
-    __controller_serial->write(message.toLatin1());
+void Fouth_Window::write(int prefix, int key, QString access_level){
     __is_read_operation = false;
+    if(__count_key <= 0){
+        return;
+    }
+    QString message = OPERATION_WRITE +
+                      QString().setNum(prefix) + OPERATION_SYMBOL +
+                      QString().setNum(key) + OPERATION_SYMBOL +
+                      access_level + OPERATION_SYMBOL;
+    __controller_serial->write(message.toLatin1());
+
     qDebug() << "Write";
 }
 void Fouth_Window::read(){
@@ -77,8 +105,8 @@ void Fouth_Window::clear(){
     qDebug() << "Clear";
 }
 void Fouth_Window::acceptMessage(QString message){
-    //emit sendToQml(message);
-    qDebug() << message;
+
+   // qDebug() << message;
     static QString temp_m = "<div>";
     static QString prev_temp_m = "";
     QString color = "";
@@ -110,6 +138,16 @@ void Fouth_Window::acceptMessage(QString message){
             temp_m += "</div>";
             prev_temp_m += temp_m;
             prev_temp_m += "<div>";
+            __succeful_write_operation = (temp_m.indexOf("write: Succeful", 0) != -1) ? true : false;
+            if(__succeful_write_operation){
+                if(__count_key > 0){
+                    __current_key++;
+                    __count_key--;
+                    __succeful_write_operation = false;
+                    emit succefulWrite(true);
+                }
+
+            }
             if(temp_m.indexOf("Enter the",0) != -1){
                 time++;
                 if(time == __COUNT_LOG_MESSAGE){
@@ -119,7 +157,7 @@ void Fouth_Window::acceptMessage(QString message){
                     time = 0;
                 }
             }
-            __succeful_write_operation = (temp_m.indexOf("write: Succeful", 0) != -1) ? true : false;
+
             //qDebug() << "Write: " << __succeful_write_operation;
             emit sendToQml(temp_m);
 

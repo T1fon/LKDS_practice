@@ -33,10 +33,6 @@ Rectangle {
             com_c_box.displayText = com_port_model.getPortName(index)
         }
         else{
-            //device_name_t_e_text.text = ""
-            //device_id_t_e_text.text = ""
-            //manufacturer_name_t_e_text.text = ""
-            //manufacturer_id_t_e_text.text = ""
             com_c_box.displayText = "Устройств не обнаружено"
         }
     }

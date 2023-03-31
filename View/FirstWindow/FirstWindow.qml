@@ -196,10 +196,10 @@ ApplicationWindow
 
            stackview.push(fouthwindow)
        }
-       onSendInformationAboutKey: ( firstKey,  pref,  numKey, redact) =>
+       /*onSendInformationAboutKey: ( firstKey,  pref,  numKey, redact) =>
        {
             firstwindow.keyInformation(firstKey,  pref,  numKey, redact)
-       }
+       }*/
     }
     FouthWindow
     {

@@ -33,7 +33,6 @@ public slots:
     bool startConnection(QString port_name);
 signals:
     void readyRead(QString message);
-    void signalClear();
 };
 
 #endif // CONTROLLERSERIALMANAGER_H

@@ -177,42 +177,38 @@ bool Controller_KeyTable::removeRows(int row, int count, const QModelIndex &pare
 
 }
 
-void Controller_KeyTable::addKey(QString numKey)
+void Controller_KeyTable::addKey(QString key)
 {
-    int i = numKey.toInt();
-    if (i == 0 || i == NULL)
-        i = 1;
+    int i = key.toInt();
 
-   for(int j = 0; j < i; j++)
-   {
-       TableDisplayServiceKey buf;
+   TableDisplayServiceKey buf;
 
-       QString t = "";
+   QString t = "";
 
-       buf.KodCust =__codCust;
-       qDebug() << "K" << __codCust;
+   buf.KodCust =__codCust;
+   qDebug() << "K" << __codCust;
 
-       buf.IdNum = t.setNum(__rowsID + 1);
-       qDebug() << "KOD"<<buf.KodCust;
-       t = "";
+   buf.IdNum = t.setNum(__rowsID + 1);
+   qDebug() << "KOD"<<buf.KodCust;
+   t = "";
 
-       buf.KodReg = __kodReg;
+   buf.KodReg = __kodReg;
 
-       buf.Date = QDate::currentDate().toString("dd.MM.yyyy");
-       __numKey = numKeyFofReg(__kodReg);
-       qDebug() << "NUM KEY:" <<  __numKey << "ROWSID" << __rowsID;
-       buf.NumKey = t.setNum(__numKey + 1);
-       __numKey ++;
-       __rowsID ++;
+   buf.Date = QDate::currentDate().toString("dd.MM.yyyy");
+   __numKey = numKeyFofReg(__kodReg);
+   qDebug() << "NUM KEY:" <<  __numKey << "ROWSID" << __rowsID;
+   buf.NumKey = t.setNum(__numKey + 1);
+   __numKey = i;
+   __rowsID ++;
 
 
-       __query = "INSERT INTO Service_key (KOD_CUST, KOD_REG, DATE, NUM_KEY) VALUES ( ' " + buf.KodCust + " ', '"+buf.KodReg + "', '" + buf.Date + "', '" + buf.NumKey + "')";
-       __dispetcher->connectToDataBase();
-       __q = __dispetcher->queryToDB(__query);
-       __serviceNames->push_back(buf);
-       insertRows(__rows, 1);
-       __rows++;
-    }
+   __query = "INSERT INTO Service_key (KOD_CUST, KOD_REG, DATE, NUM_KEY) VALUES ( ' " + buf.KodCust + " ', '"+buf.KodReg + "', '" + buf.Date + "', '" + buf.NumKey + "')";
+   __dispetcher->connectToDataBase();
+   __q = __dispetcher->queryToDB(__query);
+   __serviceNames->push_back(buf);
+   insertRows(__rows, 1);
+   __rows++;
+
 }
 
 QString Controller_KeyTable::printData()
