@@ -19,7 +19,7 @@ ApplicationWindow
     title: qsTr("Проект Арсений")
     property int swidth: this.width/100
     property int sheight: this.height/100
-    color: "#F7EFD7"
+
     property int defMargin: 10
 
     StackView
@@ -38,7 +38,7 @@ ApplicationWindow
         id: firstwindow
         width:parent.width
         height: parent.height
-        color: "#F5F5F5"
+        color: "#F7EFD7"
         signal button1Clicked();
         signal button2Clicked();
         signal buttonSettingsClicked();
@@ -51,7 +51,7 @@ ApplicationWindow
             y: sheight * 10.083
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenterOffset: parent.height/6
-            color: "#F5F5F5"
+            color: "#F7EFD7"
 
              Text
              {
@@ -70,7 +70,7 @@ ApplicationWindow
         Rectangle
         {
             id:buttongroup
-            color: "#F5F5F5"
+            color: "#F7EFD7"
             height: sheight * 37.31481
             width: swidth * 39.7395
             anchors.horizontalCenter: parent.horizontalCenter

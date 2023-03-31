@@ -58,7 +58,15 @@ bool ControllerSerialManager::isConnection(){
     return __connection_succeful;
 }
 void ControllerSerialManager::write(QByteArray data){
+
     if(__connection_succeful){
+        //OPERATION_READ
+        /*if(data == "2"){
+            __is_read_operation = true;
+        }
+        else{
+            __is_read_operation = false;
+        }*/
         __m_serial_manager->portWrite(data);
     }
 }

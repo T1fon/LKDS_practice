@@ -19,7 +19,7 @@ private:
     QThread *__serial_thread = nullptr;
     ModelSerialManager *__m_serial_manager = nullptr;
     Settings __settings;
-
+    bool __is_read_operation = false;
     QString __searchDevice();
 public:
     ControllerSerialManager(Settings settings, QString port_name = "");
@@ -33,6 +33,7 @@ public slots:
     bool startConnection(QString port_name);
 signals:
     void readyRead(QString message);
+    void signalClear();
 };
 
 #endif // CONTROLLERSERIALMANAGER_H

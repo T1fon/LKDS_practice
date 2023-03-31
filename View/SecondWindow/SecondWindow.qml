@@ -15,7 +15,7 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
-    color: "#F5F5F5"
+    color: "#F7EFD7"
 
     signal buttonMainWindowClicked()
     signal buttonThirdWindowClicked()
@@ -126,7 +126,7 @@ Rectangle
         id: travellmenu
         height: sheight * 16.5625
         width: swidth * 27.96875
-        color: "#F5F5F5"
+        color: "#F7EFD7"
         //anchors.right: parent.right
         y: sheight * 60.15625
         x: swidth * 67.552

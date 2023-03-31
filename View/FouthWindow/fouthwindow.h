@@ -20,6 +20,10 @@ private:
     ControllerSerialManager *__controller_serial;
     QString __port_name = "";
     QString __searchByPortSettings(QString path_to_settings_file);
+    bool __is_read_operation = false;
+    bool __succeful_write_operation = false;
+    int __COUNT_LOG_MESSAGE = 3;
+
 public:
     Fouth_Window();
     ~Fouth_Window();
@@ -33,9 +37,11 @@ public slots:
     void read();
     void check();
     void clear();
+    void slotClearLog();
 signals:
     void returnMessage(QString message);
     void sendToQml(QString message);
+    void signalClearLog();
 };
 
 #endif // FOUTHWINDOW_H

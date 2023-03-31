@@ -11,7 +11,7 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
-    color: "#F5F5F5"
+    color: "#F7EFD7"
 
     signal buttonSecondWindowClicked()
     signal buttonFouthWindowClicked()
@@ -56,7 +56,7 @@ Rectangle
         height: sheight * 27.8125
         x: swidth * 67.03125
         y: sheight * 12.3438
-        color: "#F5F5F5"
+        color: "#F7EFD7"
 
         Button
         {

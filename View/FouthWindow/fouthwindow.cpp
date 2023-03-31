@@ -12,6 +12,7 @@ Fouth_Window::Fouth_Window()
     __controller_serial = new ControllerSerialManager(__settings, __port_name);
 
     connect(__controller_serial, SIGNAL(readyRead(QString)), this, SLOT(acceptMessage(QString)));
+  //  connect(__controller_serial, SIGNAL(signalClear()), this, SLOT(slotClearLog()));
 }
 QString Fouth_Window::__searchByPortSettings(QString path_to_settings_file){
     qDebug() << "Пробуем открыть файл";
@@ -57,24 +58,86 @@ void Fouth_Window::setPortName(QString port_name){
 void Fouth_Window::write(QString prefix_and_key, QString access_level){
     QString message = OPERATION_WRITE + prefix_and_key + access_level + OPERATION_SYMBOL;
     __controller_serial->write(message.toLatin1());
+    __is_read_operation = false;
     qDebug() << "Write";
 }
 void Fouth_Window::read(){
     __controller_serial->write(OPERATION_READ);
+    __is_read_operation = true;
     qDebug() << "Read";
 }
 void Fouth_Window::check(){
     __controller_serial->write(OPERATION_CHECK);
+    __is_read_operation = false;
     qDebug() << "Check";
 }
 void Fouth_Window::clear(){
     __controller_serial->write(OPERATION_CLEAR);
+    __is_read_operation = false;
     qDebug() << "Clear";
 }
 void Fouth_Window::acceptMessage(QString message){
-   // qDebug() << message;
-    emit sendToQml(message);
-    //return message;
+    //emit sendToQml(message);
+    qDebug() << message;
+    static QString temp_m = "<div>";
+    static QString prev_temp_m = "";
+    QString color = "";
+    static int time = 0;
+    int color_position = 0;
+
+    if(__is_read_operation){
+        color_position = message.indexOf("Access_mode");
+
+        if(message.indexOf("Engineer") != -1){
+            color = "\"red\"";
+        }
+        else if(message.indexOf("Operator") != -1){
+            color = "\"green\"";
+        }
+        else if(message.indexOf("Administrator") != -1){
+            color = "\"blue\"";
+        }
+        else if(message.indexOf("Developer") != -1){
+            color = "\"#FAFF00\"";
+        }
+    }
+
+    for(int i = 0; i < message.size(); i++){
+        if(message.at(i) == '\n'){
+            if(__is_read_operation){
+                temp_m += "</font>";
+            }
+            temp_m += "</div>";
+            prev_temp_m += temp_m;
+            prev_temp_m += "<div>";
+            if(temp_m.indexOf("Enter the",0) != -1){
+                time++;
+                if(time == __COUNT_LOG_MESSAGE){
+                    emit signalClearLog();
+                    temp_m = prev_temp_m;
+                    prev_temp_m = "";
+                    time = 0;
+                }
+            }
+            __succeful_write_operation = (temp_m.indexOf("write: Succeful", 0) != -1) ? true : false;
+            //qDebug() << "Write: " << __succeful_write_operation;
+            emit sendToQml(temp_m);
+
+            temp_m = "<div>";
+        }
+        else{
+            if(__is_read_operation){
+                if(i == color_position){
+                    temp_m += "<font ";
+                    temp_m += "color = " + color + " >";
+                }
+            }
+            temp_m += message.at(i);
+        }
+    }
+}
+void Fouth_Window::slotClearLog(){
+    emit signalClearLog();
 }
 Fouth_Window::~Fouth_Window(){
     disconnect(__controller_serial, SIGNAL(readyRead(QString)), this, SLOT(acceptMessage(QString)));

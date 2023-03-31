@@ -10,7 +10,7 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
-    color: "#F5F5F5"
+    color: "#F7EFD7"
 
     signal buttonFirstWindowClicked()
 
@@ -18,7 +18,7 @@ Rectangle
     {
         width: swidth * 58.333333
         height: sheight * 6.09375
-        color: "#F5F5F5"
+        color: "#F7EFD7"
         y: sheight * 2.969
         x: swidth * 3.125
 
@@ -84,7 +84,7 @@ Rectangle
         height: sheight * 37.1875
         x: swidth * 66.7187
         y: sheight * 11.796875
-        color: "#F5F5F5"
+        color: "#F7EFD7"
         Button
         {
             id: add
