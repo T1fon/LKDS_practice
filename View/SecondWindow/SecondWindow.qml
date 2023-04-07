@@ -157,17 +157,19 @@ Rectangle
         title: "Добавить компанию"
         x: 30 * swidth
         y: 20 * sheight
+
         contentItem: Rectangle
         {
             width: parent.width
             height: parent.height
+            color: "#F7EFD7"
            Rectangle
            {
                id:e1
                height: sheight * 7.3333
                width: parent.width
                y: sheight * 2
-               color: "grey"
+               color: "#FBFBFB"
 
                TextInput
                {
@@ -184,7 +186,7 @@ Rectangle
                {
                    height: parent.height
                    width: swidth * 15.5416
-                   color: "red"
+                   color: "#D3B992"
                    anchors.right: parent.right
 
                    Text {
@@ -203,7 +205,7 @@ Rectangle
                height: sheight * 7.3333
                width: parent.width
                y: sheight * 11
-               color: "grey"
+               color: "#FBFBFB"
 
                TextInput
                {
@@ -220,7 +222,7 @@ Rectangle
                {
                    height: parent.height
                    width: swidth * 15.5416
-                   color: "red"
+                   color: "#D3B992"
                    anchors.right: parent.right
 
                    Text {
@@ -239,7 +241,7 @@ Rectangle
                height: sheight * 7.3333
                width: parent.width
                y: sheight * 20
-               color: "grey"
+               color: "#FBFBFB"
 
                TextInput
                {
@@ -256,7 +258,7 @@ Rectangle
                {
                    height: parent.height
                    width: swidth * 15.5416
-                   color: "red"
+                   color: "#D3B992"
                    anchors.right: parent.right
 
                    Text {
@@ -275,7 +277,7 @@ Rectangle
                height: sheight * 7.3333
                width: parent.width
                y: sheight * 29
-               color: "grey"
+               color: "#FBFBFB"
 
                TextInput
                {
@@ -292,7 +294,7 @@ Rectangle
                {
                    height: parent.height
                    width: swidth * 15.5416
-                   color: "red"
+                   color: "#D3B992"
                    anchors.right: parent.right
 
                    Text {

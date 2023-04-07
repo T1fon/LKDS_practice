@@ -176,7 +176,13 @@ bool Controller_KeyTable::removeRows(int row, int count, const QModelIndex &pare
 {
 
 }
-
+void Controller_KeyTable::deleteKey(QString num_key, QString kod_reg){
+    __query = QString("DELETE FROM Service_key WHERE NUM_KEY = ") + num_key + " AND KOD_REG = " + kod_reg + ";";
+    qDebug() << __query;
+    __dispetcher->connectToDataBase();
+    __q = __dispetcher->queryToDB(__query);
+    //__q->exec();
+}
 void Controller_KeyTable::addKey(QString key)
 {
     int i = key.toInt();

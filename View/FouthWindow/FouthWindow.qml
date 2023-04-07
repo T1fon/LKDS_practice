@@ -15,23 +15,30 @@ Rectangle
         {
             log_panel_area.text = ""
         }
-        onSuccefulWrite: (result)=>
+        onSuccefulWrite: (result, current_access_level, back_step)=>
         {
             if(result === true){
-                key_table.addKey(getCurrentKey()-1)
+                var operation;
                 info_panel_edit.text = window_write_key.getKeyParametr();
+                if(back_step === false){
+                    key_table.addKey(getCurrentKey()-1)
+                    operation = 1;
+                }
+                else{
+                    operation = -1;
+                }
 
-                if(access_level === "0"){
-                    meckanik_count.text = Number(meckanik_count.text)+1
+                if(current_access_level === 0){
+                    meckanik_count.text = Number(meckanik_count.text)+operation
                 }
-                else if(access_level === "1"){
-                    operator_count.text = Number(operator_count.text)+1
+                else if(current_access_level === 1){
+                    operator_count.text = Number(operator_count.text)+operation
                 }
-                else if(access_level === "2"){
-                    administrator_count.text = Number(administrator_count.text)+1
+                else if(current_access_level === 2){
+                    administrator_count.text = Number(administrator_count.text)+operation
                 }
-                else if(access_level === "3"){
-                    developer_count.text = Number(developer_count.text)+1
+                else if(current_access_level === 3){
+                    developer_count.text = Number(developer_count.text)+operation
                 }
             }
         }
@@ -51,7 +58,9 @@ Rectangle
     signal connectToDevice(port_name: string);
     signal sendInformationAboutKey(first_key: string, prefix: string, count_key: string, overwriting: bool);
     signal recieveTW(table_view: Controller_KeyTable)
-
+    function backStep(){
+        window_write_key.backStep(key_table);
+    }
     onRecieveTW: (value) =>
     {
         key_table = value
@@ -88,12 +97,25 @@ Rectangle
 
     Keys.onPressed: onKeyPressed(event);
 
+    Button{
+        id: programmer_back
+        x: swidth * 3.2291
+        y: sheight * 2.9688
+        width: swidth * 6.0937
+        height: sheight * 8.0469
+        text: "<-"
+        background: Rectangle{
+            color: "#D3B992"
+        }
+        onClicked: backStep()
+    }
+
     Rectangle
     {
         id: info_panel
-        width: swidth * 92.8125
+        width: swidth * 85.2083
         height: sheight * 8.0469
-        x: swidth * 3.2292
+        x: swidth * 10.83333
         y: sheight * 2.9688
         color: "white"
 

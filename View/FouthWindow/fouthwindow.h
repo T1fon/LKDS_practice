@@ -2,6 +2,7 @@
 #define FOUTHWINDOW_H
 
 #include "../../Controller/SerialManager/ControllerSerialManager.h"
+#include "../../Controller/controller_keytable.h"
 #include <qqml.h>
 
 #define OPERATION_WRITE "1"
@@ -24,7 +25,8 @@ private:
     bool __succeful_write_operation = false;
     int __COUNT_LOG_MESSAGE = 3;
 
-    int __current_key, __prefix, __count_key;
+    int __current_key, __prefix, __count_key, __current_count_key;
+    QList<int> __access_history;
     bool __overwriting = false;
 
 public:
@@ -45,12 +47,12 @@ public slots:
     void check();
     void clear();
     void slotClearLog();
-
+    void backStep(Controller_KeyTable *key_table);
 signals:
     void returnMessage(QString message);
     void sendToQml(QString message);
     void signalClearLog();
-    void succefulWrite(bool result);
+    void succefulWrite(bool result, int last_access_key, bool back_step = false);
 };
 
 #endif // FOUTHWINDOW_H

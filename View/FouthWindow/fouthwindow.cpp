@@ -20,14 +20,15 @@ bool Fouth_Window::setKeyParametr(QString prefix, QString start_key, QString cou
     __current_key = start_key.toInt()+1;
     __prefix = prefix.toInt();
     __count_key = count_key.toInt();
+    __current_count_key = __count_key;
     __overwriting = overwriting;
     return true;
 }
 QString Fouth_Window::getKeyParametr(){
-    qDebug() << "count_key = " << __count_key;
+   // qDebug() << "count_key = " << __count_key;
     return "Префикс: " + QString().setNum(__prefix) + " | "
             + "Ключ: " + QString().setNum(__current_key) + " | "
-            + "Осталось ключей: " + QString().setNum(__count_key);
+            + "Осталось ключей: " + QString().setNum(__current_count_key);
 }
 int Fouth_Window::getCurrentKey(){
     return __current_key;
@@ -78,7 +79,7 @@ void Fouth_Window::setPortName(QString port_name){
 }
 void Fouth_Window::write(int prefix, int key, QString access_level){
     __is_read_operation = false;
-    if(__count_key <= 0){
+    if(__current_count_key <= 0){
         return;
     }
     QString message = OPERATION_WRITE +
@@ -86,8 +87,18 @@ void Fouth_Window::write(int prefix, int key, QString access_level){
                       QString().setNum(key) + OPERATION_SYMBOL +
                       access_level + OPERATION_SYMBOL;
     __controller_serial->write(message.toLatin1());
-
+    __access_history.push_back(access_level.toInt());
     qDebug() << "Write";
+}
+void Fouth_Window::backStep(Controller_KeyTable *key_table){
+    if(__current_count_key < __count_key && __count_key != 0){
+        __current_key--;
+        __current_count_key++;
+        key_table->deleteKey(QString().setNum(__current_key), QString().setNum(__prefix));
+        this->clear();
+        emit succefulWrite(true, __access_history.back(), true);
+        __access_history.pop_back();
+    }
 }
 void Fouth_Window::read(){
     __controller_serial->write(OPERATION_READ);
@@ -140,11 +151,11 @@ void Fouth_Window::acceptMessage(QString message){
             prev_temp_m += "<div>";
             __succeful_write_operation = (temp_m.indexOf("write: Succeful", 0) != -1) ? true : false;
             if(__succeful_write_operation){
-                if(__count_key > 0){
+                if(__current_count_key > 0){
                     __current_key++;
-                    __count_key--;
+                    __current_count_key--;
                     __succeful_write_operation = false;
-                    emit succefulWrite(true);
+                    emit succefulWrite(true, __access_history.back(), false);
                 }
 
             }

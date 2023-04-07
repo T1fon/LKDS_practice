@@ -61,6 +61,7 @@ public slots:
     void updateModel();
     void recieveRegion(QString codcust, QString city, QString reg);
     void addKey(QString numKey);
+    void deleteKey(QString num_key, QString kod_reg);
     QString printData();
     QString addCodCust();
     int getKey();
