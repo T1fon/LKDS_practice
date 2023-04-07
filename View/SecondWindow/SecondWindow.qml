@@ -150,7 +150,6 @@ Rectangle
     Dialog
     {
 
-
         id: add
         height: sheight * 51.875
         width: swidth * 46.666
@@ -163,12 +162,14 @@ Rectangle
             width: parent.width
             height: parent.height
             color: "#F7EFD7"
+
            Rectangle
            {
                id:e1
                height: sheight * 7.3333
-               width: parent.width
+               width: parent.width - swidth*2
                y: sheight * 2
+               x: swidth
                color: "#FBFBFB"
 
                TextInput
@@ -188,7 +189,6 @@ Rectangle
                    width: swidth * 15.5416
                    color: "#D3B992"
                    anchors.right: parent.right
-
                    Text {
                        text: qsTr("Название компании")
                        font.family: "Helvetica"
@@ -203,8 +203,9 @@ Rectangle
            {
                id:e2
                height: sheight * 7.3333
-               width: parent.width
+               width: parent.width - swidth*2
                y: sheight * 11
+               x: swidth
                color: "#FBFBFB"
 
                TextInput
@@ -239,8 +240,9 @@ Rectangle
            {
                id:e3
                height: sheight * 7.3333
-               width: parent.width
+               width: parent.width - swidth*2
                y: sheight * 20
+               x: swidth
                color: "#FBFBFB"
 
                TextInput
@@ -275,8 +277,9 @@ Rectangle
            {
                id:e4
                height: sheight * 7.3333
-               width: parent.width
+               width: parent.width - swidth*2
                y: sheight * 29
+               x: swidth
                color: "#FBFBFB"
 
                TextInput
@@ -313,6 +316,7 @@ Rectangle
         {
             width: parent.width
             height: sheight * 8
+            color: "#F7EFD7"
             Button
             {
                 id: okbut
