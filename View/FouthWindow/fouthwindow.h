@@ -49,6 +49,7 @@ public slots:
     void clear();
     void slotClearLog();
     void backStep(Controller_KeyTable *key_table);
+    void endWork();
 signals:
     void returnMessage(QString message);
     void sendToQml(QString message);

@@ -149,7 +149,6 @@ Rectangle
 
     Dialog
     {
-
         id: add
         height: sheight * 51.875
         width: swidth * 46.666
@@ -466,6 +465,7 @@ Rectangle
                 contr.recieveRegion(aa.checkCodCust(), aa.checkCity(), aa.checkReg())
                 secondwindow.buttonThirdWindowClicked()
                 secondwindow.sendTW(contr)
+                search_tE.text = ""
                 thirdwindow.changeData()
             }
 
@@ -485,6 +485,7 @@ Rectangle
             }
             onClicked:
             {
+                search_tE.text = ""
                 secondwindow.buttonMainWindowClicked()
             }
         }

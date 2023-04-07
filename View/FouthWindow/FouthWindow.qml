@@ -7,7 +7,34 @@ import KeyTable 1.0
 
 Rectangle
 {
+    Dialog{
+        id: warning_clear
 
+        width: swidth * 40
+        height: sheight * 25
+        x: 30 * swidth
+        y: 20 * sheight
+
+        title: "Предупреждение"
+        contentItem: Rectangle{
+            width: parent.width
+            height: parent.height
+            Text{
+                text: "Внимание! Вы уверены, что хотите вернуться на шаг назад,\n при это все данные с ключа будут стёрты?"
+            }
+
+        }
+        footer: Rectangle {
+            width: swidth * 35
+            height: sheight * 10
+            Button{
+                height: sheight * 5
+                onClicked: {
+                    warning_clear.close()
+                }
+            }
+        }
+    }
     Fouth_Window
     {
         id: window_write_key
@@ -61,6 +88,15 @@ Rectangle
     function backStep(){
         window_write_key.backStep(key_table);
     }
+    function endWork(){
+        meckanik_count.text = "0"
+        operator_count.text = "0"
+        administrator_count.text = "0"
+        developer_count.text = "0"
+        window_write_key.endWork()
+        log_panel_area.text = ""
+        fouthwindow.buttonFirstWindowClicked()
+    }
     onRecieveTW: (value) =>
     {
         key_table = value
@@ -91,7 +127,7 @@ Rectangle
             window_write_key.clear()
         }
         else if(event.key === Qt.Key_F10){
-            fouthwindow.buttonFirstWindowClicked()
+            endWork()
         }
     }
 
@@ -107,7 +143,10 @@ Rectangle
         background: Rectangle{
             color: "#D3B992"
         }
-        onClicked: backStep()
+        onClicked: {
+            warning_clear.open()
+            backStep()
+        }
     }
 
     Rectangle
@@ -333,7 +372,7 @@ Rectangle
             }
             onClicked:
             {
-                fouthwindow.buttonFirstWindowClicked()
+                endWork()
             }
 
         }

@@ -198,6 +198,9 @@ void Fouth_Window::acceptMessage(QString message){
         }
     }
 }
+void Fouth_Window::endWork(){
+    __access_history.clear();
+}
 void Fouth_Window::slotClearLog(){
     emit signalClearLog();
 }
