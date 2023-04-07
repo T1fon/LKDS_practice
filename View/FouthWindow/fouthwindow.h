@@ -10,6 +10,7 @@
 #define OPERATION_CHECK "3"
 #define OPERATION_CLEAR "4"
 #define OPERATION_SYMBOL "?"
+#define ID_DEVELOPER 3
 #define DEFAULT_SAVE_PATH "./port_config.txt"
 
 class Fouth_Window : public QObject
@@ -52,7 +53,7 @@ signals:
     void returnMessage(QString message);
     void sendToQml(QString message);
     void signalClearLog();
-    void succefulWrite(bool result, int last_access_key, bool back_step = false);
+    void succefulWrite(bool access_develoer, int last_access_key, bool back_step = false);
 };
 
 #endif // FOUTHWINDOW_H

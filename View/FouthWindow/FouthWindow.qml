@@ -15,31 +15,31 @@ Rectangle
         {
             log_panel_area.text = ""
         }
-        onSuccefulWrite: (result, current_access_level, back_step)=>
+        onSuccefulWrite: (access_developer, current_access_level, back_step)=>
         {
-            if(result === true){
-                var operation;
-                info_panel_edit.text = window_write_key.getKeyParametr();
-                if(back_step === false){
+            var operation;
+            info_panel_edit.text = window_write_key.getKeyParametr();
+            if(back_step === false){
+                if(access_developer === false){
                     key_table.addKey(getCurrentKey()-1)
-                    operation = 1;
                 }
-                else{
-                    operation = -1;
-                }
+                operation = 1;
+            }
+            else{
+                operation = -1;
+            }
 
-                if(current_access_level === 0){
-                    meckanik_count.text = Number(meckanik_count.text)+operation
-                }
-                else if(current_access_level === 1){
-                    operator_count.text = Number(operator_count.text)+operation
-                }
-                else if(current_access_level === 2){
-                    administrator_count.text = Number(administrator_count.text)+operation
-                }
-                else if(current_access_level === 3){
-                    developer_count.text = Number(developer_count.text)+operation
-                }
+            if(current_access_level === 0){
+                meckanik_count.text = Number(meckanik_count.text)+operation
+            }
+            else if(current_access_level === 1){
+                operator_count.text = Number(operator_count.text)+operation
+            }
+            else if(current_access_level === 2){
+                administrator_count.text = Number(administrator_count.text)+operation
+            }
+            else if(current_access_level === 3){
+                developer_count.text = Number(developer_count.text)+operation
             }
         }
     }

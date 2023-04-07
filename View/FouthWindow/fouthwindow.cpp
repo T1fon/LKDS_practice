@@ -77,6 +77,23 @@ void Fouth_Window::setPortName(QString port_name){
     __port_name = port_name;
     __controller_serial->startConnection(__port_name);
 }
+void Fouth_Window::backStep(Controller_KeyTable *key_table){
+    if(__current_count_key < __count_key && __count_key != 0){
+        __current_key--;
+        __current_count_key++;
+        key_table->deleteKey(QString().setNum(__current_key), QString().setNum(__prefix));
+        this->clear();
+
+        for(;__access_history.back() == ID_DEVELOPER; ){
+            qDebug() << __access_history.back();
+            emit succefulWrite(__access_history.back(), __access_history.back(), true);
+            __access_history.pop_back();
+        }
+        emit succefulWrite(__access_history.back(), __access_history.back(), true);
+        qDebug() << __access_history.back();
+        __access_history.pop_back();
+    }
+}
 void Fouth_Window::write(int prefix, int key, QString access_level){
     __is_read_operation = false;
     if(__current_count_key <= 0){
@@ -89,16 +106,6 @@ void Fouth_Window::write(int prefix, int key, QString access_level){
     __controller_serial->write(message.toLatin1());
     __access_history.push_back(access_level.toInt());
     qDebug() << "Write";
-}
-void Fouth_Window::backStep(Controller_KeyTable *key_table){
-    if(__current_count_key < __count_key && __count_key != 0){
-        __current_key--;
-        __current_count_key++;
-        key_table->deleteKey(QString().setNum(__current_key), QString().setNum(__prefix));
-        this->clear();
-        emit succefulWrite(true, __access_history.back(), true);
-        __access_history.pop_back();
-    }
 }
 void Fouth_Window::read(){
     __controller_serial->write(OPERATION_READ);
@@ -152,10 +159,16 @@ void Fouth_Window::acceptMessage(QString message){
             __succeful_write_operation = (temp_m.indexOf("write: Succeful", 0) != -1) ? true : false;
             if(__succeful_write_operation){
                 if(__current_count_key > 0){
-                    __current_key++;
-                    __current_count_key--;
+
                     __succeful_write_operation = false;
-                    emit succefulWrite(true, __access_history.back(), false);
+                    if(__access_history.back() == ID_DEVELOPER){
+                        emit succefulWrite(true, __access_history.back(), false);
+                    }
+                    else{
+                        __current_key++;
+                        __current_count_key--;
+                        emit succefulWrite(false, __access_history.back(), false);
+                    }
                 }
 
             }
