@@ -113,6 +113,7 @@ Rectangle {
             delegate: Rectangle {
                 id: bb
                 required property bool current
+
                 color: current ? "lightgray" : "white"
                 implicitHeight: 26
                 border.color: "#bbb"
@@ -122,18 +123,18 @@ Rectangle {
                     text: display
                     anchors.verticalCenter: parent.verticalCenter
                     x: 4
-
                 }
                 onCurrentChanged: ()=>
                 {
-                    if(current)
+                    if(current){
                         aa.chooseRegion(tableView.currentRow)
                         secondwindow.changeLastKey()
                         aa.redactProfile(tableView.currentRow)
+                    }
                 }
-
-
             }
+
+
 
         } // TableView
 

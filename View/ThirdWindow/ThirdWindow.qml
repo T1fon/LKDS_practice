@@ -157,33 +157,14 @@ Rectangle
                         fouthwindow.recieveTW(c_KT)
                         thirdwindow.buttonFouthWindowClicked()
                         fouthwindow.sendInformationAboutKey(c_KT.getKey(), c_KT.getReg(), tI.text, redactKey)
+                        tI.text = "1"
                     }
                     //c_KT.addKey(tI.text)
                 else
                     addkey.enabled
             } 
         }
-        /*Button
-        {
-            id: fourthwindow_button
-            width: parent.width
-            height: sheight * 7.65625
-            anchors.bottom: parent.bottom
-            text: "Программировать"
-            font.family: "Helvetica"
-            font.pointSize: sheight * 1.5
-            background: Rectangle
-            {
-                color: "#D3B992"
-            }
-            onClicked:
-            {
-                if(tI.text !== ""){
-                    thirdwindow.buttonFouthWindowClicked()
-                    fouthwindow.sendInformationAboutKey(c_KT.getKey(), c_KT.getReg(), tI.text, redactKey)
-                }
-            }
-        }*/
+
     }
     Button
     {

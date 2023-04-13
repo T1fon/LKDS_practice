@@ -201,9 +201,10 @@ void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString re
 
 }
 
-void Controller_DatabaseManager::searchCompany(QString seachplace)
+void Controller_DatabaseManager::searchCompany(QString searchplace)
 {
-    __query = "SELECT * FROM Custom WHERE INN = '" + seachplace + "'";
+    __query = "SELECT * FROM Custom WHERE INN LIKE '%" +searchplace + "%'";
+
     emit beginResetModel();
     __rowNames->clear();
     this->updateModel();
@@ -218,7 +219,6 @@ void Controller_DatabaseManager::refreshTable()
      __rowNames->clear();
      this->updateModel();
      emit endResetModel();
-
 }
 
 void Controller_DatabaseManager::chooseRegion(int row)

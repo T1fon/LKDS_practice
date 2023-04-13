@@ -7,30 +7,89 @@ import KeyTable 1.0
 
 Rectangle
 {
+    property bool show_warning_back_step: true
+
     Dialog{
         id: warning_clear
 
-        width: swidth * 40
-        height: sheight * 25
+        width: swidth * 44
+        height: sheight * 40
         x: 30 * swidth
         y: 20 * sheight
 
         title: "Предупреждение"
+
         contentItem: Rectangle{
             width: parent.width
             height: parent.height
             Text{
-                text: "Внимание! Вы уверены, что хотите вернуться на шаг назад,\n при это все данные с ключа будут стёрты?"
+                text: "Внимание! \n\nВы уверены, что хотите вернуться на шаг назад,\nпри это все данные с ключа будут стёрты?"
+                width: parent.width
+                height: parent.height
+                font.family: "Helvetica"
+                font.pointSize: swidth * 1.35
             }
-
+            color: "#F7EFD7"
         }
+
         footer: Rectangle {
             width: swidth * 35
-            height: sheight * 10
-            Button{
-                height: sheight * 5
-                onClicked: {
-                    warning_clear.close()
+            height: sheight * 15
+            color: "#F7EFD7"
+            Column{
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: sheight * 1.2
+
+                CheckBox{
+                    id: cb_warning_back_step
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Не показывать более данное уведомление"
+                    font.family: "Helvetica"
+                    font.pointSize: swidth * 1.35
+                    tristate: false
+                }
+                Button{
+                    width: warning_clear.footer.width
+                    height: sheight * 5
+                    anchors.bottom: warning_clear.footer.bottom
+                    font.family: "Helvetica"
+                    font.pointSize: swidth * 1.4
+                    text: "Да"
+
+                    background: Rectangle{
+                        width: parent.width
+                        height: parent.height
+                        color: "#D3B992"
+                    }
+                    onClicked: {
+                        if(cb_warning_back_step.checkState === Qt.Checked){
+                            show_warning_back_step = false
+                        }
+                        else{
+                            show_warning_back_step = true
+                        }
+                        backStep()
+                        warning_clear.close()
+                    }
+                }
+                Button{
+                    width: warning_clear.footer.width
+                    height: sheight * 5
+                    anchors.bottom: warning_clear.footer.bottom
+                    font.family: "Helvetica"
+                    font.pointSize: swidth * 1.4
+                    text: "Отмена"
+
+                    background: Rectangle{
+                        width: parent.width
+                        height: parent.height
+                        color: "#D3B992"
+                    }
+                    onClicked: {
+                        cb_warning_back_step.checkState = Qt.Unchecked
+                        warning_clear.close()
+                    }
                 }
             }
         }
@@ -93,6 +152,8 @@ Rectangle
         operator_count.text = "0"
         administrator_count.text = "0"
         developer_count.text = "0"
+        show_warning_back_step = true
+        cb_warning_back_step.checkState = Qt.Unchecked
         window_write_key.endWork()
         log_panel_area.text = ""
         fouthwindow.buttonFirstWindowClicked()
@@ -144,8 +205,12 @@ Rectangle
             color: "#D3B992"
         }
         onClicked: {
-            warning_clear.open()
-            backStep()
+            if(show_warning_back_step === true){
+                warning_clear.open()
+            }
+            else{
+                backStep()
+            }
         }
     }
 

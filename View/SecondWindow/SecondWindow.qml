@@ -25,6 +25,7 @@ Rectangle
     property int swidth: this.width/100
     property int sheight: this.height/100
     property bool flagRedact: false
+    property int current_dialog_row: 0
     color: "#F7EFD7"
 
     signal buttonMainWindowClicked()
@@ -32,6 +33,7 @@ Rectangle
     signal send()
     signal sendTW(ckt: Controller_KeyTable);
     signal changeLastKey()
+
 
 
 
@@ -90,10 +92,10 @@ Rectangle
                 if(search_tE.text != "")
                 {
                     aa.searchCompany(search_tE.text)
-                    //search_tE.clear()
                 }
-                else
-                searchbutton.enabled
+                else{
+                    searchbutton.enabled
+                }
             }
 
         }
@@ -120,9 +122,11 @@ Rectangle
             {
                 search_tE.clear()
                 aa.refreshTable()
+
             }
         }
     }
+
     Rectangle
     {
         id: secondwindow_table
@@ -143,8 +147,12 @@ Rectangle
                 model: Controller_DatabaseManager {id:aa}
                 columnWidths: [10 * swidth, 15 * swidth, 10 * swidth, 10 * swidth, 12 *swidth]
             }
-
         }
+
+    }
+
+    Keys.onEnterPressed: (event)=>{
+       thirdwindow_button.clicked()
     }
 
     Dialog
@@ -156,13 +164,18 @@ Rectangle
         x: 30 * swidth
         y: 20 * sheight
 
+
+
         contentItem: Rectangle
         {
             width: parent.width
             height: parent.height
             color: "#F7EFD7"
-
-           Rectangle
+            Keys.onEnterPressed: {
+                okbut.clicked()
+            }
+            Keys.forwardTo: [tE1, tE2, tE3, tE4]
+            Rectangle
            {
                id:e1
                height: sheight * 7.3333
@@ -181,6 +194,8 @@ Rectangle
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
+                   focus: true
+                   KeyNavigation.tab: tE2
                }
                Rectangle
                {
@@ -217,6 +232,7 @@ Rectangle
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
+                    KeyNavigation.tab: tE3
                }
                Rectangle
                {
@@ -254,6 +270,7 @@ Rectangle
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
+                    KeyNavigation.tab: tE4
                }
                Rectangle
                {
@@ -291,6 +308,7 @@ Rectangle
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
+                   KeyNavigation.tab: tE1
                }
                Rectangle
                {
@@ -324,6 +342,7 @@ Rectangle
                 x: swidth * 2
                 y: sheight
                 text: "Добавить"
+
                 background: Rectangle
                 {
                     color: "#D3B992"
@@ -462,11 +481,14 @@ Rectangle
             }
             onClicked:
             {
-                contr.recieveRegion(aa.checkCodCust(), aa.checkCity(), aa.checkReg())
-                secondwindow.buttonThirdWindowClicked()
-                secondwindow.sendTW(contr)
-                search_tE.text = ""
-                thirdwindow.changeData()
+                if(aa.checkReg() !== ""){
+                    contr.recieveRegion(aa.checkCodCust(), aa.checkCity(), aa.checkReg())
+                    secondwindow.buttonThirdWindowClicked()
+                    secondwindow.sendTW(contr)
+                    search_tE.text = ""
+                    cancelButton.clicked()
+                    thirdwindow.changeData()
+                }
             }
 
         }

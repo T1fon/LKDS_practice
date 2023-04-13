@@ -110,10 +110,11 @@ void Controller_KeyTable::recieveRegion(QString codcust, QString city, QString r
     __city = city;
     __kodReg = reg;
     qDebug() << "RET TH" << __kodReg;
+
     if (__kodReg == "")
         __query = "SELECT * FROM Service_key";
     else
-        __query = QString("SELECT * FROM Service_key WHERE KOD_REG ='") + __kodReg + QString("'");
+        __query = QString("SELECT * FROM Service_key WHERE KOD_REG ='") + __kodReg + QString("'") + " AND KOD_CUST = '" + codcust + "'";
     qDebug() << __query;
     emit beginResetModel();
     __serviceNames->clear();
