@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<RCC>
+    <qresource prefix="/">
+        <file alias="View/FirstWindow/FirstWindow.qml">../View/FirstWindow/FirstWindow.qml</file>
+        <file alias="main.qml">../main.qml</file>
+        <file alias="View/SecondWindow/SecondWindow.qml">../View/SecondWindow/SecondWindow.qml</file>
+        <file alias="View/ThirdWindow/ThirdWindow.qml">../View/ThirdWindow/ThirdWindow.qml</file>
+        <file alias="View/FouthWindow/FouthWindow.qml">../View/FouthWindow/FouthWindow.qml</file>
+        <file alias="View/FifthWindow/FifthWindow.qml">../View/FifthWindow/FifthWindow.qml</file>
+        <file alias="View/SecondWindow/TableModeler.qml">../View/SecondWindow/TableModeler.qml</file>
+        <file alias="View/ThirdWindow/TableModeler_th.qml">../View/ThirdWindow/TableModeler_th.qml</file>
+        <file alias="View/SettingsWindow/SettingsWindow.qml">../View/SettingsWindow/SettingsWindow.qml</file>
+        <file alias="Source/settings.png">../Source/settings.png</file>
+        <file alias="View/FifthWindow/TableModeler_fw.qml">../View/FifthWindow/TableModeler_fw.qml</file>
+        <file alias="View/FifthWindow/AddCustom.qml">../View/FifthWindow/AddCustom.qml</file>
+        <file alias="View/FifthWindow/AddReg.qml">../View/FifthWindow/AddReg.qml</file>
+    </qresource>
+</RCC>

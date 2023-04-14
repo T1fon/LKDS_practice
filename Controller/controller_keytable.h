@@ -83,7 +83,6 @@ private:
     QString __kodReg = "";
 
 signals:
-    sendInformationAboutKey(QString firstKey, QString pref, int num, bool redact);
 };
 
 #endif // CONTROLLER_KEYTABLE_H

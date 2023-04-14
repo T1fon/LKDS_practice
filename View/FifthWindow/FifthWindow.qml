@@ -2,6 +2,11 @@ import QtQuick 2.6
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+import AllBase 1.0
+import QtQml.Models 2.15
+import COMPortModel 1.0
+import CBM 1.0
+import "../FifthWindow/"
 
 Rectangle
 {
@@ -10,9 +15,43 @@ Rectangle
     height: 600
     property int swidth: this.width/100
     property int sheight: this.height/100
+    property bool checkTouch: false
     color: "#F7EFD7"
 
+    Controller_allBase
+    {
+        id: c_ab
+    }
+    CBModel
+    {
+        id: cbm
+    }
+
+    AddCustom
+    {
+        id: a_c
+        c_ab: c_ab
+        flagRedact: false
+    }
+    AddReg
+    {
+        id: a_r
+        c_ab: c_ab
+        flagRedact: false
+    }
+
     signal buttonFirstWindowClicked()
+
+    function onAct(index)
+    {
+        c_ab.setTableNum(index)
+        cbm.updateData(index)
+    }
+
+    function onAction(index)
+    {
+        c_ab.setSecTabNum(index)
+    }
 
     Rectangle
     {
@@ -64,7 +103,11 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
             }
-
+            onClicked:
+            {
+                c_ab.search(text.text)
+                text.clear()
+            }
         }
     }
     Rectangle
@@ -74,7 +117,65 @@ Rectangle
         height: sheight * 66.9531
         x: swidth * 3.125
         y: sheight * 11.796875
-        color: "red"
+        visible: true
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 5
+
+
+            TableModeler_fw {
+                id : tab
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                model: c_ab
+                columnWidths: [10 * swidth, 15 * swidth, 10 * swidth, 10 * swidth, 12 *swidth]
+            }
+
+        }
+    }
+
+    Rectangle
+    {
+        id: searchCase
+        width: swidth * 30.9688
+        height: sheight * 7.6563
+        x: swidth * 65
+        y: sheight * 12.796875
+        color: "#F7EFD7"
+        Rectangle
+        {
+            id:firstpanel
+            height: parent.height
+            width: swidth * 15
+            anchors.left: parent.left
+
+            ComboBox
+            {
+                id: com_f_box
+                width: parent.width
+                height: parent.height
+                model: ["Custom", "ServKey", "Region"]
+                onActivated: onAct(index)
+
+            }
+
+        }
+        Rectangle
+        {
+            id: secondpanel
+            height: parent.height
+            width: swidth * 15
+            anchors.right: parent.right
+            ComboBox
+            {
+                id: com_f_box_two
+                width: parent.width
+                height: parent.height
+                model: cbm
+                onActivated: onAction(index)
+
+            }
+        }
     }
 
     Rectangle
@@ -83,7 +184,7 @@ Rectangle
         width: swidth * 27.9688
         height: sheight * 37.1875
         x: swidth * 66.7187
-        y: sheight * 11.796875
+        y: sheight * 22.796875
         color: "#F7EFD7"
         Button
         {
@@ -96,6 +197,27 @@ Rectangle
             background: Rectangle
             {
                 color: "#D3B992"
+            }
+            onClicked:
+            {
+                if (c_ab.checkTable() === 0)
+                {
+                    a_c.flagRedact = false
+                    a_c.open()
+                    add.background.color = "#D3B992"
+                }
+                else if(c_ab.checkTable() === 1)
+                {
+                    add.enabled
+                    add.background.color = "grey"
+                }
+                else if (c_ab.checkTable() === 2 || c_ab.checkTable() === 3)
+                {
+                    a_r.flagRedact = false
+                    a_r.open()
+                    c_ab.refreshTable()
+                    add.background.color = "#D3B992"
+                }
             }
         }
         Button
@@ -111,8 +233,97 @@ Rectangle
             {
                 color: "#D3B992"
             }
+            onClicked:
+            {
+                checkTouch = c_ab.checkTouchFlag()
+                if (c_ab.checkTable() === 0 && checkTouch === true )
+                {
+                    a_c.flagRedact = true
+                    a_c.open()
+                    a_c.redact()
+                    redact.background.color = "#D3B992"
+                }
+                else if(c_ab.checkTable() === 1)
+                {
+                    redact.enabled
+                    redact.background.color = "grey"
+                }
+                else if ((c_ab.checkTable() === 2 || c_ab.checkTable() === 3) && checkTouch === true)
+                {
+                    a_r.flagRedact = true
+                    a_r.open()
+                    a_r.redact()
+                    c_ab.refreshTable()
+                    redact.background.color = "#D3B992"
+                }
+
+            }
 
         }
+
+            Dialog
+            {
+                id: podtv
+                height: sheight * 20
+                width: swidth * 20
+                x: -30 * swidth
+                y: 15 * sheight
+                title: "Подтверждение"
+                contentItem: Rectangle
+                {
+                    height: parent.height
+                    width: parent.width
+                    Text {
+                        id: podtv_text
+                        text: qsTr("Вы уверены в удалении?")
+                        font.family: "Helvetica"
+                        font.pointSize: swidth
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                    color: "#F7EFD7"
+                }
+                footer: Rectangle
+                {
+                    height: sheight * 5
+                    width: parent.width
+                    color: "#F7EFD7"
+                    Button
+                    {
+                        id: okbut
+                        width: swidth * 10
+                        height: sheight * 5
+                        text: "Да"
+                        background: Rectangle
+                        {
+                            color: "#D3B992"
+                        }
+                        onClicked:
+                        {
+                            c_ab.deleteRow()
+                            podtv.close()
+                        }
+                    }
+
+                    Button
+                    {
+                        id: cancelbut
+                        width: swidth * 10
+                        height: sheight * 5
+                        text: "Нет"
+                        x: swidth * 10
+                        background: Rectangle
+                        {
+                            color: "#D3B992"
+                        }
+                        onClicked:
+                        {
+                            podtv.close()
+                        }
+                    }
+                }
+            }
+
         Button
         {
             id: delet
@@ -126,8 +337,105 @@ Rectangle
             {
                 color: "#D3B992"
             }
+            onClicked:
+            {
+                checkTouch = c_ab.checkTouchFlag()
+                if (c_ab.checkTable() !== 1 && checkTouch === true)
+                {
+                    podtv.open()
+                }
+                else
+                {
+                    delet.enabled
+                    delet.background.color = "grey"
+                }
+            }
 
         }
+        Dialog
+        {
+            id:podtv_file
+            height: sheight * 20
+            width: swidth * 20
+            x: -30 * swidth
+            y: 15 * sheight
+            title: "Подтверждение"
+            contentItem: Rectangle
+            {
+                height: parent.height
+                width: parent.width
+                Rectangle
+                {
+                    height: parent.height / 2
+                    width: parent.width
+                    color: "#F7EFD7"
+                    Text {
+                        id: podtv_tex
+                        text: qsTr("Введите имя файла")
+                        font.family: "Helvetica"
+                        font.pointSize: swidth
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                    Rectangle
+                    {
+                        height: sheight * 4
+                        width: parent.width
+                        y: sheight * 5
+                        TextInput
+                        {
+                            id: path
+                            height: parent.height
+                            width: parent.width
+                            font.family: "Helvetica"
+                            font.pointSize: swidth * 1.5
+                            color: "black"
+                        }
+                    }
+                }
+                color: "#F7EFD7"
+            }
+            footer: Rectangle
+            {
+                height: sheight * 5
+                width: parent.width
+                color: "#F7EFD7"
+                Button
+                {
+                    id: okbut1
+                    width: swidth * 10
+                    height: sheight * 5
+                    text: "Да"
+                    background: Rectangle
+                    {
+                        color: "#D3B992"
+                    }
+                    onClicked:
+                    {
+                        c_ab.pushDataToFile(path.text)
+                        podtv_file.close()
+                    }
+                }
+
+                Button
+                {
+                    id: cancelbut1
+                    width: swidth * 10
+                    height: sheight * 5
+                    text: "Нет"
+                    x: swidth * 10
+                    background: Rectangle
+                    {
+                        color: "#D3B992"
+                    }
+                    onClicked:
+                    {
+                        podtv_file.close()
+                    }
+                }
+            }
+        }
+
         Button
         {
             id: unload
@@ -140,6 +448,10 @@ Rectangle
             background: Rectangle
             {
                 color: "#D3B992"
+            }
+            onClicked:
+            {
+                podtv_file.open()
             }
 
         }

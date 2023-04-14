@@ -7,7 +7,7 @@ Controller_KeyTable::Controller_KeyTable(QObject *parent):QAbstractTableModel(pa
     __columnNames  << tr("Id Num")<< tr("Kod_Cust") << tr("Kod Reg") << tr("Date") << tr("Num key");
     __q = new QSqlQuery;
    // if (__codCust == "")
-    //    __query = "SELECT * FROM Service_key";
+    __query = "SELECT * FROM Service_key";
     qDebug() <<"constQ" << __query;
     __serviceNames = new QVector<TableDisplayServiceKey>;
     this->updateModel();

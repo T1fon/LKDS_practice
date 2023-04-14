@@ -17,9 +17,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Controller/controller_allbase.h \
     Controller/controller_databasemanager.h \
     Controller/controller_keytable.h \
     Controller/SerialManager/ControllerSerialManager.h \
+    Model/CBModel/cbmodel.h \
     Model/COMPortModel/COMPortModel.h \
     Model/model_database.h \
     Model/SerialManager/ModelSerialManager.h \
@@ -30,9 +32,11 @@ HEADERS += \
     View/SettingsWindow/SettingsWindow.h \
     View/ThirdWindow/thirdwindow.h
 SOURCES += \
+    Controller/controller_allbase.cpp \
     Controller/controller_databasemanager.cpp \
     Controller/controller_keytable.cpp \
     Controller/SerialManager/ControllerSerialManager.cpp \
+    Model/CBModel/cbmodel.cpp \
     Model/COMPortModel/COMPortModel.cpp \
     Model/model_database.cpp \
     Model/SerialManager/ModelSerialManager.cpp \
@@ -45,7 +49,10 @@ SOURCES += \
     main.cpp
 
 DISTFILES += \
+    View/FifthWindow/AddCustom.qml \
+    View/FifthWindow/AddReg.qml \
     View/FifthWindow/FifthWindow.qml \
+    View/FifthWindow/TableModeler_fw.qml \
     View/FirstWindow/FirstWindow.qml \
     View/FouthWindow/FouthWindow.qml \
     View/SecondWindow/AddCompany.qml \

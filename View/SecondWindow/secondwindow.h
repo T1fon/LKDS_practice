@@ -3,7 +3,6 @@
 
 
 #include <QObject>
-#include <QWidget>
 #include <QString>
 #include <QSqlQueryModel>
 #include <qqml.h>
