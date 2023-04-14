@@ -22,14 +22,7 @@ FirstWindow::FirstWindow(QObject *parent)
 
    // __engine->rootContext()->setContextProperty("DataBase", &DataBase);
    // __engine->rootContext()->setContextProperty("TableModel", __model);
-    Controller_DatabaseManager c_DB;
-    //__write_key_window = new FouthWindow(parent);
-
-    //__model = new Controller_DatabaseManager;
-    __engine = new QQmlApplicationEngine;
-    //__engine->rootContext()->setContextProperty("bd", &c_DB);
-   // __engine->rootContext()->setContextProperty("wkw", __write_key_window);
-   // const QUrl url(u"qrc:/View/FirstWindow/FirstWindow.qml"_qs);
+   // Controller_DatabaseManager c_DB;
 
     qmlRegisterType<Controller_DatabaseManager>("DatabaseManager", 0, 1, "Controller_DatabaseManager");
     qmlRegisterType<Fouth_Window>("WindowWriteKey", 1, 0, "Fouth_Window");

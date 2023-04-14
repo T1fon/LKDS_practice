@@ -1,6 +1,10 @@
 QT += quick qml sql serialport
 
-resources.files = main.qml 
+TARGET = LKDS_Practice
+TEMPLATE    = app
+RC_FILE     = resources.rc
+
+resources.files = main.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources \
     Source.qrc

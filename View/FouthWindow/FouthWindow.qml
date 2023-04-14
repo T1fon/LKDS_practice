@@ -256,7 +256,7 @@ Rectangle
             id: column
             leftPadding: swidth * 2
             topPadding: sheight * 4
-
+            spacing: sheight*2
             RadioButton
             {
                 id: meckanik
@@ -268,9 +268,11 @@ Rectangle
                     text: meckanik.text
                     color: "red"
                     leftPadding: 2 * swidth
+
                     font.family: "Helvetica"
                     font.pointSize: swidth * 1.5
-                    bottomPadding : 1 * swidth
+                    topPadding: -sheight*0.3 - swidth*0.3
+
                 }
                 onClicked:
                 {
@@ -291,7 +293,7 @@ Rectangle
                     leftPadding: 2 * swidth
                     font.family: "Helvetica"
                     font.pointSize: swidth * 1.5
-                    bottomPadding : 1 * swidth
+                    topPadding: -sheight*0.3 - swidth*0.3
                 }
                 onClicked:
                 {
@@ -311,7 +313,7 @@ Rectangle
                     leftPadding: 2 * swidth
                     font.family: "Helvetica"
                     font.pointSize: swidth * 1.5
-                    bottomPadding : 1 * swidth
+                    topPadding: -sheight*0.3 - swidth*0.3
                 }
                 onClicked:
                 {
@@ -326,13 +328,15 @@ Rectangle
 
                 contentItem: Text
                 {
+                    width: parent.width
+                    height: parent.height
                     text: developer.text
                     color: "#FAFF00"
                     leftPadding: 2 * swidth
                     font.family: "Helvetica"
                     font.pointSize: swidth * 1.5
-                    bottomPadding : 1 * swidth
                     anchors.left: parent.left
+                    topPadding: -sheight*0.3 - swidth*0.3
                 }
                 onClicked:
                 {

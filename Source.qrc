@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>View/FirstWindow/FirstWindow.qml</file>
-        <file>main.qml</file>
         <file>View/SecondWindow/SecondWindow.qml</file>
         <file>View/ThirdWindow/ThirdWindow.qml</file>
         <file>View/FouthWindow/FouthWindow.qml</file>
@@ -10,5 +8,6 @@
         <file>View/ThirdWindow/TableModeler_th.qml</file>
         <file>View/SettingsWindow/SettingsWindow.qml</file>
         <file>Source/settings.png</file>
+        <file>View/FirstWindow/FirstWindow.qml</file>
     </qresource>
 </RCC>
