@@ -27,6 +27,9 @@ QList<QString> FifthWindow::getColumnName(int value)
         QList<QString> textReg{"KodReg", "NameReg"};
         return textReg;
     }
+    else{
+        return QList<QString> ();
+    }
 }
 
 QList<QString> FifthWindow::getTableName()

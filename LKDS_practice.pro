@@ -22,6 +22,7 @@ HEADERS += \
     Controller/controller_keytable.h \
     Controller/SerialManager/ControllerSerialManager.h \
     Model/CBModel/cbmodel.h \
+    Model/CBModel/cbmodel_secwin.h \
     Model/COMPortModel/COMPortModel.h \
     Model/model_database.h \
     Model/SerialManager/ModelSerialManager.h \
@@ -37,6 +38,7 @@ SOURCES += \
     Controller/controller_keytable.cpp \
     Controller/SerialManager/ControllerSerialManager.cpp \
     Model/CBModel/cbmodel.cpp \
+    Model/CBModel/cbmodel_secwin.cpp \
     Model/COMPortModel/COMPortModel.cpp \
     Model/model_database.cpp \
     Model/SerialManager/ModelSerialManager.cpp \

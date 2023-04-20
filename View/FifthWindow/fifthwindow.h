@@ -9,7 +9,7 @@
 
 #define FIRST_TABLE 0
 #define SECOND_TABLE 1
-#define THIRD_TABLE 3
+#define THIRD_TABLE 2
 
 class FifthWindow : public QObject
 {

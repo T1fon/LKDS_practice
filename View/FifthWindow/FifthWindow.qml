@@ -46,11 +46,21 @@ Rectangle
     {
         c_ab.setTableNum(index)
         cbm.updateData(index)
+        c_ab.setSecTabNum(0)
+        com_f_box_two.displayText = cbm.getValue(0)
     }
 
     function onAction(index)
     {
         c_ab.setSecTabNum(index)
+        com_f_box_two.displayText = cbm.getValue(index)
+
+    }
+    onWindowChanged: {
+        c_ab.setTableNum(0)
+        cbm.updateData(0)
+        c_ab.setSecTabNum(0)
+        com_f_box_two.displayText = cbm.getValue(0)
     }
 
     Rectangle
@@ -106,6 +116,31 @@ Rectangle
             onClicked:
             {
                 c_ab.search(text.text)
+                //text.clear()
+            }
+        }
+
+        Button
+        {
+            id: cancelbutton
+            height: parent.height
+            width: swidth * 5
+            x: swidth * 59
+            background: Rectangle
+            {
+                color: "#D3B992"
+            }
+            Text {
+                id: namecancel
+                text: qsTr("X")
+                font.family: "Helvetica"
+                font.pointSize: sheight * 2
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            onClicked:
+            {
+                c_ab.refreshTable()
                 text.clear()
             }
         }
@@ -155,7 +190,7 @@ Rectangle
                 width: parent.width
                 height: parent.height
                 model: ["Custom", "ServKey", "Region"]
-                onActivated: onAct(index)
+                onActivated: (index) =>{onAct(index)}
 
             }
 
@@ -172,7 +207,7 @@ Rectangle
                 width: parent.width
                 height: parent.height
                 model: cbm
-                onActivated: onAction(index)
+                onActivated: (index)=>{onAction(index)}
 
             }
         }

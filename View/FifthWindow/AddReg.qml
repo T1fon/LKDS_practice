@@ -50,7 +50,7 @@ Dialog
                    anchors.right: parent.right
 
                    Text {
-                       text: qsTr("Название региона")
+                       text: qsTr("Номер региона")
                        font.family: "Helvetica"
                        font.pointSize: swidth
                        anchors.verticalCenter: parent.verticalCenter
@@ -86,7 +86,7 @@ Dialog
                    anchors.right: parent.right
 
                    Text {
-                       text: qsTr("Номер региона")
+                       text: qsTr("Название региона")
                        font.family: "Helvetica"
                        font.pointSize: swidth
                        anchors.verticalCenter: parent.verticalCenter

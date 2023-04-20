@@ -97,7 +97,7 @@ private:
 
     int __numTable = 0;
     int __rows;
-    QStringList __customNames, __keyNames, __regNames;
+    QStringList __customNames, __keyNames, __regNames, __customNamesSearch, __keyNamesSearch, __regNamesSearch;
     QVector<Custom> *__customTable;
     QVector<ServiceKey> *__keyTable;
     QVector<Region> *__regTable;

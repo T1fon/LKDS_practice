@@ -5,7 +5,10 @@ controller_allBase::controller_allBase(QObject *parent)
 {
     __customNames << tr("Cod_Cust") << tr("Name_Custom") << tr("INN") << tr("Reg") << tr("City");
     __keyNames << tr("Id Num")<< tr("Kod_Cust") << tr("Kod Reg") << tr("Date") << tr("Num key");
-    __regNames << tr("Name Reg") << tr("Kod Reg");
+    __regNames  << tr("Kod Reg") << tr("Name Reg");
+    __customNamesSearch << tr("COD_CUST") << tr("NAME_CUSTOM") << tr("INN") << tr("KOD_REG") << tr("NAME_SITY");
+    __keyNamesSearch << tr("ID_NUM")<< tr("KOD_CUST") << tr("KOD_REG") << tr("DATE") << tr("NUM_KEY");
+    __regNamesSearch  << tr("KOD_REG") << tr("NAME_REG");
     __q = new QSqlQuery;
     __dispetcher = new Model_database;
     __customTable = new QVector<Custom>;
@@ -18,12 +21,17 @@ controller_allBase::controller_allBase(QObject *parent)
         __query = "SELECT * FROM Service_Key";
     else if (__numTable == THIRD_TABLE)
         __query = "SELECT * FROM Region";
-    this->updateModel();
+    //this->updateModel();
 }
 
 int controller_allBase::rowCount(const QModelIndex &) const
 {
-    return __rows;
+    if(__numTable == FIRST_TABLE)
+        return __customTable->size();
+    else if(__numTable == SECOND_TABLE)
+        return __keyTable->size();
+    else if(__numTable == THIRD_TABLE)
+        return __regTable->size();
 }
 
 int controller_allBase::columnCount(const QModelIndex &) const
@@ -62,22 +70,29 @@ QVariant controller_allBase::data(const QModelIndex &index, int role) const
     int row = index.row();
     int col = index.column();
 
-    if (row >= rowCount() || col >= columnCount() || role !=  Qt::DisplayRole)
+    if (row >= rowCount() || col >= columnCount() || role !=  Qt::DisplayRole){
+        qDebug() << "Dataaaaaa";
         return QVariant();
+    }
     if (__numTable == FIRST_TABLE)
     {
         switch (col)
         {
             case ColumnCodCust:
                 return __customTable->at(row).CodCust;
+                break;
             case ColumnNameCust:
                 return __customTable->at(row).NameCust;
+                break;
             case ColumnINNCust:
                 return __customTable->at(row).Inn;
+                break;
             case ColumnKodRegCust:
                 return __customTable->at(row).KodReg;
+                break;
             case ColumnNameSityCust:
                 return __customTable->at(row).NameSity;
+                break;
         }
     }
     else if (__numTable == SECOND_TABLE)
@@ -86,14 +101,19 @@ QVariant controller_allBase::data(const QModelIndex &index, int role) const
         {
             case ColumnIdNumKey:
                 return __keyTable->at(row).IdNum;
+                break;
             case ColumnKodCustKey:
                 return __keyTable->at(row).KodCust;
+                break;
             case ColumnRegKey:
                 return __keyTable->at(row).KodReg;
+                break;
             case ColumnDateKey:
                 return __keyTable->at(row).Date;
+                break;
             case ColumnNumKey:
                 return __keyTable->at(row).NumKey;
+                break;
         }
     }
     else if (__numTable == THIRD_TABLE)
@@ -102,8 +122,10 @@ QVariant controller_allBase::data(const QModelIndex &index, int role) const
         {
             case ColumnKodReg:
                 return __regTable->at(row).KodReg;
+                break;
             case ColumnNameReg:
                 return __regTable->at(row).NameReg;
+                break;
         }
     }
 }
@@ -114,13 +136,14 @@ void controller_allBase::updateModel()
     Region reg;
     __rows = 0;
     __dispetcher->connectToDataBase();
-    /*qDebug() << "AAAAAAAAAAAAAA";
-    if (__numTable == FIRST_TABLE)
+    qDebug() << "AAAAAAAAAAAAAA";
+    /*if (__numTable == FIRST_TABLE)
         __query = "SELECT * FROM Custom";
     else if (__numTable == SECOND_TABLE)
         __query = "SELECT * FROM Service_Key";
     else if (__numTable == THIRD_TABLE)
         __query = "SELECT * FROM Region";*/
+    qDebug() << __query;
     __q = __dispetcher->queryToDB(__query);
 
     for (; __q->next();)
@@ -128,7 +151,7 @@ void controller_allBase::updateModel()
         if (__numTable == FIRST_TABLE)
         {
             cus.CodCust = __q->value("COD_CUST").toString();
-            qDebug() << "AAAAAAAAA Cod Cust" << cus.CodCust;
+            //qDebug() << "AAAAAAAAA Cod Cust" << cus.CodCust;
             __rows_cust = __q->value("COD_CUST").toInt();
             cus.NameCust = __q->value("NAME_CUSTOM").toString();
             cus.Inn = __q->value("INN").toString();
@@ -157,7 +180,7 @@ void controller_allBase::updateModel()
             __regTable->push_back(reg);
         }
 
-        __rows ++;
+        __rows++;
     }
 }
 
@@ -191,14 +214,19 @@ bool controller_allBase::setData(const QModelIndex &index, const QVariant &value
         {
         case ColumnCodCust:
             __cust_display->CodCust = text.setNum(__rows_cust + 1);
+            break;
         case ColumnNameCust:
             __cust_display->NameCust = value.toString();
+            break;
         case ColumnINNCust:
             __cust_display->Inn = value.toString();
+            break;
         case ColumnKodRegCust:
             __cust_display->KodReg = value.toString();
+            break;
         case ColumnNameSityCust:
             __cust_display->NameSity = value.toString();
+            break;
         }
         if (index.isValid() && role == Qt::EditRole)
         {
@@ -206,19 +234,23 @@ bool controller_allBase::setData(const QModelIndex &index, const QVariant &value
            {
            emit dataChanged(index, index);
             __customTable->replace(index.row(), *__cust_display);
+            delete __cust_display;
             return true;
            }
         }
-        return false;
         delete __cust_display;
+        return false;
+
     }
     else if(__numTable == THIRD_TABLE)
     {
         switch (col) {
         case ColumnKodReg:
             __reg_display->KodReg = text.setNum(__rows_reg + 1);
+            break;
         case ColumnNameReg:
             __reg_display->NameReg = value.toString();
+            break;
         }
         if (index.isValid() && role == Qt::EditRole)
         {
@@ -226,32 +258,36 @@ bool controller_allBase::setData(const QModelIndex &index, const QVariant &value
            {
            emit dataChanged(index, index);
             __regTable->replace(index.row(), *__reg_display);
+            delete __reg_display;
             return true;
            }
         }
+        delete __reg_display;
      return false;
-     delete __reg_display;
+
     }
 }
 
 bool controller_allBase::insertRows(int row, int count, const QModelIndex &parent)
 {
-    emit beginInsertRows(parent, row, count+row);
-    emit endInsertRows();
+    beginInsertRows(parent, row, count+row - 1);
+    endInsertRows();
     return true;
 }
 
 bool controller_allBase::removeRows(int row, int count, const QModelIndex &parent)
 {
     int row_count = rowCount();
-    if (count == 0 || (row + count - 1) > row_count)
+    if (count == 0 || (row + count - 1) >= row_count){
+        qDebug() << "LOXD";
         return false;
-    emit beginRemoveRows(parent, row, row + count - 1);
+    }
+    beginRemoveRows(parent, row, row + count - 1);
     if(__numTable == FIRST_TABLE)
         __customTable->remove(row, count);
     else if(__numTable == THIRD_TABLE)
         __regTable->remove(row, count);
-    emit endRemoveRows();
+    endRemoveRows();
     return true;
 
 }
@@ -269,6 +305,7 @@ int controller_allBase::getTableNum()
 
 void controller_allBase::setTableNum(int value)
 {
+    //refreshTable();
     __numTable = value;
     if(__numTable == FIRST_TABLE)
        __query = "SELECT * FROM Custom";
@@ -276,25 +313,26 @@ void controller_allBase::setTableNum(int value)
        __query = "SELECT * FROM Service_Key";
     else if (__numTable == THIRD_TABLE)
        __query = "SELECT * FROM Region";
-    emit beginResetModel();
-    emit endResetModel();
-    updateModel();
+    refreshTable();
+    //endResetModel();
+    //updateModel();
 }
 void controller_allBase::setSecTabNum(int value)
 {
+
     if(__numTable == FIRST_TABLE)
     {
-        __secTabName = __customNames.at(value);
+        __secTabName = __customNamesSearch.at(value);
     }
     else if(__numTable == SECOND_TABLE)
     {
-        __secTabName == __keyNames.at(value);
+
+        __secTabName = __keyNamesSearch.at(value);
     }
     else if(__numTable == THIRD_TABLE)
     {
-        __secTabName = __regNames.at(value);
+        __secTabName = __regNamesSearch.at(value);
     }
-    qDebug() << "NAMESECNAME" << __secTabName;
 }
 
 void controller_allBase::addCustomData(QString cust, QString inn, QString reg, QString city, bool flag)
@@ -325,8 +363,13 @@ void controller_allBase::addCustomData(QString cust, QString inn, QString reg, Q
         //qDebug() << __query;
         __q = __dispetcher->queryToDB(__query);
         __customTable->push_back(buf);
-        insertRows(__rows_cust, 1);
+        insertRows(__customTable->size(), 1);
+       // beginResetModel();
         __rows_cust++;
+        __rows++;
+        //refreshTable();
+        //updateModel();
+        //endResetModel();
     }
     else
     {
@@ -335,10 +378,11 @@ void controller_allBase::addCustomData(QString cust, QString inn, QString reg, Q
       __query = "UPDATE Custom SET NAME_CUSTOM = '" + buf.NameCust + "', INN = '" + buf.Inn + "', KOD_REG = '" + buf.KodReg + "', NAME_SITY ='" + buf.NameSity + "' WHERE COD_CUST = '" + __companyCodCust + "'";
       __q = __dispetcher->queryToDB(__query);
 
-      emit beginResetModel();
+      beginResetModel();
       __customTable->remove(__rowDelete);
       __customTable->push_back(buf);
-      emit endResetModel();
+        refreshTable();
+      endResetModel();
     }
 }
 
@@ -351,22 +395,30 @@ void controller_allBase::addRegData(QString kodreg, QString name, bool flag)
 
     if (!flag)
     {
-         __query = "INSERT INTO Region (KOD_REG, NAME_REG) VALUES ( ' " + buf.KodReg + " ', '" + buf.NameReg + "')";
-        //qDebug() << __query;
+
+        __query = "INSERT INTO Region (KOD_REG, NAME_REG) VALUES ( ' " + buf.KodReg + " ', '" + buf.NameReg + "')";
+        qDebug() << __query;
+        __dispetcher->connectToDataBase();
         __q = __dispetcher->queryToDB(__query);
         __regTable->push_back(buf);
-        insertRows(__rows, 1);
+        insertRows(__regTable->size(), 1);
         __rows_reg++;
+        qDebug() << "SUCCES";
+        //updateModel();
+        //refreshTable();
+
     }
     else
     {
      __query = "UPDATE Region SET NAME_REG = '" + buf.NameReg + "' WHERE KOD_REG = '" + __regKodReg + "'";
       __q = __dispetcher->queryToDB(__query);
 
-      emit beginResetModel();
+      beginResetModel();
       __regTable->remove(__rowDelete);
       __regTable->push_back(buf);
-      emit endResetModel();
+      //refreshTable();
+      endResetModel();
+      qDebug() << "SUCCES";
     }
 }
 
@@ -374,6 +426,7 @@ void controller_allBase::chooseRow(int row)
 {
     __checkTouch = true;
     __rowDelete = row;
+    qDebug() << "ROWWW" << __rowDelete;
     if(__numTable == FIRST_TABLE)
     {
         Custom bufer;
@@ -470,19 +523,41 @@ bool controller_allBase::checkTouchFlag()
 void controller_allBase::refreshTable()
 {
     __dispetcher->connectToDataBase();
-    if (__numTable == 0)
+    if (__numTable == 0){
         __query = "SELECT * FROM Custom";
-    else if (__numTable == 2 || __numTable == 3)
+        __customTable->clear();
+    }
+    else if(__numTable == 1){
+        __keyTable->clear();
+        __query = "SELECT * FROM Service_Key";
+    }
+    else if (__numTable == 2 || __numTable == 3){
         __query = "SELECT * FROM Region";
-     emit beginResetModel();
-    __regTable->clear();
+        __regTable->clear();
+    }
+    beginResetModel();
      this->updateModel();
-     emit endResetModel();
+    endResetModel();
 }
 
 void controller_allBase::deleteRow()
 {
+    qDebug() << "DELETE";
+    __dispetcher->connectToDataBase();
+    if (__numTable == FIRST_TABLE)
+    {
+        Custom buf;
+        buf = __customTable->at(__rowDelete);
+        __query = "DELETE FROM Custom WHERE 'COD_CUST' = '" + buf.CodCust + "'";
+    }
+    else if (__numTable == THIRD_TABLE)
+    {
+        Region buf;
+        buf = __regTable->at(__rowDelete);
+        __query = "DELETE FROM Region WHERE 'KOD_REG' = '" + buf.KodReg + "'";
+    }
     removeRows(__rowDelete, 1);
+    __dispetcher->queryToDB(__query);
     refreshTable();
 }
 
@@ -629,19 +704,20 @@ void controller_allBase::search(QString text)
     }
     else if(__numTable == SECOND_TABLE)
     {
-        __query = "SELECT * FROM Service_key WHERE" + __secTabName + " LIKE '%" +text + "%'";
+        __query = "SELECT * FROM Service_key WHERE " + __secTabName + " LIKE '%" +text + "%'";
         __keyTable->clear();
     }
     else if (__numTable == THIRD_TABLE)
     {
-        __query = "SELECT * FROM Region WHERE" + __secTabName + " LIKE '%" +text + "%'";
+        __query = "SELECT * FROM Region WHERE " + __secTabName + " LIKE '%" +text + "%'";
         __regTable->clear();
     }
 
-    __dispetcher->queryToDB(__query);
-    emit beginResetModel();
+    //__q = __dispetcher->queryToDB(__query);
+
+    beginResetModel();
     this->updateModel();
-    emit endResetModel();
+    endResetModel();
 }
 controller_allBase::~controller_allBase()
 {
