@@ -6,7 +6,7 @@
 #include "../../Controller/controller_databasemanager.h"
 #include "../../Model/model_database.h"
 #include "../../Controller/controller_allbase.h"
-#include"../Model/CBModel/cbmodel.h"
+#include"../../Model/CBModel/cbmodel.h"
 
 
 

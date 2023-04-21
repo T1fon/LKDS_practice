@@ -34,7 +34,10 @@ Rectangle
     signal sendTW(ckt: Controller_KeyTable);
     signal changeLastKey()
 
-
+    onWindowChanged: ()=>
+    {
+        aa.refreshTable()
+    }
 
 
     Rectangle

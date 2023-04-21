@@ -118,6 +118,7 @@ ApplicationWindow
 
         onButton1Clicked:
         {
+            secondwindow.windowChanged(mainwindow)
             stackview.push(secondwindow)
 
         }

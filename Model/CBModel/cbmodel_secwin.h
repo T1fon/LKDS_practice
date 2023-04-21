@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QAbstractListModel>
 #include <qqml.h>
-#include "../Model/model_database.h"
+#include "../../Model/model_database.h"
 
 class CBModel_secwin : public QAbstractListModel
 {

@@ -1,5 +1,5 @@
 #include "cbmodel.h"
-#include "../View/FifthWindow/fifthwindow.h"
+#include "../../View/FifthWindow/fifthwindow.h"
 
 CBModel::CBModel()
 {

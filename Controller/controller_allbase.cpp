@@ -536,29 +536,28 @@ void controller_allBase::refreshTable()
         __regTable->clear();
     }
     beginResetModel();
-     this->updateModel();
+    this->updateModel();
     endResetModel();
 }
 
 void controller_allBase::deleteRow()
 {
-    qDebug() << "DELETE";
     __dispetcher->connectToDataBase();
+    __query = "";
     if (__numTable == FIRST_TABLE)
     {
         Custom buf;
         buf = __customTable->at(__rowDelete);
-        __query = "DELETE FROM Custom WHERE 'COD_CUST' = '" + buf.CodCust + "'";
+        __query = "DELETE FROM Custom WHERE COD_CUST = '" + buf.CodCust + "'";
     }
     else if (__numTable == THIRD_TABLE)
     {
         Region buf;
         buf = __regTable->at(__rowDelete);
-        __query = "DELETE FROM Region WHERE 'KOD_REG' = '" + buf.KodReg + "'";
+        __query = "DELETE FROM Region WHERE KOD_REG = '" + buf.KodReg + "'";
     }
-    removeRows(__rowDelete, 1);
     __dispetcher->queryToDB(__query);
-    refreshTable();
+    removeRows(__rowDelete, 1);
 }
 
 void controller_allBase::pushDataToFile(QString path)
