@@ -253,9 +253,18 @@ QString Controller_KeyTable::getReg()
 
 Controller_KeyTable::~Controller_KeyTable()
 {
-    delete __q;
-    delete __serviceNames;
-    delete __dispetcher;
+    if(__q != nullptr){
+        delete __q;
+    }
+
+    if(__serviceNames != nullptr){
+        delete __serviceNames;
+    }
+
+    if(__dispetcher != nullptr){
+        //delete __dispetcher;
+    }
+
 }
 
 

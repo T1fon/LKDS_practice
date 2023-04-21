@@ -30,7 +30,7 @@ public:
 
 private:
     QSqlDatabase __Db;
-    QSqlQuery* __query;
+    QSqlQuery* __query = nullptr;
     bool closeDataBase();
     bool openDataBase();
 signals:

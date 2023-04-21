@@ -57,6 +57,7 @@ Rectangle
 
     }
     onWindowChanged: {
+        c_ab.refreshTable()
         c_ab.setTableNum(0)
         cbm.updateData(0)
         c_ab.setSecTabNum(0)
@@ -308,6 +309,7 @@ Rectangle
                 {
                     height: parent.height
                     width: parent.width
+                    color: "#F7EFD7"
                     Text {
                         id: podtv_text
                         text: qsTr("Вы уверены в удалении?")
@@ -316,7 +318,7 @@ Rectangle
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
-                    color: "#F7EFD7"
+
                 }
                 footer: Rectangle
                 {

@@ -124,6 +124,7 @@ ApplicationWindow
         }
         onButton2Clicked:
         {
+            fifthwindow.windowChanged(mainwindow)
             stackview.push(fifthwindow)
         }
 

@@ -104,7 +104,7 @@ Rectangle {
             delegate: Rectangle {
                 id: bb
                 required property bool current
-                color: current ? "lightgray" : "white"
+                color: (row === tableView.currentRow) ? "lightgray" : "white"
                 implicitHeight: 26
                 border.color: "#bbb"
                 border.width: 1

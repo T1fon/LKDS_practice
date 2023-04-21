@@ -68,10 +68,10 @@ public slots:
     QString getReg();
 
 private:
-    Model_database * __dispetcher;
+    Model_database * __dispetcher = nullptr;
     QStringList __columnNames;
-    QSqlQuery *__q;
-    QVector<TableDisplayServiceKey> *__serviceNames;
+    QSqlQuery *__q = nullptr;
+    QVector<TableDisplayServiceKey> *__serviceNames = nullptr;
     int __rows = 0;
     int __page = PAGE_THIRD_WINDOW;
     QString __query;

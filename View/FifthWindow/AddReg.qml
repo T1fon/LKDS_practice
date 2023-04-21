@@ -23,30 +23,32 @@ Dialog
         {
             width: parent.width
             height: parent.height
+            color:"#F7EFD7"
            Rectangle
            {
                id:e1
                height: sheight * 7.3333
                width: parent.width
                y: sheight * 2
-               color: "grey"
+               color: "#FFFFFF"
 
                TextInput
                {
                    id: tE1
                    height: parent.height
-                   width: swidth * 23.313
+                   width: swidth * 28.313
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
+                   clip: true
                }
                Rectangle
                {
                    height: parent.height
                    width: swidth * 15.5416
-                   color: "red"
+                   color: "#D3B992"
                    anchors.right: parent.right
 
                    Text {
@@ -65,24 +67,25 @@ Dialog
                height: sheight * 7.3333
                width: parent.width
                y: sheight * 11
-               color: "grey"
+               color: "#FFFFFF"
 
                TextInput
                {
                    id: tE2
                    height: parent.height
-                   width: swidth * 23.313
+                   width: swidth * 28.313
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
+                   clip: true
                }
                Rectangle
                {
                    height: parent.height
                    width: swidth * 15.5416
-                   color: "red"
+                   color: "#D3B992"
                    anchors.right: parent.right
 
                    Text {
@@ -101,6 +104,7 @@ Dialog
         {
             width: parent.width
             height: sheight * 8
+            color:"#F7EFD7"
             Button
             {
                 id: okbut

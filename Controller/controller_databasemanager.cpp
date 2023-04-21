@@ -143,15 +143,18 @@ bool Controller_DatabaseManager::setData(const QModelIndex &index,const QVariant
 }
 bool Controller_DatabaseManager::insertRows(int row, int count, const QModelIndex &parent)
 {
-    emit beginInsertRows(parent, row, count+row);
+    beginInsertRows(parent, row, count+row);
 
 
-    emit endInsertRows();
+    endInsertRows();
     return true;
  }
 bool Controller_DatabaseManager::removeRows(int row, int count, const QModelIndex &parent)
 {
 
+}
+void Controller_DatabaseManager::setReg(QString value){
+    __companyReg = value;
 }
 
 void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg,QString city, bool flag)
@@ -190,13 +193,13 @@ void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString re
     {
         //UPDATE Custom SET NAME_CUSTOM = 1, INN = 2, KOD_REG = 3, NAME_SITY = 4 WHERE COD_CUST = 71
         qDebug() << "NAMECUST:" << buf.NameCust << "INN" << buf.Inn << "KOD_REG" << buf.KodReg << "NAME_SITY" << buf.NameSity << "CODCUST" << __companyCodCust;
-      __query = "UPDATE Custom SET NAME_CUSTOM = '" + buf.NameCust + "', INN = '" + buf.Inn + "', KOD_REG = '" + buf.KodReg + "', NAME_SITY ='" + buf.NameSity + "' WHERE COD_CUST = '" + __companyCodCust + "'";
-      __q = __dispetcher->queryToDB(__query);
+        __query = "UPDATE Custom SET NAME_CUSTOM = '" + buf.NameCust + "', INN = '" + buf.Inn + "', KOD_REG = '" + buf.KodReg + "', NAME_SITY ='" + buf.NameSity + "' WHERE COD_CUST = '" + __companyCodCust + "'";
+        __q = __dispetcher->queryToDB(__query);
 
-      emit beginResetModel();
-      __rowNames->remove(__row);
-      __rowNames->push_back(buf);
-      emit endResetModel();
+        beginResetModel();
+        __rowNames->remove(__row);
+        __rowNames->push_back(buf);
+        endResetModel();
     }
 
 }
@@ -205,20 +208,20 @@ void Controller_DatabaseManager::searchCompany(QString searchplace)
 {
     __query = "SELECT * FROM Custom WHERE INN LIKE '%" +searchplace + "%'";
 
-    emit beginResetModel();
+    beginResetModel();
     __rowNames->clear();
     this->updateModel();
-    emit endResetModel();
+    endResetModel();
 }
 
 void Controller_DatabaseManager::refreshTable()
 {
     __dispetcher->connectToDataBase();
      __query = "SELECT * FROM Custom";
-     emit beginResetModel();
+    beginResetModel();
      __rowNames->clear();
      this->updateModel();
-     emit endResetModel();
+    endResetModel();
 }
 
 void Controller_DatabaseManager::chooseRegion(int row)

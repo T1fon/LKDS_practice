@@ -36,6 +36,7 @@ Rectangle
 
     onWindowChanged: ()=>
     {
+        aa.setReg("")
         aa.refreshTable()
     }
 
@@ -191,7 +192,7 @@ Rectangle
                {
                    id: tE1
                    height: parent.height
-                   width: swidth * 23.313
+                   width: swidth * 26.313
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
@@ -199,6 +200,7 @@ Rectangle
                    leftPadding: swidth * 1.5
                    focus: true
                    KeyNavigation.tab: tE2
+                   clip: true
                }
                Rectangle
                {
@@ -229,13 +231,14 @@ Rectangle
                {
                    id: tE2
                    height: parent.height
-                   width: swidth * 23.313
+                   width: swidth * 26.313
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
                     KeyNavigation.tab: tE3
+                    clip: true
                }
                Rectangle
                {
@@ -267,13 +270,14 @@ Rectangle
                {
                    id: tE3
                    height: parent.height
-                   width: swidth * 23.313
+                   width: swidth * 26.313
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
                     KeyNavigation.tab: tE4
+                    clip: true
                }
                Rectangle
                {
@@ -305,13 +309,14 @@ Rectangle
                {
                    id: tE4
                    height: parent.height
-                   width: swidth * 23.313
+                   width: swidth * 26.313
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
                    topPadding: sheight * 2.5
                    leftPadding: swidth * 1.5
                    KeyNavigation.tab: tE1
+                   clip: true
                }
                Rectangle
                {

@@ -391,7 +391,7 @@ void controller_allBase::addRegData(QString kodreg, QString name, bool flag)
     Region buf;
     buf.KodReg = kodreg;
     buf.NameReg = name;
-    qDebug() << "К=KODREG" << buf.KodReg << " NAMEREG" << buf.NameReg;
+    qDebug() << "K=KODREG" << buf.KodReg << " NAMEREG" << buf.NameReg;
 
     if (!flag)
     {
@@ -426,6 +426,9 @@ void controller_allBase::chooseRow(int row)
 {
     __checkTouch = true;
     __rowDelete = row;
+    if(row >= rowCount()){
+        return;
+    }
     qDebug() << "ROWWW" << __rowDelete;
     if(__numTable == FIRST_TABLE)
     {
@@ -449,6 +452,9 @@ void controller_allBase::chooseRow(int row)
 
 void controller_allBase::redactProfile(int row)
 {
+    if(row >= rowCount()){
+        return;
+    }
     if (__numTable == FIRST_TABLE)
     {
         QString buf;
@@ -544,6 +550,10 @@ void controller_allBase::deleteRow()
 {
     __dispetcher->connectToDataBase();
     __query = "";
+    if(__rowDelete >= rowCount()){
+        return;
+    }
+
     if (__numTable == FIRST_TABLE)
     {
         Custom buf;

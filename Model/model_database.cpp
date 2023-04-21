@@ -65,5 +65,8 @@ bool Model_database::isOpen()
 Model_database::~Model_database()
 {
     this->closeDataBase();
-    delete __query;
+    if(__query != nullptr){
+        //delete __query;
+    }
+
 }

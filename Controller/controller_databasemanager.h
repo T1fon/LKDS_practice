@@ -74,6 +74,7 @@ public slots:
     QString checkCodCust();
     QString checkCity();
     QString checkReg();
+    void setReg(QString value);
     QString checkReg1();
     QString checkInn();
     QString checkName();
