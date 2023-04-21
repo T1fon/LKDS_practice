@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import DatabaseManager 1.0
 import SecWin 1.0
 import KeyTable 1.0
+import AllBase 1.0
 import "../SecondWindow/"
 import "../ThirdWindow/"
 import "../FouthWindow/"

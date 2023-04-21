@@ -9,5 +9,8 @@
         <file>View/SettingsWindow/SettingsWindow.qml</file>
         <file>Source/settings.png</file>
         <file>View/FirstWindow/FirstWindow.qml</file>
+        <file>View/FifthWindow/TableModeler_fw.qml</file>
+        <file>View/FifthWindow/AddCustom.qml</file>
+        <file>View/FifthWindow/AddReg.qml</file>
     </qresource>
 </RCC>
