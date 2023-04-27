@@ -140,7 +140,6 @@ public slots:
     void search(QString text);
     void setSecTabNum(int value);
 
-
 signals:
 
 };

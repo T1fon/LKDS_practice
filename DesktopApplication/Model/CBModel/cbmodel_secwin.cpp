@@ -70,7 +70,7 @@ QHash<int, QByteArray> CBModel_secwin::roleNames()const
 
 bool CBModel_secwin::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    dataChanged(index, index, {role});
+    emit dataChanged(index, index, {role});
     __CBMSW_names_variant->push_back(value);
 }
 
