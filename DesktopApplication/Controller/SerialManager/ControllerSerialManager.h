@@ -1,7 +1,8 @@
 #ifndef CONTROLLERSERIALMANAGER_H
 #define CONTROLLERSERIALMANAGER_H
 
-#include "../../Model/SerialManager/ModelSerialManager.h"
+#include "Model/SerialManager/ModelSerialManager.h"
+//#include "../../Model/SerialManager/ModelSerialManager.h"
 #include <QThread>
 #include <QFile>
 #include <QTextStream>

@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <stdlib.h>
 //Result write operation
-#define RESULT_SUCCEFUL 1
+#define RESULT_SUCCESSFUL 1
 #define RESULT_WARNING 2
 
 #define DEFAULT_PORT_CLK 2
@@ -90,7 +90,7 @@ void EEP_init(const ports_93c46wp_t &ports);
 void EEP___printCommand(const ports_93c46wp_t &ports, uint8_t **data, int count_words);
 void EEP___portReset(const ports_93c46wp_t &ports);
 void EEP___printStartCommandBit(const ports_93c46wp_t &ports);
-int  EEP___isSuccefulWrite(const ports_93c46wp_t &ports);
+int  EEP___isSuccessfulWrite(const ports_93c46wp_t &ports);
 int  EEP___executeCommand(const ports_93c46wp_t &ports, uint8_t command);
 
 void EEP_modeEWEnable(const ports_93c46wp_t &ports);

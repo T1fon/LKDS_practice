@@ -24,7 +24,8 @@ private:
     QString __searchByPortSettings(QString path_to_settings_file);
     bool __is_read_operation = false;
     bool __succeful_write_operation = false;
-    int __COUNT_LOG_MESSAGE = 3;
+    int __COUNT_LOG_MESSAGE = 8;
+    int __time = 0;
 
     int __current_key, __prefix, __count_key, __current_count_key;
     QList<int> __access_history;

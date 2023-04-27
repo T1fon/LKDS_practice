@@ -48,7 +48,7 @@ void EEP___printCommand(const ports_93c46wp_t &ports, uint8_t *data, int count_w
     }
 }
 
-int EEP___isSuccefulWrite(const ports_93c46wp_t &ports){
+int EEP___isSuccessfulWrite(const ports_93c46wp_t &ports){
 
     digitalWrite(ports.port_CS, HIGH);
     delay(ports.delay);
@@ -79,7 +79,7 @@ int EEP___isSuccefulWrite(const ports_93c46wp_t &ports){
         return RESULT_WARNING;
     }
     
-    return RESULT_SUCCEFUL;
+    return RESULT_SUCCESSFUL;
 }
 
 int EEP___executeCommand(const ports_93c46wp_t &ports, uint8_t command){
@@ -112,7 +112,7 @@ int EEP___executeCommand(const ports_93c46wp_t &ports, uint8_t command){
     digitalWrite(ports.port_CS, LOW);
     delay(ports.delay);
 
-    return RESULT_SUCCEFUL;
+    return RESULT_SUCCESSFUL;
 }
 
 void EEP_modeEWEnable(const ports_93c46wp_t &ports){
@@ -124,7 +124,7 @@ void EEP_modeEWDisable(const ports_93c46wp_t &ports){
 void EEP_eraseAll(const ports_93c46wp_t &ports){
    EEP_modeEWEnable(ports);
    EEP___executeCommand(ports,COMMAND_ERAL);
-   EEP___isSuccefulWrite(ports);
+   EEP___isSuccessfulWrite(ports);
 }
 
 key_data_t EEP_readKey(const ports_93c46wp_t &ports){
@@ -231,7 +231,7 @@ bool EEP_writeKey(const ports_93c46wp_t &ports, unsigned int prefix, long int ke
     delay(ports.delay);
 
     //нужно постараться дождаться подтверждуния о записи от устройства
-    EEP___isSuccefulWrite(ports);
+    EEP___isSuccessfulWrite(ports);
 
     //WRITE Key
     digitalWrite(ports.port_CS, HIGH);
@@ -249,7 +249,7 @@ bool EEP_writeKey(const ports_93c46wp_t &ports, unsigned int prefix, long int ke
     digitalWrite(ports.port_CS, LOW);
     delay(ports.delay);
         
-    EEP___isSuccefulWrite(ports);
+    EEP___isSuccessfulWrite(ports);
 
     //WRITE Access_mode
 
@@ -287,7 +287,7 @@ bool EEP_writeKey(const ports_93c46wp_t &ports, unsigned int prefix, long int ke
     digitalWrite(ports.port_CS, LOW);
     delay(ports.delay);
 
-    EEP___isSuccefulWrite(ports);
+    EEP___isSuccessfulWrite(ports);
 
     write_result = EEP_checkWriteKey(ports, prefix, key, access_mode);
 

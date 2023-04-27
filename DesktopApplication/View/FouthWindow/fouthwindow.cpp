@@ -105,20 +105,24 @@ void Fouth_Window::write(int prefix, int key, QString access_level){
                       access_level + OPERATION_SYMBOL;
     __controller_serial->write(message.toLatin1());
     __access_history.push_back(access_level.toInt());
+    __time++;
     qDebug() << "Write";
 }
 void Fouth_Window::read(){
     __controller_serial->write(OPERATION_READ);
+    __time++;
     __is_read_operation = true;
     qDebug() << "Read";
 }
 void Fouth_Window::check(){
     __controller_serial->write(OPERATION_CHECK);
+    __time++;
     __is_read_operation = false;
     qDebug() << "Check";
 }
 void Fouth_Window::clear(){
     __controller_serial->write(OPERATION_CLEAR);
+    __time++;
     __is_read_operation = false;
     qDebug() << "Clear";
 }
@@ -128,28 +132,37 @@ void Fouth_Window::acceptMessage(QString message){
     static QString temp_m = "<div>";
     static QString prev_temp_m = "";
     QString color = "";
-    static int time = 0;
+
     int color_position = 0;
 
     if(__is_read_operation){
-        color_position = message.indexOf("Access_mode");
-
-        if(message.indexOf("Engineer") != -1){
+        color_position = temp_m.indexOf("Access_mode");
+        //qDebug() << temp_m << " " << color_position;
+        if(temp_m.indexOf("Engineer") != -1){
             color = "\"red\"";
+            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Engineer");
+            temp_m.insert(color_position,"<font color=" + color + ">");
         }
-        else if(message.indexOf("Operator") != -1){
+        else if(temp_m.indexOf("Operator") != -1){
             color = "\"green\"";
+            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Operator");
+            temp_m.insert(color_position,"<font color=" + color + ">");
         }
-        else if(message.indexOf("Administrator") != -1){
+        else if(temp_m.indexOf("Administrator") != -1){
             color = "\"blue\"";
+            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Administrator");
+            temp_m.insert(color_position,"<font color=" + color + ">");
         }
-        else if(message.indexOf("Developer") != -1){
+        else if(temp_m.indexOf("Developer") != -1){
             color = "\"#FAFF00\"";
+            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Developer");
+            temp_m.insert(color_position,"<font color=" + color + ">");
         }
     }
 
     for(int i = 0; i < message.size(); i++){
         if(message.at(i) == '\n'){
+            //qDebug() << "\\n = " << i;
             if(__is_read_operation){
                 temp_m += "</font>";
             }
@@ -172,15 +185,15 @@ void Fouth_Window::acceptMessage(QString message){
                 }
 
             }
-            if(temp_m.indexOf("Enter the",0) != -1){
-                time++;
-                if(time == __COUNT_LOG_MESSAGE){
-                    emit signalClearLog();
-                    temp_m = prev_temp_m;
-                    prev_temp_m = "";
-                    time = 0;
-                }
+
+
+            if(__time == __COUNT_LOG_MESSAGE){
+                emit signalClearLog();
+                temp_m = prev_temp_m;
+                prev_temp_m = "";
+                __time = 0;
             }
+
 
             //qDebug() << "Write: " << __succeful_write_operation;
             emit sendToQml(temp_m);
@@ -188,12 +201,7 @@ void Fouth_Window::acceptMessage(QString message){
             temp_m = "<div>";
         }
         else{
-            if(__is_read_operation){
-                if(i == color_position){
-                    temp_m += "<font ";
-                    temp_m += "color = " + color + " >";
-                }
-            }
+
             temp_m += message.at(i);
         }
     }
