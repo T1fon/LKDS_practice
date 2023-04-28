@@ -335,7 +335,7 @@ void controller_allBase::setSecTabNum(int value)
     }
 }
 
-void controller_allBase::addCustomData(QString cust, QString inn, QString reg, QString city, bool flag)
+int controller_allBase::addCustomData(QString cust, QString inn, QString reg, QString city, bool flag)
 {
     Custom buf;
     __dispetcher->connectToDataBase();
@@ -346,6 +346,10 @@ void controller_allBase::addCustomData(QString cust, QString inn, QString reg, Q
     __q = __dispetcher->queryToDB(__query);
     __q->next();
 
+    if(__q->value("KOD_REG").toString() == "")
+    {
+        return -1;
+    }
     QString t = "";
     if (!flag)
         buf.CodCust = t.setNum(__rows_cust +1);
