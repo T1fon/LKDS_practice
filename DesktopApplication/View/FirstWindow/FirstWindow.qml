@@ -134,7 +134,11 @@ ApplicationWindow
             y: sheight * 81.4814
             width: swidth * 7.7083
             height: swidth * 7.7083
-            text: "S"
+            display: AbstractButton.IconOnly
+            icon.width: width
+            icon.height: height
+            icon.color: "transparent"
+            icon.source: "/Source/settings.png"
             background: Rectangle
             {
                 color: "#D3B992"

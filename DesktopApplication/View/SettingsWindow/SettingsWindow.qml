@@ -74,7 +74,7 @@ Rectangle {
             width: parent.width - parent.height/2-10
             height: parent.height/2
             model: com_port_model
-            onActivated: onAct(index)
+            onActivated:(index)=> onAct(index)
         }
 
         Button{

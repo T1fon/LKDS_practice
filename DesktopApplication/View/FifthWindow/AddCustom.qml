@@ -37,7 +37,7 @@ Dialog
                {
                    id: tE1
                    height: parent.height
-                   width: swidth * 28.313
+                   width: swidth * 29.8
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
@@ -74,7 +74,7 @@ Dialog
                {
                    id: tE2
                    height: parent.height
-                   width: swidth * 28.313
+                   width: swidth * 29.8
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
@@ -112,7 +112,7 @@ Dialog
                    model: CBModel{id :sec_winCB}
                    id: tE3
                    height: parent.height
-                   width: swidth * 27.6
+                   width: swidth * 29.8
                    editable: true
 
                     onAccepted: {
@@ -156,7 +156,7 @@ Dialog
                {
                    id: tE4
                    height: parent.height
-                   width: swidth * 28.313
+                   width: swidth * 29.8
                    font.family: "Helvetica"
                    font.pointSize: swidth * 1.5
                    color: "black"
