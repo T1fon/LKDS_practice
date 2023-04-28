@@ -4,6 +4,11 @@
 #include <QObject>
 #include <QAbstractListModel>
 #include <qqml.h>
+#include <QSqlQueryModel>
+#include <QSqlDatabase>
+#include <iostream>
+
+#include "../model_database.h"
 
 #define FIRST_TABLE_C 0
 #define SECOND_TABLE_C 1
@@ -28,11 +33,19 @@ public:
 public slots:
     void updateData(int numTable);
     QString getValue(int row);
+    void secWinData(QString value);
+    void clearQuery();
+    void deleteQueryEl();
+    QString getQuery();
 
 private:
     QList<QString> *__tableCB, *__textCB;
     int __numTable = 0;
     QVector<QVariant> *__CBM_names_variant = nullptr;
+    QString __finalQuery = "";
+    QSqlQuery *__q;
+    Model_database * __dispetcher;
+    QString __query;
 
 };
 

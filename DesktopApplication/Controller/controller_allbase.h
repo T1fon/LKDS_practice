@@ -2,7 +2,6 @@
 #define CONTROLLER_ALLBASE_H
 
 #include <QObject>
-#include <QObject>
 #include <QSqlQueryModel>
 #include <qqml.h>
 #include <QStringList>
@@ -121,7 +120,7 @@ public slots:
     void updateModel();
     int getTableNum();
     void setTableNum(int value);
-    void addCustomData(QString cust,QString inn,QString reg,QString city, bool flag);
+    int addCustomData(QString cust,QString inn,QString reg,QString city, bool flag);
     void addRegData(QString kodreg, QString name, bool flag);
     void chooseRow(int row);
     void redactProfile(int row);
@@ -139,7 +138,6 @@ public slots:
     void pushDataToFile(QString path);
     void search(QString text);
     void setSecTabNum(int value);
-
 
 signals:
 

@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.1
 import Qt.labs.qmlmodels 1.0
 import QtQml.Models 2.15
 import AllBase 1.0
+import CBM 1.0
 
 Dialog
 {
@@ -106,18 +107,26 @@ Dialog
                y: sheight * 20
                color: "#FFFFFF"
 
-               TextInput
+               ComboBox
                {
+                   model: CBModel{id :sec_winCB}
                    id: tE3
                    height: parent.height
-                   width: swidth * 28.313
-                   font.family: "Helvetica"
-                   font.pointSize: swidth * 1.5
-                   color: "black"
-                   topPadding: sheight * 2.5
-                   leftPadding: swidth * 1.5
-                   clip: true
+                   width: swidth * 27.6
+                   editable: true
+
+                    onAccepted: {
+
+                        sec_winCB.secWinData(tE3.editText);
+
+                    }
+
+                    onCountChanged: {
+                        currentIndex = find(tE3.editText, Qt.MatchContains);
+                        tE3.editText = textAt(currentIndex);
+                    }
                }
+
                Rectangle
                {
                    height: parent.height
@@ -193,14 +202,33 @@ Dialog
                 }
                 onClicked:
                 {
-                    c_ab.addCustomData(tE1.text, tE2.text, tE3.text, tE4.text, flagRedact);
-                    tE1.clear()
-                    tE2.clear()
-                    tE3.clear()
-                    tE4.clear()
-                    flagRedact = false
+                    if (tE1.text === "" || tE2.text === "" || tE3.editText === "" || tE4.text === "")
+                    {
+                        okbut.enabled
+                        background.color = "grey"
+                    }
 
-                    add.close()
+                    else
+                    {
+
+                        if(c_ab.addCustomData(tE1.text, tE2.text, tE3.editText, tE4.text, flagRedact) !== -1)
+                        {
+                            tE1.clear()
+                            tE2.clear()
+                            //tE3.
+                            sec_winCB.clearQuery()
+                            tE3.editText = ""
+
+                            tE4.clear()
+                            flagRedact = false
+                            background.color = "#D3B992"
+                            add.close()
+                        }
+                        else
+                        {
+                            background.color = "grey"
+                        }
+                    }
 
                 }
             }
@@ -220,9 +248,12 @@ Dialog
                 {
                     tE1.clear()
                     tE2.clear()
-                    tE3.clear()
+                    //tE3.clear()
+                    sec_winCB.clearQuery()
+                    tE3.editText = ""
                     tE4.clear()
                     add.close()
+                    okbut.background.color = "#D3B992"
                 }
             }
 
@@ -231,7 +262,7 @@ Dialog
     {
         tE1.text = c_ab.checkName()
         tE2.text = c_ab.checkInn()
-        tE3.text = c_ab.checkReg()
+        tE3.editText = c_ab.checkReg()
         tE4.text = c_ab.checkCity()
         flagRedact = true
     }

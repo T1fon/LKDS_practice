@@ -7,6 +7,7 @@ import QtQml.Models 2.15
 import DatabaseManager 1.0
 import SecWin 1.0
 import KeyTable 1.0
+import CBM 1.0
 import "../SecondWindow/"
 import "../ThirdWindow/"
 
@@ -266,19 +267,26 @@ Rectangle
                x: swidth
                color: "#FBFBFB"
 
-               TextInput
+               ComboBox
                {
+                   model: CBModel{id :sec_winCB}
                    id: tE3
                    height: parent.height
-                   width: swidth * 26.313
-                   font.family: "Helvetica"
-                   font.pointSize: swidth * 1.5
-                   color: "black"
-                   topPadding: sheight * 2.5
-                   leftPadding: swidth * 1.5
-                    KeyNavigation.tab: tE4
-                    clip: true
+                   width: swidth * 27.6
+                   editable: true
+
+                    onAccepted: {
+
+                        sec_winCB.secWinData(tE3.editText);
+
+                    }
+
+                    onCountChanged: {
+                        currentIndex = find(tE3.editText, Qt.MatchContains);
+                        tE3.editText = textAt(currentIndex);
+                    }
                }
+
                Rectangle
                {
                    height: parent.height
@@ -357,14 +365,33 @@ Rectangle
                 }
                 onClicked:
                 {
-                    aa.recieveData(tE1.text, tE2.text, tE3.text, tE4.text, flagRedact);
-                    tE1.clear()
-                    tE2.clear()
-                    tE3.clear()
-                    tE4.clear()
-                    flagRedact = false
+                    if (tE1.text === "" || tE2.text === "" || tE3.editText === "" || tE4.text === "")
+                    {
+                        okbut.enabled
+                        background.color = "grey"
+                    }
 
-                    add.close()
+                    else
+                    {
+
+                        if (aa.recieveData(tE1.text, tE2.text, tE3.editText, tE4.text, flagRedact) !== -1)
+                        {
+                            tE1.clear()
+                            tE2.clear()
+                            //tE3.
+                            sec_winCB.clearQuery()
+                            tE3.editText = ""
+
+                            tE4.clear()
+                            flagRedact = false
+                            background.color = "#D3B992"
+                            add.close()
+                        }
+                        else
+                        {
+                            background.color = "#grey"
+                        }
+                    }
 
                 }
             }
@@ -384,9 +411,12 @@ Rectangle
                 {
                     tE1.clear()
                     tE2.clear()
-                    tE3.clear()
+                    //tE3.clear()
+                    sec_winCB.clearQuery()
+                    tE3.editText = ""
                     tE4.clear()
                     add.close()
+                    okbut.background.color = "#D3B992"
                 }
             }
 
@@ -458,7 +488,7 @@ Rectangle
                 add.open()
                 tE1.text = aa.checkName()
                 tE2.text = aa.checkInn()
-                tE3.text = aa.checkReg1()
+                tE3.editText = aa.checkReg1()
                 tE4.text = aa.checkCity()
             }
 

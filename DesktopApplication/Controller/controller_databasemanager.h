@@ -67,7 +67,7 @@ signals:
 
 public slots:
     void updateModel();
-    void recieveData(QString cust,QString inn,QString reg,QString city, bool flag);
+    int recieveData(QString cust,QString inn,QString reg,QString city, bool flag);
     void searchCompany(QString seachplace);
     void refreshTable();
     void chooseRegion(int row);

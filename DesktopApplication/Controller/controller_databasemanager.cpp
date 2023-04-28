@@ -157,7 +157,7 @@ void Controller_DatabaseManager::setReg(QString value){
     __companyReg = value;
 }
 
-void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg,QString city, bool flag)
+int Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg,QString city, bool flag)
 {
 
     TableDisplay buf;
@@ -168,6 +168,10 @@ void Controller_DatabaseManager::recieveData(QString cust,QString inn,QString re
     //qDebug() << __query;
     __q = __dispetcher->queryToDB(__query);
     __q->next();
+    if (__q->value("KOD_REG").toString() == "")
+    {
+        return -1;
+    }
 
     QString t = "";
     if (!flag)
