@@ -12,5 +12,6 @@
         <file>View/FifthWindow/TableModeler_fw.qml</file>
         <file>View/FifthWindow/AddCustom.qml</file>
         <file>View/FifthWindow/AddReg.qml</file>
+        <file>Source/back_step.png</file>
     </qresource>
 </RCC>

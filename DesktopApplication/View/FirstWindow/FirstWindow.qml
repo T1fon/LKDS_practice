@@ -151,18 +151,7 @@ ApplicationWindow
         onButtonSettingsClicked: {
             stackview.push(settings_window)
         }
-        Button{
-            id: helpwindow_button
-            x: swidth * 78.125
-            y: sheight * 81.4814
-            width: swidth * 7.7083
-            height: swidth * 7.7083
-            background: Rectangle
-            {
-                color: "#D3B992"
-            }
 
-        }
     }
     SecondWindow
     {

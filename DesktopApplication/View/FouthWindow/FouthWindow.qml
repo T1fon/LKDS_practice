@@ -200,7 +200,11 @@ Rectangle
         y: sheight * 2.9688
         width: swidth * 6.0937
         height: sheight * 8.0469
-        text: "<-"
+        display: AbstractButton.IconOnly
+        icon.width: width
+        icon.height: height
+        icon.color: "transparent"
+        icon.source: "/Source/back_step.png"
         background: Rectangle{
             color: "#D3B992"
         }
