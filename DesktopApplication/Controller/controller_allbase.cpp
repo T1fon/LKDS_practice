@@ -3,9 +3,9 @@
 controller_allBase::controller_allBase(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    __customNames << tr("Cod_Cust") << tr("Name_Custom") << tr("INN") << tr("Reg") << tr("City");
-    __keyNames << tr("Id Num")<< tr("Kod_Cust") << tr("Kod Reg") << tr("Date") << tr("Num key");
-    __regNames  << tr("Kod Reg") << tr("Name Reg");
+    __customNames << tr("Код компании") << tr("Наименование") << tr("ИНН") << tr("Регион") << tr("Город");
+    __keyNames << tr("ID ключа")<< tr("Код компании") << tr("Регион") << tr("Дата создания") << tr("Номер ключа");
+    __regNames  << tr("Код региона") << tr("Наименование");
     __customNamesSearch << tr("COD_CUST") << tr("NAME_CUSTOM") << tr("INN") << tr("KOD_REG") << tr("NAME_SITY");
     __keyNamesSearch << tr("ID_NUM")<< tr("KOD_CUST") << tr("KOD_REG") << tr("DATE") << tr("NUM_KEY");
     __regNamesSearch  << tr("KOD_REG") << tr("NAME_REG");

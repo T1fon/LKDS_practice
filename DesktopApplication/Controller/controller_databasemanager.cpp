@@ -5,7 +5,7 @@
 Controller_DatabaseManager::Controller_DatabaseManager(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    __columnNames << tr("Cod_Cust") << tr("Name_Custom") << tr("INN") << tr("Reg") << tr("City");
+    __columnNames << tr("Код компании") << tr("Наименование") << tr("ИНН") << tr("Регион") << tr("Город");
     __dispetcher = new Model_database(this);
     __dispetcher->connectToDataBase();
     __q = new QSqlQuery;

@@ -190,7 +190,7 @@ Rectangle
                 id: com_f_box
                 width: parent.width
                 height: parent.height
-                model: ["Custom", "ServKey", "Region"]
+                model: ["Компании", "Сервисные ключи", "Регионы"]
                 onActivated: (index) =>{onAct(index)}
 
             }
