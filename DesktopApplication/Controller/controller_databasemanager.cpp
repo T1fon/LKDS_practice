@@ -210,7 +210,7 @@ int Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg
 
 void Controller_DatabaseManager::searchCompany(QString searchplace)
 {
-    __query = "SELECT * FROM Custom WHERE INN LIKE '%" +searchplace + "%'";
+    __query = "SELECT * FROM Custom WHERE INN LIKE '%" + searchplace + "%' OR NAME_CUSTOM LIKE '%" +  searchplace + "%';";
 
     beginResetModel();
     __rowNames->clear();
