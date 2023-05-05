@@ -136,14 +136,7 @@ void controller_allBase::updateModel()
     Region reg;
     __rows = 0;
     __dispetcher->connectToDataBase();
-    qDebug() << "AAAAAAAAAAAAAA";
-    /*if (__numTable == FIRST_TABLE)
-        __query = "SELECT * FROM Custom";
-    else if (__numTable == SECOND_TABLE)
-        __query = "SELECT * FROM Service_Key";
-    else if (__numTable == THIRD_TABLE)
-        __query = "SELECT * FROM Region";*/
-    qDebug() << __query;
+
     __q = __dispetcher->queryToDB(__query);
 
     for (; __q->next();)
@@ -279,7 +272,6 @@ bool controller_allBase::removeRows(int row, int count, const QModelIndex &paren
 {
     int row_count = rowCount();
     if (count == 0 || (row + count - 1) >= row_count){
-        qDebug() << "LOXD";
         return false;
     }
     beginRemoveRows(parent, row, row + count - 1);
@@ -337,6 +329,9 @@ void controller_allBase::setSecTabNum(int value)
 
 int controller_allBase::addCustomData(QString cust, QString inn, QString reg, QString city, bool flag)
 {
+    if(__rowDelete < 0){
+        return -1;
+    }
     Custom buf;
     __dispetcher->connectToDataBase();
 
@@ -366,7 +361,7 @@ int controller_allBase::addCustomData(QString cust, QString inn, QString reg, QS
         __query = "INSERT INTO Custom (NAME_CUSTOM, INN, KOD_REG, NAME_SITY ) VALUES ( ' " + buf.NameCust + " ', '" + buf.Inn + "', '" + buf.KodReg + "' , '" + buf.NameSity + "')";
         //qDebug() << __query;
         __q = __dispetcher->queryToDB(__query);
-        __customTable->push_back(buf);
+        __customTable->push_front(buf);
         insertRows(__customTable->size(), 1);
        // beginResetModel();
         __rows_cust++;
@@ -384,14 +379,17 @@ int controller_allBase::addCustomData(QString cust, QString inn, QString reg, QS
 
       beginResetModel();
       __customTable->remove(__rowDelete);
-      __customTable->push_back(buf);
+      __customTable->push_front(buf);
         refreshTable();
       endResetModel();
     }
 }
 
-void controller_allBase::addRegData(QString kodreg, QString name, bool flag)
+int controller_allBase::addRegData(QString kodreg, QString name, bool flag)
 {
+    if(__rowDelete < 0){
+        return -1;
+    }
     Region buf;
     buf.KodReg = kodreg;
     buf.NameReg = name;
@@ -404,7 +402,7 @@ void controller_allBase::addRegData(QString kodreg, QString name, bool flag)
         qDebug() << __query;
         __dispetcher->connectToDataBase();
         __q = __dispetcher->queryToDB(__query);
-        __regTable->push_back(buf);
+        __regTable->push_front(buf);
         insertRows(__regTable->size(), 1);
         __rows_reg++;
         qDebug() << "SUCCES";
@@ -419,8 +417,9 @@ void controller_allBase::addRegData(QString kodreg, QString name, bool flag)
 
       beginResetModel();
       __regTable->remove(__rowDelete);
-      __regTable->push_back(buf);
+      __regTable->push_front(buf);
       //refreshTable();
+
       endResetModel();
       qDebug() << "SUCCES";
     }
@@ -433,30 +432,45 @@ void controller_allBase::chooseRow(int row)
     if(row >= rowCount()){
         return;
     }
-    qDebug() << "ROWWW" << __rowDelete;
+
     if(__numTable == FIRST_TABLE)
     {
         Custom bufer;
-        bufer = __customTable->at(row);
-        __companyCodCust = bufer.CodCust;
-        __companyCity = bufer.NameSity;
-        __companyInn = bufer.Inn;
-        __companyReg = bufer.KodReg;
+        if(row < 0){
+            __companyName = "";
+            __companyCodCust = "";
+            __companyCity = "";
+            __companyInn = "";
+            __companyReg = "";
+        }
+        else{
+            bufer = __customTable->at(row);
+            __companyCodCust = bufer.CodCust;
+            __companyCity = bufer.NameSity;
+            __companyInn = bufer.Inn;
+            __companyReg = bufer.KodReg;
+        }
+
     }
     else if(__numTable == THIRD_TABLE)
     {
         Region bufer;
-        bufer = __regTable->at(row);
-                qDebug() << "К=KODREG" << bufer.KodReg << " NAMEREG" << bufer.NameReg;
-        __regKodReg = bufer.KodReg;
-        __regNameReg = bufer.NameReg;
+        if(row < 0){
+            __regKodReg = "";
+            __regNameReg = "";
+        }
+        else{
+            bufer = __regTable->at(row);
+            __regKodReg = bufer.KodReg;
+            __regNameReg = bufer.NameReg;
+        }
     }
 
 }
 
 void controller_allBase::redactProfile(int row)
 {
-    if(row >= rowCount()){
+    if(row >= rowCount() || row < 0){
         return;
     }
     if (__numTable == FIRST_TABLE)

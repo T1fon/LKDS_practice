@@ -121,7 +121,7 @@ public slots:
     int getTableNum();
     void setTableNum(int value);
     int addCustomData(QString cust,QString inn,QString reg,QString city, bool flag);
-    void addRegData(QString kodreg, QString name, bool flag);
+    int addRegData(QString kodreg, QString name, bool flag);
     void chooseRow(int row);
     void redactProfile(int row);
     void refreshTable();

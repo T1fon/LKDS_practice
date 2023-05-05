@@ -17,6 +17,7 @@ void Model_database::connectToDataBase()
     else
     {
         qDebug() << "Try to open";
+
         this->openDataBase();
     }
 }
@@ -24,10 +25,11 @@ void Model_database::connectToDataBase()
 bool Model_database::openDataBase()
 {
 
-    __Db = QSqlDatabase::addDatabase("QSQLITE");
-    __Db.setDatabaseName(DATABASE_WAY);
+
     if(!__Db.isOpen())
     {
+        __Db = QSqlDatabase::addDatabase("QSQLITE");
+        __Db.setDatabaseName(DATABASE_WAY);
 
         if(__Db.open())
         {

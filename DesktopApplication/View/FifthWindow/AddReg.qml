@@ -119,13 +119,26 @@ Dialog
                 }
                 onClicked:
                 {
-                    c_ab.addRegData(tE1.text, tE2.text, flagRedact);
-                    tE1.clear()
-                    tE2.clear()
-                    flagRedact = false
+                    if(tE1.text === "" || tE2.text === ""){
 
-                    add.close()
-                    c_ab.refreshTable()
+                        background.color = "grey"
+                    }
+
+                    else{
+
+                        if(c_ab.addRegData(tE1.text, tE2.text, flagRedact) !== -1){
+                            tE1.clear()
+                            tE2.clear()
+                            flagRedact = false
+                            background.color = "#D3B992"
+                            add.close()
+                            c_ab.chooseRow(-1)
+                            c_ab.refreshTable()
+                        }
+                        else{
+                            background.color = "grey"
+                        }
+                    }
 
                 }
             }
@@ -143,6 +156,7 @@ Dialog
                 }
                 onClicked:
                 {
+                    okbut.background.color = "#D3B992"
                     tE1.clear()
                     tE2.clear()
                     add.close()

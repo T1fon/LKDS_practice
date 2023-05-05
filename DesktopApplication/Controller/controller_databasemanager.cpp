@@ -189,7 +189,7 @@ int Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg
         __query = "INSERT INTO Custom (NAME_CUSTOM, INN, KOD_REG, NAME_SITY ) VALUES ( ' " + buf.NameCust + " ', '" + buf.Inn + "', '" + buf.KodReg + "' , '" + buf.NameSity + "')";
         //qDebug() << __query;
         __q = __dispetcher->queryToDB(__query);
-        __rowNames->push_back(buf);
+        __rowNames->push_front(buf);
         insertRows(__rows, 1);
         __rows++;
     }
@@ -202,7 +202,7 @@ int Controller_DatabaseManager::recieveData(QString cust,QString inn,QString reg
 
         beginResetModel();
         __rowNames->remove(__row);
-        __rowNames->push_back(buf);
+        __rowNames->push_front(buf);
         endResetModel();
     }
 

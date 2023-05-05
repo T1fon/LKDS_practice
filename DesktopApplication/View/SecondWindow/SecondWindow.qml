@@ -367,7 +367,6 @@ Rectangle
                 {
                     if (tE1.text === "" || tE2.text === "" || tE3.editText === "" || tE4.text === "")
                     {
-                        okbut.enabled
                         background.color = "grey"
                     }
 

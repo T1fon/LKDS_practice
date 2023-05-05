@@ -204,25 +204,23 @@ Dialog
                 {
                     if (tE1.text === "" || tE2.text === "" || tE3.editText === "" || tE4.text === "")
                     {
-                        okbut.enabled
                         background.color = "grey"
                     }
 
                     else
                     {
-
                         if(c_ab.addCustomData(tE1.text, tE2.text, tE3.editText, tE4.text, flagRedact) !== -1)
                         {
                             tE1.clear()
                             tE2.clear()
-                            //tE3.
                             sec_winCB.clearQuery()
                             tE3.editText = ""
-
                             tE4.clear()
+
                             flagRedact = false
                             background.color = "#D3B992"
                             add.close()
+                            c_ab.chooseRow(-1)
                         }
                         else
                         {
