@@ -18,6 +18,7 @@ bool Fouth_Window::setKeyParametr(QString prefix, QString start_key, QString cou
         return false;
     }
     __current_key = start_key.toInt()+1;
+    //qDebug() << __current_key << " " << start_key;
     __prefix = prefix.toInt();
     __count_key = count_key.toInt();
     __current_count_key = __count_key;

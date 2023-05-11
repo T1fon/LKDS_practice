@@ -202,7 +202,7 @@ void Controller_KeyTable::addKey(QString key)
    buf.KodReg = __kodReg;
 
    buf.Date = QDate::currentDate().toString("dd.MM.yyyy");
-   __numKey = numKeyFofReg(__kodReg);
+  // __numKey = numKeyFofReg(__kodReg);
    qDebug() << "NUM KEY:" <<  __numKey << "ROWSID" << __rowsID;
    buf.NumKey = t.setNum(__numKey + 1);
    __numKey = i;
@@ -231,15 +231,23 @@ QString Controller_KeyTable::addCodCust()
 
 int Controller_KeyTable::numKeyFofReg(QString __kodReg)
 {
-    qDebug() << "srart";
-    __query = "SELECT *FROM Service_key WHERE KOD_REG = " + __kodReg + " ORDER BY NUM_KEY DESC";
+   // qDebug() << "srart";
+    __query = "SELECT * FROM Service_key WHERE KOD_REG = " + __kodReg + " ORDER BY NUM_KEY DESC";
     __dispetcher->connectToDataBase();
     __q = __dispetcher->queryToDB(__query);
     __q->next();
+    //qDebug() << "NUM_KEY " << __q->value("NUM_KEY").toInt() << " kodREG " << __kodReg;
+
     if (__q->value("NUM_KEY") == "")
         return 0;
     else
-        return __q->value("NUM_KEY").toInt();
+        return __q->value("NUM_KEY").toInt();;
+}
+
+
+void Controller_KeyTable::setKey(int key)
+{
+    __numKey = key;
 }
 
 int Controller_KeyTable::getKey()

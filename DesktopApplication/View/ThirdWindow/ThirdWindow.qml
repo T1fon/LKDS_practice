@@ -156,10 +156,11 @@ Rectangle
                     if(tI.text !== ""){
                         fouthwindow.recieveTW(c_KT)
                         thirdwindow.buttonFouthWindowClicked()
+                        c_KT.setKey(c_KT.numKeyFofReg(c_KT.getReg()))
                         fouthwindow.sendInformationAboutKey(c_KT.getKey(), c_KT.getReg(), tI.text, redactKey)
                         tI.text = "1"
                     }
-                    //c_KT.addKey(tI.text)
+
                 else
                     addkey.enabled
             } 

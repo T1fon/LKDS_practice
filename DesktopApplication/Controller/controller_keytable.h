@@ -46,7 +46,7 @@ public:
     bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex())override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex())override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override ;
-    int numKeyFofReg(QString __kodReg);
+
 
     QHash<int, QByteArray> roleNames() const override;
 
@@ -66,6 +66,8 @@ public slots:
     QString addCodCust();
     int getKey();
     QString getReg();
+    void setKey(int key);
+    int numKeyFofReg(QString __kodReg);
 
 private:
     Model_database * __dispetcher = nullptr;

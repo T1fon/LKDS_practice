@@ -19,9 +19,11 @@ ApplicationWindow
     width:800
     height: 600
     visible: true
-    title: qsTr("Проект Арсений")
+    title: program_name
     property int swidth: this.width/100
     property int sheight: this.height/100
+    property string program_name: "Key programmer"
+    property string program_version: "Версия 1.0"
 
     property int defMargin: 10
 
@@ -35,6 +37,15 @@ ApplicationWindow
         id: stackview
         anchors.fill: parent
         initialItem: firstwindow
+    }
+
+    Text{
+        text: program_version
+        x:  swidth * 93
+        y:  sheight * 97
+        font.pointSize: 1 * swidth
+
+
     }
 
     Rectangle
@@ -63,7 +74,7 @@ ApplicationWindow
              Text
              {
                  id:t_programm_name
-                 text: qsTr("LKDS prog")
+                 text: program_name
                  anchors.horizontalCenter: parent.horizontalCenter
                  anchors.verticalCenter: parent.verticalCenter
                  font.family: "Helvetica"
