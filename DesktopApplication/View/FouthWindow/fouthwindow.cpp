@@ -1,5 +1,14 @@
 #include "fouthwindow.h"
 
+const QMap<Fouth_Window::__access_level_t, QString> Fouth_Window::__access_level_name = {{__LEVEL_ENGINEER, "Engineer"},
+                                                                     {__LEVEL_OPERATOR, "Operator"},
+                                                                     {__LEVEL_ADMINISTRATOR, "Administrator"},
+                                                                     {__LEVEL_DEVELOPER, "Developer"}};
+const QMap<Fouth_Window::__access_level_t, QString> Fouth_Window::__access_level_color = {{__LEVEL_ENGINEER, "\"red\""},
+                                                          {__LEVEL_OPERATOR, "\"green\""},
+                                                          {__LEVEL_ADMINISTRATOR, "\"blue\""},
+                                                          {__LEVEL_DEVELOPER, "\"#FAFF00\""}};
+
 Fouth_Window::Fouth_Window()
 {
     __settings.bound_rate = QSerialPort::Baud9600;
@@ -11,7 +20,7 @@ Fouth_Window::Fouth_Window()
     __port_name = __searchByPortSettings(DEFAULT_SAVE_PATH);
     __controller_serial = new ControllerSerialManager(__settings, __port_name);
 
-    connect(__controller_serial, SIGNAL(readyRead(QString)), this, SLOT(acceptMessage(QString)));
+    connect(__controller_serial, SIGNAL(readyRead(QByteArray, int, int, int)), this, SLOT(acceptMessage(QByteArray,int,int,int)));
 }
 bool Fouth_Window::setKeyParametr(QString prefix, QString start_key, QString count_key, bool overwriting){
     if(prefix == "" || start_key == "" || count_key == ""){
@@ -80,132 +89,148 @@ void Fouth_Window::setPortName(QString port_name){
 }
 void Fouth_Window::backStep(Controller_KeyTable *key_table){
     if(__current_count_key < __count_key && __count_key != 0){
-        __current_key--;
-        __current_count_key++;
-        key_table->deleteKey(QString().setNum(__current_key), QString().setNum(__prefix));
+        __ptr_key_table = key_table;
+        __back_step_process = true;
         this->clear();
-
-        for(;__access_history.back() == ID_DEVELOPER; ){
-            qDebug() << __access_history.back();
-            emit succefulWrite(__access_history.back(), __access_history.back(), true);
-            __access_history.pop_back();
-        }
-        emit succefulWrite(__access_history.back(), __access_history.back(), true);
-        qDebug() << __access_history.back();
-        __access_history.pop_back();
     }
 }
 void Fouth_Window::write(int prefix, int key, QString access_level){
-    __is_read_operation = false;
     if(__current_count_key <= 0){
         return;
     }
-    QString message = OPERATION_WRITE +
-                      QString().setNum(prefix) + OPERATION_SYMBOL +
-                      QString().setNum(key) + OPERATION_SYMBOL +
-                      access_level + OPERATION_SYMBOL;
-    __controller_serial->write(message.toLatin1());
+
+    __controller_serial->write(ControllerSerialManager::OPERATION_WRITE,prefix,key,access_level);
     __access_history.push_back(access_level.toInt());
     __time++;
     qDebug() << "Write";
 }
 void Fouth_Window::read(){
-    __controller_serial->write(OPERATION_READ);
+    __controller_serial->write(ControllerSerialManager::OPERATION_READ);
     __time++;
-    __is_read_operation = true;
     qDebug() << "Read";
 }
 void Fouth_Window::check(){
-    __controller_serial->write(OPERATION_CHECK);
+    __controller_serial->write(ControllerSerialManager::OPERATION_CHECK);
     __time++;
-    __is_read_operation = false;
     qDebug() << "Check";
 }
 void Fouth_Window::clear(){
-    __controller_serial->write(OPERATION_CLEAR);
+    __controller_serial->write(ControllerSerialManager::OPERATION_CLEAR);
     __time++;
-    __is_read_operation = false;
     qDebug() << "Clear";
 }
-void Fouth_Window::acceptMessage(QString message){
-
-   // qDebug() << message;
+void Fouth_Window::acceptMessage(QByteArray message, int lenght, int command, int answer)
+{
     static QString temp_m = "<div>";
     static QString prev_temp_m = "";
-    QString color = "";
 
-    int color_position = 0;
 
-    if(__is_read_operation){
-        color_position = temp_m.indexOf("Access_mode");
-        //qDebug() << temp_m << " " << color_position;
-        if(temp_m.indexOf("Engineer") != -1){
-            color = "\"red\"";
-            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Engineer");
-            temp_m.insert(color_position,"<font color=" + color + ">");
-        }
-        else if(temp_m.indexOf("Operator") != -1){
-            color = "\"green\"";
-            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Operator");
-            temp_m.insert(color_position,"<font color=" + color + ">");
-        }
-        else if(temp_m.indexOf("Administrator") != -1){
-            color = "\"blue\"";
-            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Administrator");
-            temp_m.insert(color_position,"<font color=" + color + ">");
-        }
-        else if(temp_m.indexOf("Developer") != -1){
-            color = "\"#FAFF00\"";
-            //qDebug() << "color = " << color << " pos = " << temp_m.indexOf("Developer");
-            temp_m.insert(color_position,"<font color=" + color + ">");
-        }
-    }
+    switch(command){
+        case ControllerSerialManager::OPERATION_WRITE:
+            if(answer == __STATUS_SUCCESS){
+                temp_m += "<p>Operation write: Successful</p>";
 
-    for(int i = 0; i < message.size(); i++){
-        if(message.at(i) == '\n'){
-            //qDebug() << "\\n = " << i;
-            if(__is_read_operation){
-                temp_m += "</font>";
-            }
-            temp_m += "</div>";
-            prev_temp_m += temp_m;
-            prev_temp_m += "<div>";
-            __succeful_write_operation = (temp_m.indexOf("write: Succeful", 0) != -1) ? true : false;
-            if(__succeful_write_operation){
-                if(__current_count_key > 0){
-
-                    __succeful_write_operation = false;
-                    if(__access_history.back() == ID_DEVELOPER){
-                        emit succefulWrite(true, __access_history.back(), false);
-                    }
-                    else{
-                        __current_key++;
-                        __current_count_key--;
-                        emit succefulWrite(false, __access_history.back(), false);
-                    }
+                if(__access_history.back() == __LEVEL_DEVELOPER){
+                    emit succefulWrite(true, __access_history.back(), false);
                 }
+                else{
+                    __current_key++;
+                    __current_count_key--;
+                    emit succefulWrite(false, __access_history.back(), false);
+                }
+            }
+            else{
+                temp_m += "<p>Operation write: ACCESS DENIED!!!</p>";
+            }
+            break;
+        case ControllerSerialManager::OPERATION_READ:
+            if(answer == __STATUS_SUCCESS){
+                temp_m += "<p>Result read:</p>";
+                temp_m += QString("<p><font color=") + __access_level_color[(__access_level_t)message[ControllerSerialManager::FIELD_ANSWER+1]] + ">";
+                temp_m += "Prefix: " + QString("").setNum((uint8_t)message[ControllerSerialManager::FIELD_ANSWER+2]) + " | ";
+                temp_m += "Key: " + QString("").setNum( ((int)((uint8_t)message[ControllerSerialManager::FIELD_ANSWER+4]) << 8) |
+                                                         (uint8_t)message[ControllerSerialManager::FIELD_ANSWER+3]) + " | ";
+                temp_m += QString("Access mode: ") + __access_level_name[(__access_level_t)message[ControllerSerialManager::FIELD_ANSWER+1]];
+                temp_m += "</font></p>";
+            }
+            else{
+                temp_m += "<p>Operation read: ACCESS DENIED!!!</p>";
+            }
+            break;
+        case ControllerSerialManager::OPERATION_CHECK:
+            if(answer == 0x1){
+                temp_m += "<p>Operation check: Successful</p>";
+            }
+            else{
+                temp_m += "<p>Operation check: ACCESS DENIED!!!</p>";
+            }
+            break;
+        case ControllerSerialManager::OPERATION_CLEAR:
+            if(answer == __STATUS_SUCCESS){
+                temp_m += "<p>Operation clear: Successful</p>";
 
+                if(__back_step_process){
+                    __back_step_process = false;
+                    __current_key--;
+                    __current_count_key++;
+                    __ptr_key_table->deleteKey(QString().setNum(__current_key), QString().setNum(__prefix));
+
+                    for(;__access_history.back() == __LEVEL_DEVELOPER; ){
+                        qDebug() << __access_history.back();
+                        emit succefulWrite(__access_history.back(), __access_history.back(), true);
+                        __access_history.pop_back();
+                    }
+                    emit succefulWrite(__access_history.back(), __access_history.back(), true);
+                    qDebug() << __access_history.back();
+                    __access_history.pop_back();
+                }
+            }
+            else{
+                temp_m += "<p>Operation clear: fail</p>";
+            }
+            break;
+        case ControllerSerialManager::OPERATION_GET_STATUS:
+            if(answer == __STATUS_SUCCESS || answer == __STATUS_REQUEST){
+                if(message[ControllerSerialManager::FIELD_ANSWER+4] & 0b10){
+                    temp_m += "<p>Button PRESSED</p>";
+                    emit pressButtomOnUZK();
+                }
             }
 
-
-            if(__time == __COUNT_LOG_MESSAGE){
-                emit signalClearLog();
-                temp_m = prev_temp_m;
-                prev_temp_m = "";
-                __time = 0;
-            }
-
-
-            //qDebug() << "Write: " << __succeful_write_operation;
-            emit sendToQml(temp_m);
-
-            temp_m = "<div>";
-        }
-        else{
-
-            temp_m += message.at(i);
+            break;
+    }
+    if(answer != __STATUS_SUCCESS && answer != __STATUS_REQUEST){
+        qDebug() << "ANSWER = " << (uint8_t)answer;
+        switch ((uint8_t)answer) {
+        case __STATUS_KEY_NOT_FOUND:
+            emit createErrorDialog("УЗК","Отсутствует сервисный ключ");
+            break;
+        case __STATUS_ERROR_WRITE:
+            emit createErrorDialog("УЗК","Ошибка записи / \nНевозможно записать сервисный ключ");
+            break;
+        case __STATUS_PACKAGE_ERROR:
+            emit createErrorDialog("УЗК","Неверное содержимое пакета запроса");
+            break;
+        default:
+            emit createErrorDialog("УЗК","Неизвестная ошибка возникла на УЗК");
+            break;
         }
     }
+    temp_m += "</div>";
+
+    prev_temp_m += temp_m;
+    if(__time == __COUNT_LOG_MESSAGE){
+        emit signalClearLog();
+        temp_m = prev_temp_m;
+        prev_temp_m = "";
+        __time = 0;
+    }
+
+    emit sendToQml(temp_m);
+
+    temp_m = "<div>";
+
+
 }
 void Fouth_Window::endWork(){
     __access_history.clear();

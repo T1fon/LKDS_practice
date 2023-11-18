@@ -43,7 +43,6 @@ void ModelSerialManager::close(){
         __serial_port->close();
         cout << "Connection closed" << endl;
     }
-    //disconnect(__serial_port, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(handleError(QSerialPort::SerialPortError)));
     disconnect(__serial_port, SIGNAL(readyRead()), this, SLOT(readInPort()));
 }
 void ModelSerialManager::portWrite(QByteArray data){
@@ -54,11 +53,12 @@ void ModelSerialManager::portWrite(QByteArray data){
         qDebug() << "Open to error";
     }
 }
+/*
 void ModelSerialManager::__portRead(){
     QByteArray result;
     result = __serial_port->readAll();
     //qDebug() << result;
-}
+}*/
 void ModelSerialManager::moveToThreadSerialPort(QThread *&thread){
     __serial_port->moveToThread(thread);
 }

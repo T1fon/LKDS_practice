@@ -23,7 +23,7 @@ ApplicationWindow
     property int swidth: this.width/100
     property int sheight: this.height/100
     property string program_name: "Key programmer"
-    property string program_version: "Версия 1.0"
+    property string program_version: "Версия 1.1"
 
     property int defMargin: 10
 

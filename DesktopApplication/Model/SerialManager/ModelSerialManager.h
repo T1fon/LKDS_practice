@@ -28,8 +28,8 @@ private:
     QSerialPort *__serial_port = nullptr;
     QSerialPortInfo *__serial_port_info = nullptr;
 
-private slots:
-   void __portRead();
+//private slots:
+  // void __portRead();
 public:
     ModelSerialManager(Settings settings, QString port_name);
 
@@ -48,7 +48,7 @@ public slots:
 signals:
     void finished();
     void errorPort(QString error);
-    void printDataPort(QString message);
+    void printDataPort(QByteArray message);
 };
 
 #endif // MODELSERIALWORKER_H

@@ -12,18 +12,22 @@ Rectangle
     Dialog{
         id: warning_clear
 
+        property string user_title
+        property string user_message
+
         width: swidth * 44
         height: sheight * 40
         x: 30 * swidth
         y: 20 * sheight
 
-        title: "Предупреждение"
+        title: user_title
+        //title: "Предупреждение"
 
         contentItem: Rectangle{
             width: parent.width
             height: parent.height
             Text{
-                text: "Внимание! \n\nВы уверены, что хотите вернуться на шаг назад,\nпри это все данные с ключа будут стёрты?"
+                text: warning_clear.user_message
                 width: parent.width
                 height: parent.height
                 font.family: "Helvetica"
@@ -50,12 +54,14 @@ Rectangle
                     tristate: false
                 }
                 Button{
+                    id: dialog_button_ok
+                    property string user_message
                     width: warning_clear.footer.width
                     height: sheight * 5
                     anchors.bottom: warning_clear.footer.bottom
                     font.family: "Helvetica"
                     font.pointSize: swidth * 1.4
-                    text: "Да"
+                    text: user_message
 
                     background: Rectangle{
                         width: parent.width
@@ -74,6 +80,7 @@ Rectangle
                     }
                 }
                 Button{
+                    id: dialog_button_cancel
                     width: warning_clear.footer.width
                     height: sheight * 5
                     anchors.bottom: warning_clear.footer.bottom
@@ -127,6 +134,22 @@ Rectangle
             else if(current_access_level === 3){
                 developer_count.text = Number(developer_count.text)+operation
             }
+        }
+        onPressButtomOnUZK:
+        ()=>
+        {
+            window_write_key.write(window_write_key.getPrefix(),window_write_key.getCurrentKey(),access_level)
+        }
+        onCreateErrorDialog:
+        (title, message)=>
+        {
+            console.log("Message = " + message)
+            warning_clear.user_title = title
+            warning_clear.user_message = message
+            dialog_button_ok.user_message = "Понял"
+            dialog_button_cancel.visible = false
+            cb_warning_back_step.visible = false
+            warning_clear.open()
         }
     }
 
@@ -210,6 +233,11 @@ Rectangle
         }
         onClicked: {
             if(show_warning_back_step === true){
+                warning_clear.user_title = "Предупреждение"
+                warning_clear.user_message = "Внимание! \n\nВы уверены, что хотите вернуться на шаг назад,\nпри это все данные с ключа будут стёрты?"
+                dialog_button_ok.user_message = "Да"
+                dialog_button_cancel.visible = true
+                cb_warning_back_step.visible = true
                 warning_clear.open()
             }
             else{
